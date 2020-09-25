@@ -1,37 +1,36 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
-    "eject": "expo eject"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src"
   },
   "dependencies": {
+    "expo": "~39.0.2",
+    "expo-splash-screen": "^0.6.1",
+    "expo-status-bar": "~1.0.2",
+    "expo-updates": "~0.3.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "~0.63.2",
+    "react-native-gesture-handler": "~1.7.0",
+    "react-native-reanimated": "~1.13.0",
+    "react-native-screens": "~2.10.1",
+    "react-native-unimodules": "~0.11.0",
+    "react-native-web": "~0.13.12",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/netinfo": "5.9.6",
     "@react-navigation/drawer": "^5.9.1",
     "@react-navigation/native": "^5.7.4",
     "@react-navigation/stack": "^5.9.1",
     "etebase": "^0.13.0",
-    "expo": "~39.0.2",
-    "expo-splash-screen": "^0.6.1",
-    "expo-status-bar": "~1.0.2",
-    "expo-updates": "~0.3.3",
     "immutable": "^4.0.0-rc.12",
     "moment": "^2.29.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
     "react-native-etebase": "^0.1.5",
-    "react-native-gesture-handler": "~1.7.0",
     "react-native-get-random-values": "^1.5.0",
-    "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
-    "react-native-screens": "~2.10.1",
     "react-native-sodium": "^0.3.8",
-    "react-native-web": "~0.13.12",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
@@ -40,6 +39,10 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "@babel/core": "~7.9.0",
+    "babel-jest": "~25.2.6",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.13.1",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
@@ -54,5 +57,7 @@
     "eslint-plugin-react": "^7.21.2",
     "typescript": "~3.9.5"
   },
-  "private": true
+  "private": true,
+  "name": "etesync-notes",
+  "version": "1.0.0"
 }
