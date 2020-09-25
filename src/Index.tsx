@@ -1,21 +1,46 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+// SPDX-FileCopyrightText: © 2019 EteSync Authors
+// SPDX-License-Identifier: GPL-3.0-only
 
-export default function Index() {
+import * as React from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/es/integration/react";
+import App from "./App";
+
+import "react-native-etebase";
+import * as Etebase from "etebase";
+import { store, persistor } from "./store";
+
+function MyPersistGate(props: React.PropsWithChildren<unknown>) {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    Etebase.ready.then(() => {
+      setLoading(false);
+      persistor.persist();
+    });
+  }, []);
+
+  if (loading) {
+    return (<React.Fragment />);
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PersistGate persistor={persistor}>
+      {props.children}
+    </PersistGate>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+class Index extends React.Component {
+  public render() {
+    return (
+      <Provider store={store}>
+        <MyPersistGate>
+          <App />
+        </MyPersistGate>
+      </Provider>
+    );
+  }
+}
+
+export default Index;
