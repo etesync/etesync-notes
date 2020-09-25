@@ -59,6 +59,7 @@
     "eslint": "^7.9.0",
     "eslint-plugin-react": "^7.21.2",
     "jest": "~25.2.6",
+    "license-checker": "^25.0.1",
     "react-test-renderer": "~16.13.1",
     "typescript": "~3.9.5"
   },

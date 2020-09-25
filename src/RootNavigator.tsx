@@ -12,6 +12,8 @@ import { Appbar, Paragraph, useTheme } from "react-native-paper";
 
 import { Title } from "./widgets/Typography";
 import LoginScreen from "./screens/LoginScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+import AboutScreen from "./screens/AboutScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
 
 import Wizard, { WizardNavigationBar, PagePropsType } from "./widgets/Wizard";
@@ -90,6 +92,8 @@ export default React.memo(function RootNavigator() {
         <>
         </>
       )}
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="About" component={AboutScreen} />
       <Stack.Screen
         name="DebugLogs"
         component={DebugLogsScreen}
