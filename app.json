@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "etesync_notes",
+    "name": "EteSync Notes",
     "slug": "etesync_notes",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#fdf6df"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
