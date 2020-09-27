@@ -22,22 +22,11 @@ export default function LogoutDialog(props: { visible: boolean, onDismiss: (logg
       title="Are you sure?"
       visible={props.visible}
       onOk={async () => {
-        let error: Error | undefined;
-        try {
-          await etebase.logout();
-        } catch (e) {
-          error = e;
-        }
-
         // Here we log out regardless if we actually have an etesync
         dispatch(logout(etebase));
 
         persistor.persist();
 
-        // We want to still logout on error, just not dismiss the error message.
-        if (error) {
-          throw error;
-        }
         props.onDismiss(true);
       }}
       onCancel={() => props.onDismiss(false)}
