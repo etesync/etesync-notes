@@ -15,6 +15,7 @@ import LoginScreen from "./screens/LoginScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
+import NoteListScreen from "./screens/NoteListScreen";
 
 import Wizard, { WizardNavigationBar, PagePropsType } from "./widgets/Wizard";
 
@@ -23,6 +24,8 @@ import { StoreState } from "./store";
 import { setSettings } from "./store/actions";
 
 import { isDefined } from "./helpers";
+
+import * as C from "./constants";
 
 const Stack = createStackNavigator();
 
@@ -90,6 +93,16 @@ export default React.memo(function RootNavigator() {
         </>
       ) : (
         <>
+          <Stack.Screen
+            name="home"
+            component={NoteListScreen}
+            options={{
+              title: C.appName,
+              headerLeft: () => (
+                <MenuButton />
+              ),
+            }}
+          />
         </>
       )}
       <Stack.Screen name="Settings" component={SettingsScreen} />
