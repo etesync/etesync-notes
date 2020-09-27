@@ -10,6 +10,11 @@ import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useSyncGate } from "../SyncGate";
 import { CachedItem } from "../store";
 
+import { SyncManager } from "../sync/SyncManager";
+import { useAsyncDispatch } from "../store";
+import { performSync } from "../store/actions";
+import { useCredentials } from "../credentials";
+
 
 type RootStackParamList = {
   NoteListScreen: {
@@ -22,6 +27,8 @@ interface PropsType {
 }
 
 export default function NoteListScreen(props: PropsType) {
+  const etebase = useCredentials()!;
+  const dispatch = useAsyncDispatch();
   const navigation = useNavigation();
   const syncGate = useSyncGate();
   const theme = useTheme();
@@ -46,10 +53,10 @@ export default function NoteListScreen(props: PropsType) {
                 navigation.navigate("CollectionEdit", { colUid });
               }}
             />
-            <Menu.Item icon="account-multiple" title="Members"
+            <Menu.Item icon="sync" title="Sync"
               onPress={() => {
-                setShowMenu(false);
-                navigation.navigate("CollectionMembers", { colUid });
+                const syncManager = SyncManager.getManager(etebase);
+                dispatch(performSync(syncManager.sync())); // not awaiting on puprose
               }}
             />
           </Menu>

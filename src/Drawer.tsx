@@ -95,6 +95,7 @@ interface PropsType {
 export default function Drawer(props: PropsType) {
   const [showFingerprint, setShowFingerprint] = React.useState(false);
   const [showLogout, setShowLogout] = React.useState(false);
+  const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const navigation = props.navigation as DrawerNavigationProp<ParamListBase>;
   const etebase = useCredentials();
   const loggedIn = !!etebase;
@@ -115,6 +116,49 @@ export default function Drawer(props: PropsType) {
         </Container>
       </SafeAreaView>
       <ScrollView style={{ flex: 1 }}>
+        {loggedIn && (
+          <>
+            <List.Item
+              title="All Notes"
+              onPress={() => {
+                navigation.closeDrawer();
+                navigation.navigate("home", {});
+              }}
+              left={(props) => <List.Icon {...props} icon="note-multiple" />}
+            />
+            <Divider />
+            <List.Section title="Tags">
+              <List.Item
+                title="Create new tag"
+                onPress={() => {
+                  navigation.navigate("TagEdit", {});
+                }}
+                left={(props) => <List.Icon {...props} icon="plus" />}
+              />
+            </List.Section>
+            <Divider />
+            <List.Section title="Notebooks">
+              {Array.from(cacheCollections.map(({ meta }, uid) => (
+                <List.Item
+                  key={uid}
+                  title={meta.name}
+                  onPress={() => {
+                    // Filter base on notbook
+                  }}
+                  left={(props) => <List.Icon {...props} icon="notebook" />}
+                />
+              )).values())}
+              <List.Item
+                title="Create new notebook"
+                onPress={() => {
+                  navigation.navigate("CollectionEdit", {});
+                }}
+                left={(props) => <List.Icon {...props} icon="plus" />}
+              />
+            </List.Section>
+            <Divider />
+          </>
+        )}
         <>
           {menuItems.map((menuItem) => (
             <List.Item
