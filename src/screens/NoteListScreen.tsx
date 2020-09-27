@@ -3,8 +3,8 @@
 
 import * as React from "react";
 import moment from "moment";
-import { FlatList, View } from "react-native";
-import { Menu, Appbar, List, useTheme } from "react-native-paper";
+import { StyleSheet, FlatList, View } from "react-native";
+import { Menu, Appbar, List, useTheme, FAB } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 
 import { useSyncGate } from "../SyncGate";
@@ -96,6 +96,22 @@ export default function NoteListScreen(props: PropsType) {
         renderItem={renderEntry}
         maxToRenderPerBatch={10}
       />
+      <FAB
+        icon="plus"
+        accessibilityLabel="New"
+        color="white"
+        style={styles.fab}
+        onPress={() => navigation.navigate("ItemEdit", { colUid })}
+      />
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+});

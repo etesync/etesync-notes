@@ -16,6 +16,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
+import ItemEditScreen from "./screens/ItemEditScreen";
 
 import Wizard, { WizardNavigationBar, PagePropsType } from "./widgets/Wizard";
 
@@ -102,6 +103,10 @@ export default React.memo(function RootNavigator() {
                 <MenuButton />
               ),
             }}
+          />
+          <Stack.Screen
+            name="ItemEdit"
+            component={ItemEditScreen}
           />
         </>
       )}

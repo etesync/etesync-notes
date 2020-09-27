@@ -41,7 +41,8 @@
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "use-debounce": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

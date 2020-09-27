@@ -9169,6 +9169,11 @@ url-parse@^1.4.4:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+use-debounce@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-5.0.0.tgz#839592080a0c2681a5552d9fb5bc2a970fafa77c"
+  integrity sha512-ixDekk7e2wafKlaitucqYUEkpyMwfqxz0P0s8/kcH6xJMwHEovrjsJMPzZ6a4+PhcVyAJ8prk1WI8XRNUWD7aw==
+
 use-subscription@^1.0.0, use-subscription@^1.4.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.4.1.tgz#edcbcc220f1adb2dd4fa0b2f61b6cc308e620069"
