@@ -40,7 +40,7 @@ export default function NoteListScreen(props: PropsType) {
               <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
             )}
           >
-            <Menu.Item icon="pencil" title="Edit"
+            <Menu.Item icon="notebook" title="New Notebook"
               onPress={() => {
                 setShowMenu(false);
                 navigation.navigate("CollectionEdit", { colUid });
