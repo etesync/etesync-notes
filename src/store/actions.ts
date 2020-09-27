@@ -26,8 +26,9 @@ export const login = createAction(
 
 export const setCacheCollection = createAction(
   "SET_CACHE_COLLECTION",
-  async (_colMgr: Etebase.CollectionManager, col: Etebase.Collection) => {
+  async (colMgr: Etebase.CollectionManager, col: Etebase.Collection) => {
     return {
+      cache: colMgr.cacheSave(col),
       meta: await col.getMeta(),
     };
   },
@@ -68,8 +69,9 @@ export const collectionUpload = createAction(
 
 export const setCacheItem = createAction(
   "SET_CACHE_ITEM",
-  async (_col: Etebase.Collection, _itemMgr: Etebase.ItemManager, item: Etebase.Item) => {
+  async (_col: Etebase.Collection, itemMgr: Etebase.ItemManager, item: Etebase.Item) => {
     return {
+      cache: itemMgr.cacheSave(item),
       meta: await item.getMeta(),
     };
   },
@@ -83,10 +85,11 @@ export const setCacheItem = createAction(
 
 export const setCacheItemMulti = createAction(
   "SET_CACHE_ITEM_MULTI",
-  async (_colUid: string, _itemMgr: Etebase.ItemManager, items: Etebase.Item[]) => {
+  async (_colUid: string, itemMgr: Etebase.ItemManager, items: Etebase.Item[]) => {
     const ret = [];
     for (const item of items) {
       ret.push({
+        cache: itemMgr.cacheSave(item),
         meta: await item.getMeta(),
       });
     }
@@ -107,6 +110,7 @@ export const itemBatch = createAction(
     const ret = [];
     for (const item of items) {
       ret.push({
+        cache: itemMgr.cacheSave(item),
         meta: await item.getMeta(),
       });
     }

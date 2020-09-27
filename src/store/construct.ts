@@ -13,7 +13,7 @@ import {
   SettingsType,
   fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer, ErrorsData,
   CredentialsData, SyncCollectionsData, SyncGeneralData,
-  collections, items, syncCollections, syncGeneral, DecryptedCollectionsData, DecryptedItemsData,
+  collections, items, syncCollections, syncGeneral, CachedCollectionsData, CachedItemsData,
 } from "./reducers";
 
 export interface StoreState {
@@ -29,8 +29,8 @@ export interface StoreState {
     lastSync: Date | null;
   };
   cache: {
-    collections: DecryptedCollectionsData;
-    items: DecryptedItemsData;
+    collections: CachedCollectionsData;
+    items: CachedItemsData;
   };
   connection: NetInfoStateType | null;
   errors: ErrorsData;

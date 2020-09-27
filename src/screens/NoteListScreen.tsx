@@ -8,7 +8,7 @@ import { Menu, Appbar, List, useTheme, FAB } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 
 import { useSyncGate } from "../SyncGate";
-import { DecryptedItem } from "../store";
+import { CachedItem } from "../store";
 
 
 type RootStackParamList = {
@@ -72,7 +72,7 @@ export default function NoteListScreen(props: PropsType) {
 
   const entriesList: any[] = [];
 
-  function renderEntry(param: { item: DecryptedItem & { uid: string } }) {
+  function renderEntry(param: { item: CachedItem & { uid: string } }) {
     const item = param.item;
     const name = item.meta.name!;
     const mtime = (item.meta.mtime) ? moment(item.meta.mtime) : undefined;

@@ -26,11 +26,11 @@ export interface SyncCollectionsEntryData extends BaseModel {
 
 export type SyncCollectionsData = ImmutableMap<string, SyncCollectionsEntryData>;
 
-export type DecryptedItem = { meta: Etebase.ItemMetadata, content: string, isDeleted: boolean };
-export type DecryptedItems = ImmutableMap<string, DecryptedItem>;
-export type DecryptedItemsData = ImmutableMap<string, DecryptedItems>;
-export type DecryptedCollection = { meta: Etebase.CollectionMetadata };
-export type DecryptedCollectionsData = ImmutableMap<string, DecryptedCollection>;
+export type CachedItem = { cache: Uint8Array, meta: Etebase.ItemMetadata };
+export type CachedItems = ImmutableMap<string, CachedItem>;
+export type CachedItemsData = ImmutableMap<string, CachedItems>;
+export type CachedCollection = { cache: Uint8Array, meta: Etebase.CollectionMetadata };
+export type CachedCollectionsData = ImmutableMap<string, CachedCollection>;
 
 export type SyncGeneralData = {
   stoken?: string | null;
@@ -101,7 +101,7 @@ export const collections = handleActions(
       actions.setCacheCollection,
       actions.collectionUpload,
       actions.unsetCacheCollection
-    ).toString()]: (state: DecryptedCollectionsData, action: ActionMeta<DecryptedCollection, { colUid: string, deleted: boolean }>) => {
+    ).toString()]: (state: CachedCollectionsData, action: ActionMeta<CachedCollection, { colUid: string, deleted: boolean }>) => {
       if (action.payload !== undefined) {
         if (action.meta.deleted) {
           return state.remove(action.meta.colUid);
@@ -111,7 +111,7 @@ export const collections = handleActions(
       }
       return state;
     },
-    [actions.logout.toString()]: (state: DecryptedCollectionsData, _action: any) => {
+    [actions.logout.toString()]: (state: CachedCollectionsData, _action: any) => {
       return state.clear();
     },
   },
@@ -122,7 +122,7 @@ export const items = handleActions(
   {
     [combineActions(
       actions.setCacheItem
-    ).toString()]: (state: DecryptedItemsData, action: ActionMeta<DecryptedItem, { colUid: string, itemUid: string }>) => {
+    ).toString()]: (state: CachedItemsData, action: ActionMeta<CachedItem, { colUid: string, itemUid: string }>) => {
       if (action.payload !== undefined) {
         return state.setIn([action.meta.colUid, action.meta.itemUid], action.payload);
       }
@@ -131,9 +131,9 @@ export const items = handleActions(
     [combineActions(
       actions.itemBatch,
       actions.setCacheItemMulti
-    ).toString()]: (state: DecryptedItemsData, action_: any) => {
+    ).toString()]: (state: CachedItemsData, action_: any) => {
       // Fails without it for some reason
-      const action = action_ as ActionMeta<DecryptedItem[], { colUid: string, items: Etebase.Item[] }>;
+      const action = action_ as ActionMeta<CachedItem[], { colUid: string, items: Etebase.Item[] }>;
       if (action.payload !== undefined) {
         return state.withMutations((state) => {
           let i = 0;
@@ -145,7 +145,7 @@ export const items = handleActions(
       }
       return state;
     },
-    [actions.setCacheCollection.toString()]: (state: DecryptedItemsData, action: ActionMeta<any, { colUid: string }>) => {
+    [actions.setCacheCollection.toString()]: (state: CachedItemsData, action: ActionMeta<any, { colUid: string }>) => {
       if (action.payload !== undefined) {
         if (!state.has(action.meta.colUid)) {
           return state.set(action.meta.colUid, ImmutableMap());
@@ -153,13 +153,13 @@ export const items = handleActions(
       }
       return state;
     },
-    [actions.unsetCacheCollection.toString()]: (state: DecryptedItemsData, action: ActionMeta<any, { colUid: string }>) => {
+    [actions.unsetCacheCollection.toString()]: (state: CachedItemsData, action: ActionMeta<any, { colUid: string }>) => {
       if (action.payload !== undefined) {
         return state.remove(action.meta.colUid);
       }
       return state;
     },
-    [actions.logout.toString()]: (state: DecryptedItemsData, _action: any) => {
+    [actions.logout.toString()]: (state: CachedItemsData, _action: any) => {
       return state.clear();
     },
   },

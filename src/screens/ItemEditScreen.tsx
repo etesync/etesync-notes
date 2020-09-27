@@ -9,7 +9,7 @@ import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useSyncGate } from "../SyncGate";
-import { DecryptedItem } from "../store";
+import { CachedItem } from "../store";
 import ScrollView from "../widgets/ScrollView";
 import { useCredentials } from "../credentials";
 
