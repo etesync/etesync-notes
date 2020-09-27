@@ -17,3 +17,6 @@ export const serviceApiBase = "https://api.etebase.com/";
 
 // In generic mode we don't have anything etesync.com specific (app store guidelines)
 export const genericMode = Platform.OS === "ios";
+
+
+export const colType = "etebase.md.note";
