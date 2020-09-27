@@ -13,11 +13,9 @@ import { CachedItem } from "../store";
 import ScrollView from "../widgets/ScrollView";
 import { useCredentials } from "../credentials";
 
-import LocalCache from "../LocalCache";
 import Markdown from "../widgets/Markdown";
 
 interface ItemState {
-  localCache: LocalCache;
   item: Etebase.Item;
   itemMgr: Etebase.ItemManager;
 }
@@ -60,7 +58,6 @@ export default function ItemEditScreen(props: PropsType) {
         await item.setMeta(meta);
         await item.setContent(content);
       } else {
-        const localCache = LocalCache.getInstance(etebase.user.username);
         const colMgr = etebase.getCollectionManager();
         const col = await localCache.collectionGet(colMgr, colUid);
         const itemMgr = colMgr.getItemManager(col!);
@@ -71,14 +68,11 @@ export default function ItemEditScreen(props: PropsType) {
         };
 
         itemState = {
-          localCache,
           itemMgr,
           item: await itemMgr.create(meta, content),
         };
         setItemState(itemState);
       }
-      // Cache getting the colmgr, collection and etc.
-      itemState.localCache.itemSet(itemState.itemMgr, colUid, itemState.item);
       // FIXME: mark item as changed in the store
     },
     1000,
