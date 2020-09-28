@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "strict": false,
     "esModuleInterop": true,
+    "downlevelIteration": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
