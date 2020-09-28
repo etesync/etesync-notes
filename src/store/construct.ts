@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: © 2019 EteSync Authors
 // SPDX-License-Identifier: GPL-3.0-only
 
+
+import * as Etebase from "etebase";
+
 import { AsyncStorage } from "react-native";
 import { NetInfoStateType } from "@react-native-community/netinfo";
 
@@ -13,7 +16,7 @@ import {
   SettingsType,
   fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer, ErrorsData,
   CredentialsData, SyncCollectionsData, SyncGeneralData,
-  collections, items, syncCollections, syncGeneral, CachedCollectionsData, CachedItemsData,
+  collections, items, syncCollections, syncGeneral, CachedCollectionsData, CachedItemsData, CachedItem,
 } from "./reducers";
 
 export interface StoreState {
@@ -71,8 +74,16 @@ const syncPersistConfig = {
 };
 
 const cacheSerialize = (state: any, key: string | number) => {
-  if ((key === "collections") || (key === "items")) {
-    state.toJS();
+  if (key === "collections") {
+    const typedState = state as CachedCollectionsData;
+    const ret = typedState.map((x) => ({ ...x, cache: Etebase.toBase64(x.cache) }));
+    return ret.toJS();
+  } else if (key === "items") {
+    const typedState = state as CachedItemsData;
+    const ret = typedState.map((items) => {
+      return items.map((x) => ({ ...x, cache: Etebase.toBase64(x.cache) }));
+    });
+    return ret.toJS();
   }
 
   return state;
@@ -80,10 +91,12 @@ const cacheSerialize = (state: any, key: string | number) => {
 
 const cacheDeserialize = (state: any, key: string | number) => {
   if (key === "collections") {
-    return ImmutableMap(state);
+    return ImmutableMap<string, any>(state).map((x) => {
+      return { ...x, cache: Etebase.fromBase64(x.cache) };
+    });
   } else if (key === "items") {
     return ImmutableMap(state).map((item: any) => {
-      return ImmutableMap(item);
+      return ImmutableMap<string, any>(item).map((x) => ({ ...x, cache: Etebase.fromBase64(x.cache) }));
     });
   }
 
