@@ -16,7 +16,7 @@ import {
   SettingsType,
   fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer, ErrorsData,
   CredentialsData, SyncCollectionsData, SyncGeneralData,
-  collections, items, syncCollections, syncGeneral, CachedCollectionsData, CachedItemsData, CachedItem,
+  collections, items, syncCollections, syncGeneral, CachedCollectionsData, CachedItemsData,
 } from "./reducers";
 
 export interface StoreState {

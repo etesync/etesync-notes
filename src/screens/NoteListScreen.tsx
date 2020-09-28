@@ -5,7 +5,7 @@ import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View } from "react-native";
 import { Menu, Appbar, List, useTheme, FAB } from "react-native-paper";
-import { useNavigation, RouteProp } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -57,17 +57,7 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-type RootStackParamList = {
-  NoteListScreen: {
-    colUid?: string;
-  };
-};
-
-interface PropsType {
-  route: RouteProp<RootStackParamList, "NoteListScreen">;
-}
-
-export default function NoteListScreen(props: PropsType) {
+export default function NoteListScreen() {
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
   const syncDispatch = useDispatch();
