@@ -18,6 +18,7 @@ import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
 import CollectionEditScreen from "./screens/CollectionEditScreen";
 import ItemEditScreen from "./screens/ItemEditScreen";
+import InvitationsScreen from "./screens/InvitationsScreen";
 import AccountWizardScreen from "./screens/AccountWizardScreen";
 
 import Wizard, { WizardNavigationBar, PagePropsType } from "./widgets/Wizard";
@@ -120,6 +121,13 @@ export default React.memo(function RootNavigator() {
           <Stack.Screen
             name="ItemEdit"
             component={ItemEditScreen}
+          />
+          <Stack.Screen
+            name="Invitations"
+            component={InvitationsScreen}
+            options={{
+              title: "Collection Invitations",
+            }}
           />
         </>
       )}
