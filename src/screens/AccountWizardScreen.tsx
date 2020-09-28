@@ -67,9 +67,10 @@ function SetupCollectionsPage(props: PagePropsType) {
   return (
     <>
       <View style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Headline style={{ textAlign: "center" }}>Setup Collections</Headline>
+        <Headline style={{ textAlign: "center" }}>Setup Notebook</Headline>
         <Paragraph style={{ textAlign: "center" }}>
-          In order to start using EteSync you need to create collections to store your data. Clicking "Finish" below will create a default calendar, address book and a task list for you.
+          In order to use {C.appName} you need a notebook to store your data.
+          Clicking "Finish" below will create a default notebook for you.
         </Paragraph>
         {(error) && (
           <Paragraph style={{ color: "red" }}>{error.message}</Paragraph>
