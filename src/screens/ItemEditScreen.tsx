@@ -103,7 +103,7 @@ export default function ItemEditScreen(props: PropsType) {
     },
     1000,
     // The max wait time:
-    { maxWait: 5000 }
+    { maxWait: 10000 }
   );
 
   async function onSave() {
