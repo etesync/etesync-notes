@@ -42,6 +42,7 @@ export default function NoteListScreen(props: PropsType) {
   React.useEffect(() => {
     function RightAction() {
       const [showMenu, setShowMenu] = React.useState(false);
+      const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
 
       return (
         <View style={{ flexDirection: "row" }}>
@@ -54,6 +55,7 @@ export default function NoteListScreen(props: PropsType) {
             )}
           >
             <Menu.Item icon="sync" title="Sync"
+              disabled={isSyncing}
               onPress={() => {
                 setShowMenu(false);
                 const syncManager = SyncManager.getManager(etebase);
