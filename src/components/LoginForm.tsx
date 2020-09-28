@@ -102,7 +102,7 @@ class LoginForm extends React.PureComponent {
           label="Server URL"
           accessibilityLabel="Server URL"
           value={this.state.server}
-          placeholder="E.g. https://api.etesync.com"
+          placeholder="E.g. https://api.etebase.com"
           onChangeText={this.handleInputChange("server")}
           ref={this.formRefs[2]}
         />
