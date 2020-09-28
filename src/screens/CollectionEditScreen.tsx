@@ -72,7 +72,7 @@ export default function CollectionEditScreen(props: PropsType) {
 
   React.useEffect(() => {
     navigation.setOptions({
-      option: (colUid) ? "Edit Notebook" : "New Notebook",
+      title: (colUid) ? "Edit Notebook" : "New Notebook",
       headerRight: () => (
         <RightAction colUid={colUid} />
       ),
