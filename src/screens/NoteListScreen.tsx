@@ -60,7 +60,6 @@ function getSortFunction(sortOrder: string) {
 export default function NoteListScreen() {
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
-  const syncDispatch = useDispatch();
   const [newItemDialogShow, setNewItemDialogShow] = React.useState(false);
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const { sortBy } = viewSettings;
@@ -71,83 +70,6 @@ export default function NoteListScreen() {
   const theme = useTheme();
 
   React.useEffect(() => {
-    function RightAction() {
-      const [showMenu, setShowMenu] = React.useState(false);
-      const [showSortMenu, setShowSortMenu_] = React.useState(false);
-      const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
-      const selecetdStyle = { color: "green" };
-      const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
-
-      function setShowSortMenu(value: boolean) {
-        setShowSortMenu_(value);
-        setShowMenu(value);
-      }
-
-      return (
-        <View style={{ flexDirection: "row" }}>
-          <Menu
-            visible={showMenu}
-            onDismiss={() => setShowMenu(false)}
-            anchor={(
-              <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
-            )}
-          >
-            <Menu
-              visible={showSortMenu}
-              onDismiss={() => setShowSortMenu(false)}
-              anchor={(
-                <Menu.Item icon="sort" title="Sort by"
-                  disabled={isSyncing}
-                  onPress={() => {
-                    setShowSortMenu(true);
-                  }}
-                />
-              )}
-            >
-              <Menu.Item icon="sort-alphabetical" title="Name"
-                disabled={isSyncing}
-                titleStyle={
-                  (viewSettings.sortBy === "name") ? selecetdStyle : undefined
-                }
-                onPress={() => {
-                  setShowSortMenu(false);
-                  syncDispatch(setSettings({
-                    viewSettings: {
-                      ...viewSettings,
-                      sortBy: "name",
-                    },
-                  }));
-                }}
-              />
-              <Menu.Item icon="sort-numeric" title="Modification time"
-                disabled={isSyncing}
-                titleStyle={
-                  (viewSettings.sortBy === "mtime") ? selecetdStyle : undefined
-                }
-                onPress={() => {
-                  setShowSortMenu(false);
-                  syncDispatch(setSettings({
-                    viewSettings: {
-                      ...viewSettings,
-                      sortBy: "mtime",
-                    },
-                  }));
-                }}
-              />
-            </Menu>
-            <Menu.Item icon="sync" title="Sync"
-              disabled={isSyncing}
-              onPress={() => {
-                setShowMenu(false);
-                const syncManager = SyncManager.getManager(etebase);
-                dispatch(performSync(syncManager.sync())); // not awaiting on puprose
-              }}
-            />
-          </Menu>
-        </View>
-      );
-    }
-
     navigation.setOptions({
       headerRight: () => (
         <RightAction />
@@ -231,3 +153,82 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 });
+
+function RightAction() {
+  const etebase = useCredentials()!;
+  const [showMenu, setShowMenu] = React.useState(false);
+  const [showSortMenu, setShowSortMenu_] = React.useState(false);
+  const syncDispatch = useDispatch();
+  const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
+  const selecetdStyle = { color: "green" };
+  const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
+
+  function setShowSortMenu(value: boolean) {
+    setShowSortMenu_(value);
+    setShowMenu(value);
+  }
+
+  return (
+    <View style={{ flexDirection: "row" }}>
+      <Menu
+        visible={showMenu}
+        onDismiss={() => setShowMenu(false)}
+        anchor={(
+          <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
+        )}
+      >
+        <Menu
+          visible={showSortMenu}
+          onDismiss={() => setShowSortMenu(false)}
+          anchor={(
+            <Menu.Item icon="sort" title="Sort by"
+              disabled={isSyncing}
+              onPress={() => {
+                setShowSortMenu(true);
+              }}
+            />
+          )}
+        >
+          <Menu.Item icon="sort-alphabetical" title="Name"
+            disabled={isSyncing}
+            titleStyle={
+              (viewSettings.sortBy === "name") ? selecetdStyle : undefined
+            }
+            onPress={() => {
+              setShowSortMenu(false);
+              syncDispatch(setSettings({
+                viewSettings: {
+                  ...viewSettings,
+                  sortBy: "name",
+                },
+              }));
+            }}
+          />
+          <Menu.Item icon="sort-numeric" title="Modification time"
+            disabled={isSyncing}
+            titleStyle={
+              (viewSettings.sortBy === "mtime") ? selecetdStyle : undefined
+            }
+            onPress={() => {
+              setShowSortMenu(false);
+              syncDispatch(setSettings({
+                viewSettings: {
+                  ...viewSettings,
+                  sortBy: "mtime",
+                },
+              }));
+            }}
+          />
+        </Menu>
+        <Menu.Item icon="sync" title="Sync"
+          disabled={isSyncing}
+          onPress={() => {
+            setShowMenu(false);
+            const syncManager = SyncManager.getManager(etebase);
+            syncDispatch(performSync(syncManager.sync())); // not awaiting on puprose
+          }}
+        />
+      </Menu>
+    </View>
+  );
+}
