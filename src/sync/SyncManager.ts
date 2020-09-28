@@ -6,12 +6,12 @@ import * as Etebase from "etebase";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 
-import { store, persistor, StoreState } from "../store";
+import { store, persistor, StoreState, asyncDispatch } from "../store";
 
 import { credentialsSelector } from "../credentials";
-import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError, performSync } from "../store/actions";
+import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError, performSync, itemBatch } from "../store/actions";
 import * as C from "../constants";
-import { startTask } from "../helpers";
+import { startTask, arrayToChunkIterator } from "../helpers";
 
 const cachedSyncManager = new Map<string, SyncManager>();
 export class SyncManager {
@@ -92,6 +92,31 @@ export class SyncManager {
     return true;
   }
 
+  private async pushAll() {
+    const storeState = store.getState() as unknown as StoreState;
+    const etebase = (await credentialsSelector(storeState))!;
+    const cacheCollections = storeState.cache.collections;
+    const cacheItems = storeState.cache.items;
+    const syncItemsAll = storeState.sync.items;
+
+    for (const [colUid, syncItems] of syncItemsAll.entries()) {
+      for (const chunk of arrayToChunkIterator(Array.from(syncItems.keys()), this.BATCH_SIZE)) {
+        const colMgr = etebase.getCollectionManager();
+        const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+        const itemMgr = colMgr.getItemManager(col);
+        const items = chunk.map((itemUid) => {
+          const cacheItem = cacheItems.get(colUid)!.get(itemUid)!;
+          const item = itemMgr.cacheLoad(cacheItem.cache);
+          return item;
+        });
+
+        await asyncDispatch(itemBatch(col, itemMgr, items));
+      }
+    }
+
+    return true;
+  }
+
   public async sync(alwaysThrowErrors = false) {
     if (this.isSyncing) {
       return false;
@@ -99,6 +124,7 @@ export class SyncManager {
     this.isSyncing = true;
 
     try {
+      await this.pushAll();
       const stoken = await this.fetchAllCollections();
       return stoken;
     } catch (e) {

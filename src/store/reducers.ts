@@ -80,6 +80,17 @@ export const syncCollections = handleActions(
 
 export const syncItems = handleActions(
   {
+    [actions.itemBatch.toString()]: (state: SyncItemsData, action_: Action<unknown>) => {
+      const action = action_ as ActionMeta<CachedItem[], { colUid: string, items: Etebase.Item[] }>;
+      if (action.payload !== undefined) {
+        return state.withMutations((state) => {
+          for (const item of action.meta.items) {
+            state.removeIn([action.meta.colUid, item.uid]);
+          }
+        });
+      }
+      return state;
+    },
     [actions.setSyncItem.toString()]: (state: SyncItemsData, action: Action<{ colUid: string, itemUid: string }>) => {
       if (action.payload !== undefined) {
         return state.setIn([action.payload.colUid, action.payload.itemUid], true);
