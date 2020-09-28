@@ -2,8 +2,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
+import * as Etebase from "etebase";
 
 export const defaultColor = "#8BC34A";
+
+export interface NoteMetadata extends Etebase.ItemMetadata {
+  name: string;
+  mtime: number;
+}
 
 export function* arrayToChunkIterator<T>(arr: T[], size: number) {
   for (let i = 0 ; i < arr.length ; i += size) {

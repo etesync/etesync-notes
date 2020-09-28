@@ -9,21 +9,19 @@ import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useSyncGate } from "../SyncGate";
-import { CachedItem } from "../store";
+import { StoreState, useAsyncDispatch } from "../store";
 import ScrollView from "../widgets/ScrollView";
 import { useCredentials } from "../credentials";
 
 import Markdown from "../widgets/Markdown";
-
-interface ItemState {
-  item: Etebase.Item;
-  itemMgr: Etebase.ItemManager;
-}
+import { useSelector } from "react-redux";
+import { setCacheItem, itemBatch } from "../store/actions";
+import LoadingIndicator from "../widgets/LoadingIndicator";
 
 type RootStackParamList = {
   ItemEditScreen: {
     colUid: string;
-    itemUid?: string;
+    itemUid: string;
   };
 };
 
@@ -32,15 +30,32 @@ interface PropsType {
 }
 
 export default function ItemEditScreen(props: PropsType) {
-  const [itemState_, setItemState] = React.useState<ItemState>();
-  const [content, setContent_] = React.useState(""); // FIXME: Set something from the item
+  const [loading, setLoading] = React.useState(true);
+  const [changed, setChanged] = React.useState(false);
+  const [content, setContent_] = React.useState("");
   const [viewMode, setViewMode] = React.useState(false);
-  const etebase = useCredentials();
+  const dispatch = useAsyncDispatch();
+  const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
+  const cacheItems = useSelector((state: StoreState) => state.cache.items);
+  const etebase = useCredentials()!;
   const navigation = useNavigation();
   const syncGate = useSyncGate();
 
   const colUid = props.route.params.colUid;
   const itemUid = props.route.params.itemUid;
+  const cacheItem = cacheItems.get(colUid)!.get(itemUid)!;
+
+  React.useEffect(() => {
+    (async () => {
+      const colMgr = etebase.getCollectionManager();
+      const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+      const itemMgr = colMgr.getItemManager(col);
+      const item = itemMgr.cacheLoad(cacheItem.cache);
+      const content = await item.getContent(Etebase.OutputFormat.String);
+      setContent_(content);
+      setLoading(false);
+    })();
+  }, []);
 
   const persistItem = useDebouncedCallback(
     async (content: string) => {
@@ -48,58 +63,65 @@ export default function ItemEditScreen(props: PropsType) {
         return;
       }
 
-      const mtime = (new Date()).getTime();
-      let itemState: ItemState;
-      if (itemState_) {
-        itemState = itemState_;
-        const item = itemState.item;
-        const meta = await item.getMeta();
-        meta.mtime = mtime;
-        await item.setMeta(meta);
-        await item.setContent(content);
-      } else {
-        const colMgr = etebase.getCollectionManager();
-        const col = await localCache.collectionGet(colMgr, colUid);
-        const itemMgr = colMgr.getItemManager(col!);
+      const colMgr = etebase.getCollectionManager();
+      const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+      const itemMgr = colMgr.getItemManager(col);
+      const item = itemMgr.cacheLoad(cacheItem.cache);
 
-        const meta: Etebase.ItemMetadata = {
-          name: "FIXME: some name", // FIXME
-          mtime,
-        };
+      const meta = await item.getMeta();
+      meta.mtime = (new Date()).getTime();
+      await item.setMeta(meta);
+      await item.setContent(content);
 
-        itemState = {
-          itemMgr,
-          item: await itemMgr.create(meta, content),
-        };
-        setItemState(itemState);
-      }
-      // FIXME: mark item as changed in the store
+      await dispatch(setCacheItem(col, itemMgr, item));
     },
     1000,
     // The max wait time:
     { maxWait: 5000 }
   );
 
+  async function onSave() {
+    setLoading(true);
+    try {
+      const colMgr = etebase.getCollectionManager();
+      const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+      const itemMgr = colMgr.getItemManager(col);
+      const item = itemMgr.cacheLoad(cacheItem.cache);
+      await item.setContent(content);
+      await dispatch(itemBatch(col, itemMgr, [item]));
+      setChanged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   React.useEffect(() => {
     navigation.setOptions({
-      title: "FIXME: item's name.", // FIXME: maybe have an underbar with the name...
+      title: cacheItem.meta.name,
       headerRight: () => (
         <RightAction
           colUid={colUid}
           viewMode={viewMode}
           setViewMode={setViewMode}
+          onSave={onSave}
+          changed={changed}
         />
       ),
     });
-  }, [navigation, colUid, viewMode, setViewMode]);
+  }, [navigation, colUid, viewMode, setViewMode, changed]);
 
   function setContent(content: string) {
+    setChanged(true);
     persistItem.callback(content);
     setContent_(content);
   }
 
   if (syncGate) {
     return syncGate;
+  }
+
+  if (loading) {
+    return <LoadingIndicator />;
   }
 
   return (
@@ -125,17 +147,18 @@ export default function ItemEditScreen(props: PropsType) {
 interface RightActionViewProps {
   colUid: string;
   viewMode: boolean;
+  changed: boolean;
   setViewMode: (value: boolean) => void;
+  onSave: () => void;
 }
 
-function RightAction({ colUid, viewMode, setViewMode }: RightActionViewProps) {
+function RightAction({ colUid, viewMode, setViewMode, onSave, changed }: RightActionViewProps) {
   const [showMenu, setShowMenu] = React.useState(false);
   const navigation = useNavigation();
 
   return (
     <View style={{ flexDirection: "row" }}>
       <Appbar.Action icon={viewMode ? "pencil" : "eye"} accessibilityLabel="View mode" onPress={() => {
-        console.log("Yoo", viewMode);
         setViewMode(!viewMode);
       }} />
       <Menu
@@ -151,10 +174,11 @@ function RightAction({ colUid, viewMode, setViewMode }: RightActionViewProps) {
             navigation.navigate("CollectionEdit", { colUid });
           }}
         />
-        <Menu.Item icon="sync" title="Sync"
+        <Menu.Item icon="content-save" title="Save"
+          disabled={!changed}
           onPress={() => {
             setShowMenu(false);
-            navigation.navigate("CollectionMembers", { colUid });
+            onSave();
           }}
         />
       </Menu>
