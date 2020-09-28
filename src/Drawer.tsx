@@ -127,16 +127,6 @@ export default function Drawer(props: PropsType) {
               left={(props) => <List.Icon {...props} icon="note-multiple" />}
             />
             <Divider />
-            <List.Section title="Tags">
-              <List.Item
-                title="Create new tag"
-                onPress={() => {
-                  navigation.navigate("TagEdit", {});
-                }}
-                left={(props) => <List.Icon {...props} icon="plus" />}
-              />
-            </List.Section>
-            <Divider />
             <List.Section title="Notebooks">
               {Array.from(cacheCollections.map(({ meta }, uid) => (
                 <List.Item
