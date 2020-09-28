@@ -53,12 +53,6 @@ export default function NoteListScreen(props: PropsType) {
               <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
             )}
           >
-            <Menu.Item icon="notebook" title="New Notebook"
-              onPress={() => {
-                setShowMenu(false);
-                navigation.navigate("CollectionEdit", {});
-              }}
-            />
             <Menu.Item icon="sync" title="Sync"
               onPress={() => {
                 setShowMenu(false);
