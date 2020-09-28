@@ -3,11 +3,15 @@
 
 import * as Etebase from "etebase";
 
-import { store, StoreState } from "../store";
+import * as BackgroundFetch from "expo-background-fetch";
+import * as TaskManager from "expo-task-manager";
+
+import { store, persistor, StoreState } from "../store";
 
 import { credentialsSelector } from "../credentials";
-import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError } from "../store/actions";
+import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError, performSync } from "../store/actions";
 import * as C from "../constants";
+import { startTask } from "../helpers";
 
 const cachedSyncManager = new Map<string, SyncManager>();
 export class SyncManager {
@@ -117,4 +121,63 @@ export class SyncManager {
       this.isSyncing = false;
     }
   }
+}
+
+function persistorLoaded() {
+  return new Promise((resolve, _reject) => {
+    const subscription = {} as { unsubscribe: () => void };
+    subscription.unsubscribe = persistor.subscribe(() => {
+      const { bootstrapped } = persistor.getState();
+      if (bootstrapped) {
+        resolve(true);
+        subscription.unsubscribe();
+      }
+    });
+    if (persistor.getState().bootstrapped) {
+      resolve(true);
+      subscription.unsubscribe();
+    }
+  });
+}
+
+const BACKGROUND_SYNC_TASK_NAME = "SYNCMANAGER_SYNC";
+
+TaskManager.defineTask(BACKGROUND_SYNC_TASK_NAME, async () => {
+  const timeout = startTask(() => true, 27 * 1000); // Background fetch is limited to 30 seconds.
+
+  try {
+    await persistorLoaded();
+    const beforeState = store.getState() as StoreState;
+    const etebase = await credentialsSelector(beforeState);
+
+    if (!etebase) {
+      return BackgroundFetch.Result.Failed;
+    }
+
+    const syncManager = SyncManager.getManager(etebase);
+    const sync = syncManager.sync();
+    Promise.race([timeout, sync]);
+    store.dispatch(performSync(sync));
+
+    const afterState = store.getState();
+    const receivedNewData =
+      (beforeState.cache.collections !== afterState.cache.collections) ||
+      (beforeState.cache.items !== afterState.cache.items);
+
+    return receivedNewData ? BackgroundFetch.Result.NewData : BackgroundFetch.Result.NoData;
+  } catch (error) {
+    return BackgroundFetch.Result.Failed;
+  }
+});
+
+export function registerSyncTask(_username: string) {
+  return BackgroundFetch.registerTaskAsync(BACKGROUND_SYNC_TASK_NAME, {
+    minimumInterval: 4 * 60 * 60, // 4 hours
+    stopOnTerminate: false,
+    startOnBoot: true,
+  });
+}
+
+export function unregisterSyncTask(_username: string) {
+  return BackgroundFetch.unregisterTaskAsync(BACKGROUND_SYNC_TASK_NAME);
 }

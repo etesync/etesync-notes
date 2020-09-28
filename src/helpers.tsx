@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
+import { AppState, AppStateStatus } from "react-native";
 import * as Etebase from "etebase";
+
+import { logger } from "./logging";
 
 export const defaultColor = "#8BC34A";
 
@@ -111,4 +114,31 @@ export function useLoading(): [boolean, Error | undefined, (promise: PromisePara
   }
 
   return [loading, error, setPromise];
+}
+
+export function useAppStateCb(cb: (foreground: boolean) => void) {
+  const state = React.useRef(AppState.currentState);
+  const [appState, setAppState] = React.useState(state.current);
+
+  function onChange(newState: AppStateStatus) {
+    console.log(state.current, newState);
+    if (newState === "active") {
+      logger.debug("App switched to foreground");
+      cb(true);
+    } else if (state.current === "active") {
+      logger.debug("App switched to background");
+      cb(false);
+    }
+    setAppState(newState);
+  }
+
+  React.useEffect(() => {
+    AppState.addEventListener("change", onChange);
+
+    return () => {
+      AppState.removeEventListener("change", onChange);
+    };
+  }, []);
+
+  return appState;
 }

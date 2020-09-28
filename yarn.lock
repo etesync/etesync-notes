@@ -4016,6 +4016,13 @@ expo-asset@~8.2.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
+expo-background-fetch@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/expo-background-fetch/-/expo-background-fetch-8.5.0.tgz#6f263d2b51bf168418e14c716dae87a2bbf3769a"
+  integrity sha512-4YQ60I8COmfCIanj0579QrloD2CZ7N7fOu5ZCC4BQ2wLnPrepv+/9NrElpWl+M9VaTicmmBt+w5KqEwVjTHg0g==
+  dependencies:
+    expo-task-manager "~8.5.0"
+
 expo-constants@~9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.2.0.tgz#e86a38793deaff9018878afac65bce2543c80a4c"
@@ -4099,6 +4106,13 @@ expo-status-bar@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.0.2.tgz#2441a77c56be31597898337b0d086981f2adefd8"
   integrity sha512-5313u744GcLzCadxIPXyTkYw77++UXv1dXCuhYDxDbtsEf93iMra7WSvzyE8a7mRQLIIPRuGnBOdrL/V1C7EOQ==
+
+expo-task-manager@^8.5.0, expo-task-manager@~8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/expo-task-manager/-/expo-task-manager-8.5.0.tgz#8d4d192937a10f046cc4d7a5346f1a69dbacc939"
+  integrity sha512-5r0k9m7sY802pGjC/HtFchEG1oiOEScuSOA1jgsbaiC6qXyxKEOGNLBcjtvmI5BAKuSkGBC4dmxyL8sWCRLTAg==
+  dependencies:
+    unimodules-app-loader "~1.3.0"
 
 expo-updates@~0.3.2:
   version "0.3.4"

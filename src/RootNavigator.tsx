@@ -10,6 +10,8 @@ import SafeAreaView from "react-native-safe-area-view";
 import { View } from "react-native";
 import { Appbar, Paragraph, useTheme } from "react-native-paper";
 
+import { SyncManager } from "./sync/SyncManager";
+
 import { Title } from "./widgets/Typography";
 import LoginScreen from "./screens/LoginScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -25,9 +27,9 @@ import Wizard, { WizardNavigationBar, PagePropsType } from "./widgets/Wizard";
 
 import { useCredentials } from "./credentials";
 import { StoreState } from "./store";
-import { setSettings } from "./store/actions";
+import { setSettings, performSync } from "./store/actions";
 
-import { isDefined } from "./helpers";
+import { isDefined, useAppStateCb } from "./helpers";
 
 import * as C from "./constants";
 
@@ -59,6 +61,16 @@ export default React.memo(function RootNavigator() {
   const dispatch = useDispatch();
   const etebase = useCredentials();
   const theme = useTheme();
+
+  // Sync app when it goes to background
+  useAppStateCb((foreground) => {
+    if (etebase) {
+      if (!foreground) {
+        const syncManager = SyncManager.getManager(etebase);
+        dispatch(performSync(syncManager.sync()));
+      }
+    }
+  });
 
   if (!settings.ranWizrd) {
     return (
