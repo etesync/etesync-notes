@@ -17,7 +17,7 @@ function handleConnectivityChange(connectionInfo: NetInfoState) {
   store.dispatch(setConnectionInfo({ type: connectionInfo.type, isConnected: connectionInfo.isConnected }));
 }
 
-export default React.memo(function SettingsGate(props: React.PropsWithChildren<{}>) {
+export default React.memo(function SettingsGate(props: React.PropsWithChildren<unknown>) {
   const settings = useSelector((state: StoreState) => state.settings);
 
   React.useEffect(() => {

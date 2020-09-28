@@ -5,7 +5,7 @@ import * as React from "react";
 
 import { Text } from "react-native";
 
-export default React.memo(function Small(props: React.PropsWithChildren<{}>) {
+export default React.memo(function Small(props: React.PropsWithChildren<unknown>) {
   return (
     <Text style={{ fontSize: 10 }}>{props.children}</Text>
   );
