@@ -31,6 +31,7 @@ interface PropsType {
 }
 
 export default function ItemEditScreen(props: PropsType) {
+  const onSaveDoRef = React.useRef<() => void>();
   const [loading, setLoading] = React.useState(true);
   const [content, setContent_] = React.useState("");
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
@@ -81,6 +82,10 @@ export default function ItemEditScreen(props: PropsType) {
       setContent_(content);
       setLoading(false);
     })();
+
+    return () => {
+      onSaveDoRef.current?.();
+    };
   }, []);
 
   const persistItem = useDebouncedCallback(
@@ -106,15 +111,26 @@ export default function ItemEditScreen(props: PropsType) {
     { maxWait: 10000 }
   );
 
+  async function onSaveDo() {
+    if (!changed) {
+      return;
+    }
+
+    const colMgr = etebase.getCollectionManager();
+    const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+    const itemMgr = colMgr.getItemManager(col);
+    const item = itemMgr.cacheLoad(cacheItem.cache);
+    await item.setContent(content);
+    await dispatch(itemBatch(col, itemMgr, [item]));
+    setChanged(false);
+  }
+
+  onSaveDoRef.current = onSaveDo;
+
   async function onSave() {
     setLoading(true);
     try {
-      const colMgr = etebase.getCollectionManager();
-      const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
-      const itemMgr = colMgr.getItemManager(col);
-      const item = itemMgr.cacheLoad(cacheItem.cache);
-      await item.setContent(content);
-      await dispatch(itemBatch(col, itemMgr, [item]));
+      await onSaveDo();
       setChanged(false);
     } finally {
       setLoading(false);
