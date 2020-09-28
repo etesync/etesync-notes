@@ -160,6 +160,7 @@ export default function NoteListScreen(props: PropsType) {
           navigation.navigate("ItemEdit", { colUid, itemUid: item.uid });
           setNewItemDialogShow(false);
         }}
+        initialColUid={colUid}
         onDismiss={() => setNewItemDialogShow(false)}
       />
       <FAB

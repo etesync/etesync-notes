@@ -27,6 +27,7 @@ interface PropsType {
   visible: boolean;
   onOk: (colUid: string, name: string) => void;
   onDismiss: () => void;
+  initialColUid?: string;
   colUid?: string;
   item?: CachedItem;
 }
@@ -37,8 +38,9 @@ export default function NoteEditDialog(props: PropsType) {
   const [errors, setErrors] = React.useState<FormErrors>();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const options = Array.from(cacheCollections.map((val, uid) => ({ ...val, uid })).values());
+  const initialColUid = props.colUid ?? props.initialColUid;
   const [collection, setCollection] = React.useState<typeof options[0] | undefined>(
-    options.find((x) => x.uid === props.colUid) ?? options[0]
+    options.find((x) => x.uid === initialColUid) ?? options[0]
   );
 
   const noneString = "No Notebooks";
