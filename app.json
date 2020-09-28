@@ -29,6 +29,9 @@
       "android",
       "web"
     ],
+    "androidStatusBar": {
+        "translucent": true
+    },
     "android": {
       "package": "com.etesync.notes"
     }

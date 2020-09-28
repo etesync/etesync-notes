@@ -5,7 +5,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { ParamListBase } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { Image, Linking, View } from "react-native";
+import { Image, Linking, View, StatusBar } from "react-native";
 import { Divider, List, Text, Paragraph } from "react-native-paper";
 import SafeAreaView from "react-native-safe-area-view";
 
@@ -104,6 +104,7 @@ export default function Drawer(props: PropsType) {
   return (
     <>
       <SafeAreaView style={{ backgroundColor: "#424242" }}>
+        <View style={{ height: StatusBar.currentHeight }} />
         <Container style={{ backgroundColor: "transparent" }}>
           <Image
             style={{ width: 48, height: 48, marginBottom: 15 }}

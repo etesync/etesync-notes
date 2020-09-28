@@ -55,7 +55,7 @@ class App extends React.Component {
   public render() {
     return (
       <AppearanceProvider>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
         <InnerApp />
       </AppearanceProvider>
     );
