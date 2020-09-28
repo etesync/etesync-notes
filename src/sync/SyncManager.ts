@@ -9,7 +9,7 @@ import * as TaskManager from "expo-task-manager";
 import { store, persistor, StoreState, asyncDispatch } from "../store";
 
 import { credentialsSelector } from "../credentials";
-import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError, performSync, itemBatch } from "../store/actions";
+import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError, performSync, itemBatch, setSyncStatus } from "../store/actions";
 import * as C from "../constants";
 import { startTask, arrayToChunkIterator } from "../helpers";
 
@@ -124,7 +124,9 @@ export class SyncManager {
     this.isSyncing = true;
 
     try {
+      store.dispatch(setSyncStatus("Pushing changes"));
       await this.pushAll();
+      store.dispatch(setSyncStatus("Pulling changes"));
       const stoken = await this.fetchAllCollections();
       return stoken;
     } catch (e) {
