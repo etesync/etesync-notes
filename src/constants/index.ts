@@ -13,7 +13,7 @@ export const reportsEmail = "reports-notes@etesync.com";
 
 export const forgotPassword = faq + "#forgot-password";
 
-export const serviceApiBase = "https://api.etebase.com/";
+export const serviceApiBase = "https://api.etebase.com/partner/etesync/";
 
 // In generic mode we don't have anything etesync.com specific (app store guidelines)
 export const genericMode = Platform.OS === "ios";
