@@ -15,7 +15,7 @@ import { SyncManager } from "../sync/SyncManager";
 import { useAsyncDispatch, StoreState } from "../store";
 import { performSync, setCacheItem, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
-import NewNoteDialog from "../components/NewNoteDialog";
+import NoteEditDialog from "../components/NoteEditDialog";
 import { NoteMetadata } from "../helpers";
 
 
@@ -194,7 +194,7 @@ export default function NoteListScreen() {
         maxToRenderPerBatch={10}
       />
 
-      <NewNoteDialog
+      <NoteEditDialog
         key={newItemDialogShow.toString()}
         visible={newItemDialogShow}
         onOk={async (colUid, name) => {

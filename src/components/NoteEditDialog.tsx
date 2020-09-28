@@ -3,10 +3,10 @@
 
 import * as React from "react";
 import { View } from "react-native";
-import { Button, useTheme, Text, HelperText } from "react-native-paper";
+import { HelperText, TouchableRipple } from "react-native-paper";
 import { useSelector } from "react-redux";
 
-import { StoreState, CachedCollection } from "../store";
+import { StoreState, CachedCollection, CachedItem } from "../store";
 
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import Select from "../widgets/Select";
@@ -19,24 +19,27 @@ interface FormErrors {
 }
 
 
-function titleAccessor(item: CachedCollection) {
-  return item.meta.name;
+function titleAccessor(col: CachedCollection) {
+  return col.meta.name;
 }
 
 interface PropsType {
   visible: boolean;
   onOk: (colUid: string, name: string) => void;
   onDismiss: () => void;
+  colUid?: string;
+  item?: CachedItem;
 }
 
-export default function ItemNewDialog(props: PropsType) {
+export default function NoteEditDialog(props: PropsType) {
   const [selectOpen, setSelectOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(props.item?.meta.name ?? "");
   const [errors, setErrors] = React.useState<FormErrors>();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const options = Array.from(cacheCollections.map((val, uid) => ({ ...val, uid })).values());
-  const [collection, setCollection] = React.useState<typeof options[0] | undefined>(options[0]);
-  const theme = useTheme();
+  const [collection, setCollection] = React.useState<typeof options[0] | undefined>(
+    options.find((x) => x.uid === props.colUid) ?? options[0]
+  );
 
   const noneString = "No Notebooks";
 
@@ -61,7 +64,7 @@ export default function ItemNewDialog(props: PropsType) {
   return (
     <ConfirmationDialog
       key={props.visible.toString()}
-      title="New note"
+      title={(props.item) ? "Edit note" : "New note"}
       visible={props.visible}
       onOk={onOk}
       onCancel={props.onDismiss}
@@ -82,7 +85,6 @@ export default function ItemNewDialog(props: PropsType) {
       </HelperText>
 
       <View>
-        <Text>Notebook:</Text>
         <Select
           visible={selectOpen}
           onDismiss={() => setSelectOpen(false)}
@@ -96,7 +98,18 @@ export default function ItemNewDialog(props: PropsType) {
             setCollection(chosen ?? undefined);
           }}
           anchor={(
-            <Button mode="contained" color={theme.colors.accent} onPress={() => setSelectOpen(true)}>{collection?.meta.name ?? noneString}</Button>
+            <TouchableRipple
+              onPress={() => setSelectOpen(true)}
+              disabled={!!props.colUid}
+            >
+              <TextInput
+                editable={false}
+                label="Notebook"
+                accessibilityLabel="Notebook"
+                value={collection?.meta.name ?? noneString}
+                disabled={!!props.colUid}
+              />
+            </TouchableRipple>
           )}
         />
         <HelperText

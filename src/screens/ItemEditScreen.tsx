@@ -17,6 +17,7 @@ import Markdown from "../widgets/Markdown";
 import { useSelector } from "react-redux";
 import { setCacheItem, itemBatch } from "../store/actions";
 import LoadingIndicator from "../widgets/LoadingIndicator";
+import NoteEditDialog from "../components/NoteEditDialog";
 
 type RootStackParamList = {
   ItemEditScreen: {
@@ -34,6 +35,7 @@ export default function ItemEditScreen(props: PropsType) {
   const [changed, setChanged] = React.useState(false);
   const [content, setContent_] = React.useState("");
   const [viewMode, setViewMode] = React.useState(false);
+  const [noteEditDialogShow, setNoteEditDialogShow] = React.useState(false);
   const dispatch = useAsyncDispatch();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
@@ -100,15 +102,15 @@ export default function ItemEditScreen(props: PropsType) {
       title: cacheItem.meta.name,
       headerRight: () => (
         <RightAction
-          colUid={colUid}
           viewMode={viewMode}
           setViewMode={setViewMode}
           onSave={onSave}
+          onEdit={() => setNoteEditDialogShow(true)}
           changed={changed}
         />
       ),
     });
-  }, [navigation, colUid, viewMode, setViewMode, changed]);
+  }, [navigation, colUid, cacheItem, viewMode, setViewMode, changed]);
 
   function setContent(content: string) {
     setChanged(true);
@@ -140,21 +142,42 @@ export default function ItemEditScreen(props: PropsType) {
           />
         )}
       </ScrollView>
+      <NoteEditDialog
+        key={noteEditDialogShow.toString()}
+        visible={noteEditDialogShow}
+        colUid={colUid}
+        item={cacheItem}
+        onOk={async (_colUid, name) => {
+          const colMgr = etebase.getCollectionManager();
+          const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+          const itemMgr = colMgr.getItemManager(col);
+          const item = itemMgr.cacheLoad(cacheItem.cache);
+
+          const meta = await item.getMeta();
+          meta.name = name;
+          meta.mtime = (new Date()).getTime();
+          await item.setMeta(meta);
+
+          await dispatch(setCacheItem(col, itemMgr, item));
+
+          setNoteEditDialogShow(false);
+        }}
+        onDismiss={() => setNoteEditDialogShow(false)}
+      />
     </>
   );
 }
 
 interface RightActionViewProps {
-  colUid: string;
   viewMode: boolean;
   changed: boolean;
   setViewMode: (value: boolean) => void;
+  onEdit: () => void;
   onSave: () => void;
 }
 
-function RightAction({ colUid, viewMode, setViewMode, onSave, changed }: RightActionViewProps) {
+function RightAction({ viewMode, setViewMode, onSave, onEdit, changed }: RightActionViewProps) {
   const [showMenu, setShowMenu] = React.useState(false);
-  const navigation = useNavigation();
 
   return (
     <View style={{ flexDirection: "row" }}>
@@ -171,7 +194,7 @@ function RightAction({ colUid, viewMode, setViewMode, onSave, changed }: RightAc
         <Menu.Item icon="pencil" title="Edit"
           onPress={() => {
             setShowMenu(false);
-            navigation.navigate("CollectionEdit", { colUid });
+            onEdit();
           }}
         />
         <Menu.Item icon="content-save" title="Save"
