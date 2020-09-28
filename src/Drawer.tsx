@@ -122,7 +122,7 @@ export default function Drawer(props: PropsType) {
               title="All Notes"
               onPress={() => {
                 navigation.closeDrawer();
-                navigation.navigate("home", {});
+                navigation.navigate("home", { colUid: undefined });
               }}
               left={(props) => <List.Icon {...props} icon="note-multiple" />}
             />
@@ -133,7 +133,8 @@ export default function Drawer(props: PropsType) {
                   key={uid}
                   title={meta.name}
                   onPress={() => {
-                    // Filter base on notbook
+                    navigation.closeDrawer();
+                    navigation.navigate("home", { colUid: uid });
                   }}
                   left={(props) => <List.Icon {...props} icon="notebook" />}
                 />

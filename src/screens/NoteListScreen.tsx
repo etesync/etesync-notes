@@ -5,7 +5,7 @@ import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View } from "react-native";
 import { Menu, Appbar, List, useTheme, FAB } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -17,6 +17,8 @@ import { performSync, setCacheItem, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
 import NoteEditDialog from "../components/NoteEditDialog";
 import { NoteMetadata } from "../helpers";
+
+import * as C from "../constants";
 
 
 function sortMtime(aIn: CachedItem, bIn: CachedItem) {
@@ -57,7 +59,17 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-export default function NoteListScreen() {
+type RootStackParamList = {
+  NoteListScreen: {
+    colUid?: string;
+  };
+};
+
+interface PropsType {
+  route: RouteProp<RootStackParamList, "NoteListScreen">;
+}
+
+export default function NoteListScreen(props: PropsType) {
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
   const [newItemDialogShow, setNewItemDialogShow] = React.useState(false);
@@ -69,23 +81,34 @@ export default function NoteListScreen() {
   const syncGate = useSyncGate();
   const theme = useTheme();
 
+  const colUid = props.route.params?.colUid;
+
   React.useEffect(() => {
+    const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
+
     navigation.setOptions({
+      title: cacheCollection?.meta.name ?? C.appName,
       headerRight: () => (
         <RightAction />
       ),
     });
-  }, [etebase, navigation]);
+  }, [navigation, cacheCollections, colUid]);
 
   const entriesList = React.useMemo(() => {
+    const filterByUid = colUid;
+
     const ret: (CachedItem & { colUid: string, uid: string })[] = [];
     for (const [colUid, itemLists] of cacheItems.entries()) {
+      if (filterByUid && (filterByUid !== colUid)) {
+        continue;
+      }
+
       for (const [uid, item] of itemLists.entries()) {
         ret.push({ ...item, uid, colUid });
       }
     }
     return ret.sort(getSortFunction(sortBy));
-  }, [cacheItems, sortBy]);
+  }, [cacheItems, sortBy, colUid]);
 
   if (syncGate) {
     return syncGate;
@@ -114,6 +137,11 @@ export default function NoteListScreen() {
         keyExtractor={(item) => item.uid}
         renderItem={renderEntry}
         maxToRenderPerBatch={10}
+        ListEmptyComponent={() => (
+          <List.Item
+            title="Notebook is empty"
+          />
+        )}
       />
 
       <NoteEditDialog
