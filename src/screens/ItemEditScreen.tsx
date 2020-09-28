@@ -14,8 +14,8 @@ import ScrollView from "../widgets/ScrollView";
 import { useCredentials } from "../credentials";
 
 import Markdown from "../widgets/Markdown";
-import { useSelector } from "react-redux";
-import { setCacheItem, itemBatch } from "../store/actions";
+import { useSelector, useDispatch } from "react-redux";
+import { setCacheItem, itemBatch, setSettings } from "../store/actions";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import NoteEditDialog from "../components/NoteEditDialog";
 
@@ -34,14 +34,25 @@ export default function ItemEditScreen(props: PropsType) {
   const [loading, setLoading] = React.useState(true);
   const [changed, setChanged] = React.useState(false);
   const [content, setContent_] = React.useState("");
-  const [viewMode, setViewMode] = React.useState(false);
+  const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
+  const { viewMode } = viewSettings;
   const [noteEditDialogShow, setNoteEditDialogShow] = React.useState(false);
   const dispatch = useAsyncDispatch();
+  const syncDispatch = useDispatch();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
   const etebase = useCredentials()!;
   const navigation = useNavigation();
   const syncGate = useSyncGate();
+
+  function setViewMode(viewMode: boolean) {
+    syncDispatch(setSettings({
+      viewSettings: {
+        ...viewSettings,
+        viewMode,
+      },
+    }));
+  }
 
   const colUid = props.route.params.colUid;
   const itemUid = props.route.params.itemUid;

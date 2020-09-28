@@ -299,6 +299,7 @@ export interface SettingsType {
   logLevel: LogLevel;
   ranWizrd: boolean;
   viewSettings: {
+    viewMode: boolean;
     filterBy: string | null;
     sortBy: "name" | "mtime";
   };
@@ -315,6 +316,7 @@ export const settingsReducer = handleActions(
     logLevel: LogLevel.Off,
     ranWizrd: false,
     viewSettings: {
+      viewMode: false,
       filterBy: null,
       sortBy: "name",
     },
