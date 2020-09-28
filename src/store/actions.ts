@@ -135,6 +135,26 @@ export const setSyncCollection = createAction(
   }
 );
 
+export const setSyncItem = createAction(
+  "SET_SYNC_ITEM",
+  (colUid: string, itemUid: string) => {
+    return {
+      colUid,
+      itemUid,
+    };
+  }
+);
+
+export const unsetSyncItem = createAction(
+  "UNSET_SYNC_ITEM",
+  (colUid: string, itemUid: string) => {
+    return {
+      colUid,
+      itemUid,
+    };
+  }
+);
+
 export const setSyncGeneral = createAction(
   "SET_SYNC_GENERAL",
   (stoken: string | null) => {

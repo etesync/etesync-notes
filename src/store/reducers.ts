@@ -25,6 +25,7 @@ export interface SyncCollectionsEntryData extends BaseModel {
 }
 
 export type SyncCollectionsData = ImmutableMap<string, SyncCollectionsEntryData>;
+export type SyncItemsData = ImmutableMap<string, ImmutableMap<string, true>>;
 
 export type CachedItem = { cache: Uint8Array, meta: Etebase.ItemMetadata };
 export type CachedItems = ImmutableMap<string, CachedItem>;
@@ -71,6 +72,27 @@ export const syncCollections = handleActions(
       return state;
     },
     [actions.logout.toString()]: (state: SyncCollectionsData, _action: any) => {
+      return state.clear();
+    },
+  },
+  ImmutableMap({})
+);
+
+export const syncItems = handleActions(
+  {
+    [actions.setSyncItem.toString()]: (state: SyncItemsData, action: Action<{ colUid: string, itemUid: string }>) => {
+      if (action.payload !== undefined) {
+        return state.setIn([action.payload.colUid, action.payload.itemUid], true);
+      }
+      return state;
+    },
+    [actions.unsetSyncItem.toString()]: (state: SyncItemsData, action: Action<{ colUid: string, itemUid: string }>) => {
+      if (action.payload !== undefined) {
+        return state.removeIn([action.payload.colUid, action.payload.itemUid]);
+      }
+      return state;
+    },
+    [actions.logout.toString()]: (state: SyncItemsData, _action: any) => {
       return state.clear();
     },
   },

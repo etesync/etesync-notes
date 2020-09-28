@@ -15,7 +15,7 @@ import { useCredentials } from "../credentials";
 
 import Markdown from "../widgets/Markdown";
 import { useSelector, useDispatch } from "react-redux";
-import { setCacheItem, itemBatch, setSettings } from "../store/actions";
+import { setCacheItem, itemBatch, setSettings, setSyncItem, unsetSyncItem } from "../store/actions";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import NoteEditDialog from "../components/NoteEditDialog";
 
@@ -32,13 +32,13 @@ interface PropsType {
 
 export default function ItemEditScreen(props: PropsType) {
   const [loading, setLoading] = React.useState(true);
-  const [changed, setChanged] = React.useState(false);
   const [content, setContent_] = React.useState("");
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const { viewMode } = viewSettings;
   const [noteEditDialogShow, setNoteEditDialogShow] = React.useState(false);
   const dispatch = useAsyncDispatch();
   const syncDispatch = useDispatch();
+  const syncItems = useSelector((state: StoreState) => state.sync.items);
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
   const etebase = useCredentials()!;
@@ -56,7 +56,20 @@ export default function ItemEditScreen(props: PropsType) {
 
   const colUid = props.route.params.colUid;
   const itemUid = props.route.params.itemUid;
+  const changed = syncItems.hasIn([colUid, itemUid]);
   const cacheItem = cacheItems.get(colUid)!.get(itemUid)!;
+
+  function setChanged(value: boolean) {
+    if (changed === value) {
+      return;
+    }
+
+    if (value) {
+      syncDispatch(setSyncItem(colUid, itemUid));
+    } else {
+      syncDispatch(unsetSyncItem(colUid, itemUid));
+    }
+  }
 
   React.useEffect(() => {
     (async () => {
