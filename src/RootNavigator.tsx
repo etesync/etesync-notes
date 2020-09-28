@@ -18,6 +18,7 @@ import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
 import CollectionEditScreen from "./screens/CollectionEditScreen";
 import ItemEditScreen from "./screens/ItemEditScreen";
+import AccountWizardScreen from "./screens/AccountWizardScreen";
 
 import Wizard, { WizardNavigationBar, PagePropsType } from "./widgets/Wizard";
 
@@ -95,6 +96,13 @@ export default React.memo(function RootNavigator() {
         </>
       ) : (
         <>
+          <Stack.Screen
+            name="AccountWizard"
+            component={AccountWizardScreen}
+            options={{
+              title: C.appName,
+            }}
+          />
           <Stack.Screen
             name="home"
             component={NoteListScreen}
