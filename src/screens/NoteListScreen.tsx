@@ -5,7 +5,7 @@ import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View } from "react-native";
 import { Menu, Appbar, List, useTheme, FAB } from "react-native-paper";
-import { useNavigation, RouteProp } from "@react-navigation/native";
+import { useNavigation, RouteProp, NavigationProp } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -89,7 +89,7 @@ export default function NoteListScreen(props: PropsType) {
     navigation.setOptions({
       title: cacheCollection?.meta.name ?? C.appName,
       headerRight: () => (
-        <RightAction />
+        <RightAction colUid={colUid} />
       ),
     });
   }, [navigation, cacheCollections, colUid]);
@@ -183,7 +183,11 @@ const styles = StyleSheet.create({
   },
 });
 
-function RightAction() {
+interface RightActionPropsType {
+  colUid?: string;
+}
+
+function RightAction(props: RightActionPropsType) {
   const etebase = useCredentials()!;
   const [showMenu, setShowMenu] = React.useState(false);
   const [showSortMenu, setShowSortMenu_] = React.useState(false);
@@ -191,6 +195,8 @@ function RightAction() {
   const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
   const selecetdStyle = { color: "green" };
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
+  const navigation = useNavigation();
+  const { colUid } = props;
 
   function setShowSortMenu(value: boolean) {
     setShowSortMenu_(value);
@@ -249,6 +255,15 @@ function RightAction() {
             }}
           />
         </Menu>
+        {colUid && (
+          <Menu.Item icon="pencil" title="Edit Notebook"
+            disabled={isSyncing}
+            onPress={() => {
+              setShowMenu(false);
+              navigation.navigate("CollectionEdit", { colUid });
+            }}
+          />
+        )}
         <Menu.Item icon="sync" title="Sync"
           disabled={isSyncing}
           onPress={() => {
