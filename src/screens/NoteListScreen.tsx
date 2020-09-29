@@ -4,8 +4,8 @@
 import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View } from "react-native";
-import { Menu, Appbar, List, useTheme, FAB } from "react-native-paper";
-import { useNavigation, RouteProp, NavigationProp } from "@react-navigation/native";
+import { Appbar, List, useTheme, FAB } from "react-native-paper";
+import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -17,6 +17,7 @@ import { performSync, setCacheItem, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
 import NoteEditDialog from "../components/NoteEditDialog";
 import { NoteMetadata } from "../helpers";
+import Menu from "../widgets/Menu";
 
 import * as C from "../constants";
 

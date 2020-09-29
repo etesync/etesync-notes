@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as Etebase from "etebase";
 import { View, TextInput } from "react-native";
-import { Menu, Appbar } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -17,6 +17,7 @@ import Markdown from "../widgets/Markdown";
 import { useSelector, useDispatch } from "react-redux";
 import { setCacheItem, itemBatch, setSettings, setSyncItem, unsetSyncItem } from "../store/actions";
 import LoadingIndicator from "../widgets/LoadingIndicator";
+import Menu from "../widgets/Menu";
 import NoteEditDialog from "../components/NoteEditDialog";
 
 type RootStackParamList = {
