@@ -13,7 +13,7 @@ import { CachedItem } from "../store";
 
 import { SyncManager } from "../sync/SyncManager";
 import { useAsyncDispatch, StoreState } from "../store";
-import { performSync, setCacheItem, setSettings } from "../store/actions";
+import { performSync, setCacheItem, setSettings, setSyncItem } from "../store/actions";
 import { useCredentials } from "../credentials";
 import NoteEditDialog from "../components/NoteEditDialog";
 import { NoteMetadata } from "../helpers";
@@ -162,6 +162,7 @@ export default function NoteListScreen(props: PropsType) {
           };
           const item = await itemMgr.create(meta, "");
           await dispatch(setCacheItem(col, itemMgr, item));
+          dispatch(setSyncItem(colUid, item.uid));
           navigation.navigate("ItemEdit", { colUid, itemUid: item.uid });
           setNewItemDialogShow(false);
         }}

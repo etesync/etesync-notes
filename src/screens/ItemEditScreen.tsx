@@ -202,6 +202,7 @@ export default function ItemEditScreen(props: PropsType) {
           await item.setMeta(meta);
 
           await dispatch(setCacheItem(col, itemMgr, item));
+          setChanged(true);
 
           setNoteEditDialogShow(false);
         }}
