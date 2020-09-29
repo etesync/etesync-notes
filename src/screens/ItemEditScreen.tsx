@@ -180,7 +180,7 @@ export default function ItemEditScreen(props: PropsType) {
             multiline
             textAlignVertical="top"
             scrollEnabled={false}
-            style={{ flexGrow: 1, height: 1 } /* Height: 1 is needed because of an RN Android bug */}
+            style={{ flexGrow: 1 }}
             onChangeText={setContent}
             value={content}
           />
