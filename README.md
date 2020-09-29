@@ -5,7 +5,7 @@
 
 Secure, end-to-end encrypted, and privacy respecting notes application.
 
-![GitHub tag](https://img.shields.io/github/tag/etesync/ios.svg)
+![GitHub tag](https://img.shields.io/github/tag/etesync/etesync-notes.svg)
 [![Chat on freenode](https://img.shields.io/badge/irc.freenode.net-%23EteSync-blue.svg)](https://webchat.freenode.net/?channels=#etesync)
 
 # Overview
