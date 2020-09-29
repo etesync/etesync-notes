@@ -27,7 +27,7 @@ export interface SyncCollectionsEntryData extends BaseModel {
 export type SyncCollectionsData = ImmutableMap<string, SyncCollectionsEntryData>;
 export type SyncItemsData = ImmutableMap<string, ImmutableMap<string, true>>;
 
-export type CachedItem = { cache: Uint8Array, meta: Etebase.ItemMetadata };
+export type CachedItem = { cache: Uint8Array, meta: Etebase.ItemMetadata, isDeleted: boolean };
 export type CachedItems = ImmutableMap<string, CachedItem>;
 export type CachedItemsData = ImmutableMap<string, CachedItems>;
 export type CachedCollection = { cache: Uint8Array, meta: Etebase.CollectionMetadata };

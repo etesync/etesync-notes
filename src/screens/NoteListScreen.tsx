@@ -105,6 +105,10 @@ export default function NoteListScreen(props: PropsType) {
       }
 
       for (const [uid, item] of itemLists.entries()) {
+        if (item.isDeleted) {
+          continue;
+        }
+
         ret.push({ ...item, uid, colUid });
       }
     }

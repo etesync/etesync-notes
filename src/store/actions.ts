@@ -76,6 +76,7 @@ export const setCacheItem = createAction(
     return {
       cache: itemMgr.cacheSave(item),
       meta: await item.getMeta(),
+      isDeleted: item.isDeleted,
     };
   },
   (col: Etebase.Collection, _itemMgr: Etebase.ItemManager, item: Etebase.Item) => {
@@ -94,6 +95,7 @@ export const setCacheItemMulti = createAction(
       ret.push({
         cache: itemMgr.cacheSave(item),
         meta: await item.getMeta(),
+        isDeleted: item.isDeleted,
       });
     }
     return ret;
@@ -115,6 +117,7 @@ export const itemBatch = createAction(
       ret.push({
         cache: itemMgr.cacheSave(item),
         meta: await item.getMeta(),
+        isDeleted: item.isDeleted,
       });
     }
     return ret;
