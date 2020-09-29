@@ -262,11 +262,11 @@ function RightAction(props: RightActionPropsType) {
           />
         </Menu>
         {colUid && (
-          <Menu.Item icon="pencil" title="Edit Notebook"
+          <Menu.Item icon="notebook" title="Manage Notebook"
             disabled={isSyncing}
             onPress={() => {
               setShowMenu(false);
-              navigation.navigate("CollectionEdit", { colUid });
+              navigation.navigate("CollectionChangelog", { colUid });
             }}
           />
         )}

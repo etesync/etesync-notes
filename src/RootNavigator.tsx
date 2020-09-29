@@ -20,6 +20,8 @@ import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
 import CollectionEditScreen from "./screens/CollectionEditScreen";
 import ItemEditScreen from "./screens/ItemEditScreen";
+import CollectionChangelogScreen from "./screens/CollectionChangelogScreen";
+import CollectionMembersScreen from "./screens/CollectionMembersScreen";
 import InvitationsScreen from "./screens/InvitationsScreen";
 import AccountWizardScreen from "./screens/AccountWizardScreen";
 
@@ -129,6 +131,20 @@ export default React.memo(function RootNavigator() {
           <Stack.Screen
             name="CollectionEdit"
             component={CollectionEditScreen}
+          />
+          <Stack.Screen
+            name="CollectionChangelog"
+            component={CollectionChangelogScreen}
+            options={{
+              title: "Manage Notebook",
+            }}
+          />
+          <Stack.Screen
+            name="CollectionMembers"
+            component={CollectionMembersScreen}
+            options={{
+              title: "Collection Members",
+            }}
           />
           <Stack.Screen
             name="ItemEdit"
