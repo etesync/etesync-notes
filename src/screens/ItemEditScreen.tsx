@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import { View, TextInput } from "react-native";
+import { View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
@@ -11,6 +11,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useSyncGate } from "../SyncGate";
 import { StoreState, useAsyncDispatch } from "../store";
 import ScrollView from "../widgets/ScrollView";
+import RawTextInput from "../widgets/RawTextInput";
 import { useCredentials } from "../credentials";
 
 import Markdown from "../widgets/Markdown";
@@ -175,7 +176,7 @@ export default function ItemEditScreen(props: PropsType) {
             content={content}
           />
         ) : (
-          <TextInput
+          <RawTextInput
             multiline
             textAlignVertical="top"
             scrollEnabled={false}
