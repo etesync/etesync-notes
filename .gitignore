@@ -78,3 +78,7 @@ buck-out/
 # Expo
 .expo/*
 web-build/
+
+
+# Extra
+Session.vim
