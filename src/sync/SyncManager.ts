@@ -73,8 +73,12 @@ export class SyncManager {
       for (const col of collections.data) {
         const meta = await col.getMeta();
         if (this.COLLECTION_TYPES.includes(meta.type)) {
-          store.dispatch(setCacheCollection(colMgr, col));
-          await this.fetchCollection(col);
+          if (col.isDeleted) {
+            store.dispatch(unsetCacheCollection(colMgr, col.uid));
+          } else {
+            store.dispatch(setCacheCollection(colMgr, col));
+            await this.fetchCollection(col);
+          }
         }
       }
       if (collections.removedMemberships) {

@@ -35,6 +35,7 @@ export const setCacheCollection = createAction(
   (_colMgr: Etebase.CollectionManager, col: Etebase.Collection) => {
     return {
       colUid: col.uid,
+      deleted: col.isDeleted,
     };
   }
 );
@@ -47,6 +48,7 @@ export const unsetCacheCollection = createAction(
   (_colMgr: Etebase.CollectionManager, colUid: string) => {
     return {
       colUid,
+      deleted: true,
     };
   }
 );
@@ -63,6 +65,7 @@ export const collectionUpload = createAction(
   (_colMgr: Etebase.CollectionManager, col: Etebase.Collection) => {
     return {
       colUid: col.uid,
+      deleted: col.isDeleted,
     };
   }
 );
