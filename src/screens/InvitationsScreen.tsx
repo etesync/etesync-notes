@@ -69,10 +69,10 @@ export default function InvitationsScreen() {
         {invitations ?
           <>
             {(invitations.length > 0 ?
-              invitations.map((invite, idx) => (
+              invitations.map((invite) => (
                 <List.Item
                   key={invite.uid}
-                  title={`Invitation ${idx + 1}`}
+                  title={`Invitation ${invite.fromUsername}`}
                   right={() => (
                     <>
                       <IconButton icon="close" onPress={() => { reject(invite) }} />
