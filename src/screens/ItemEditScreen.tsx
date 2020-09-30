@@ -180,7 +180,7 @@ export default function ItemEditScreen(props: PropsType) {
             multiline
             textAlignVertical="top"
             scrollEnabled={false}
-            style={{ flexGrow: 1 }}
+            style={{ flexGrow: 1, paddingHorizontal: 15, paddingVertical: 10 }}
             onChangeText={setContent}
             value={content}
           />
