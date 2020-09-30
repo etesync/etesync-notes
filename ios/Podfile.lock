@@ -9,8 +9,6 @@ PODS:
   - EXConstants (9.2.0):
     - UMConstantsInterface
     - UMCore
-  - EXErrorRecovery (1.3.0):
-    - UMCore
   - EXFileSystem (9.2.0):
     - UMCore
     - UMFileSystemInterface
@@ -21,23 +19,12 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXKeepAwake (8.3.0):
-    - UMCore
-  - EXLinearGradient (8.3.1):
-    - UMCore
-  - EXLocation (9.0.0):
-    - UMCore
-    - UMPermissionsInterface
-    - UMTaskManagerInterface
   - EXPermissions (9.3.0):
     - UMCore
     - UMPermissionsInterface
   - EXSplashScreen (0.6.1):
     - React
     - UMCore
-  - EXSQLite (8.4.0):
-    - UMCore
-    - UMFileSystemInterface
   - EXTaskManager (8.5.0):
     - UMAppLoader
     - UMConstantsInterface
@@ -349,6 +336,8 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
+  - RNCAsyncStorage (1.12.0):
+    - React
   - RNCMaskedView (0.1.10):
     - React
   - RNGestureHandler (1.7.0):
@@ -384,16 +373,11 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXBackgroundFetch (from `../node_modules/expo-background-fetch/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
-  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
-  - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
-  - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
-  - EXLocation (from `../node_modules/expo-location/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
-  - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXTaskManager (from `../node_modules/expo-task-manager/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -446,6 +430,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -488,26 +473,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-background-fetch/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
-  EXErrorRecovery:
-    :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
     :path: "../node_modules/expo-font/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
-  EXKeepAwake:
-    :path: "../node_modules/expo-keep-awake/ios"
-  EXLinearGradient:
-    :path: "../node_modules/expo-linear-gradient/ios"
-  EXLocation:
-    :path: "../node_modules/expo-location/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   EXSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
-  EXSQLite:
-    :path: "../node_modules/expo-sqlite/ios"
   EXTaskManager:
     :path: "../node_modules/expo-task-manager/ios"
   EXUpdates:
@@ -570,6 +545,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
@@ -616,16 +593,11 @@ SPEC CHECKSUMS:
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXBackgroundFetch: d3dbd2cd1ff691bcbdc01d3884a9786c0577e8fe
   EXConstants: f486f6b4a36b86e47ab258d4d2b7b2699786fdce
-  EXErrorRecovery: 16696fe023fb46a32c3b09033abc361cfcf150a7
   EXFileSystem: afe9b1fd937d30270bf5108ba44e2f4a1d1ad694
   EXFont: a6a4353271395f3bb4ee528b52a5035b4b0e412a
   EXImageLoader: 7153fb1307ac643299a9072b71da0d276f4c7789
-  EXKeepAwake: 76eed36786534f6a476748e600fa6faf07ac3d09
-  EXLinearGradient: c7ca1c2933ac240ffbc805c014a72947e227ac75
-  EXLocation: a3b92458ec5c4356c5d932fe0d2bbe552ef7f4cb
   EXPermissions: 30cbe5b72bd209b65c00884180ad058a60bb413d
   EXSplashScreen: c496093747ee7f4e933c6312c0f52681612592e3
-  EXSQLite: d0d8677c13e60d5db2812387f059c697be27d3fb
   EXTaskManager: 85c9d0ad555af2a393a5c4cb34c767f0e2162357
   EXUpdates: 9ed0693ab1c8df9f0472cfb4549d5edccdf05849
   FBLazyVector: 878b59e31113e289e275165efbe4b54fa614d43d
@@ -665,6 +637,7 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
+  RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
