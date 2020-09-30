@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import moment from "moment";
-import { StyleSheet, FlatList, View } from "react-native";
+import { StyleSheet, FlatList, View, Platform } from "react-native";
 import { Appbar, List, useTheme, FAB } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
@@ -209,8 +209,38 @@ function RightAction(props: RightActionPropsType) {
     setShowMenu(value);
   }
 
+  async function refresh() {
+    const syncManager = SyncManager.getManager(etebase!);
+    const sync = syncManager.sync();
+    syncDispatch(performSync(syncManager.sync())); // not awaiting on puprose
+    await sync;
+  }
+
+  React.useEffect(() => {
+    if (Platform.OS !== "web") {
+      return () => true;
+    }
+
+    function autoRefresh() {
+      if (navigator.onLine && etebase) {
+        refresh();
+      }
+    }
+
+    const interval = 5 * 60 * 1000;
+    const id = setInterval(autoRefresh, interval);
+    return () => clearInterval(id);
+  }, [etebase]);
+
   return (
     <View style={{ flexDirection: "row" }}>
+      <Appbar.Action icon="sync" accessibilityLabel="Sync"
+        disabled={isSyncing}
+        onPress={() => {
+          setShowMenu(false);
+          refresh();
+        }}
+      />
       <Menu
         visible={showMenu}
         onDismiss={() => setShowMenu(false)}
@@ -270,14 +300,6 @@ function RightAction(props: RightActionPropsType) {
             }}
           />
         )}
-        <Menu.Item icon="sync" title="Sync"
-          disabled={isSyncing}
-          onPress={() => {
-            setShowMenu(false);
-            const syncManager = SyncManager.getManager(etebase);
-            syncDispatch(performSync(syncManager.sync())); // not awaiting on puprose
-          }}
-        />
       </Menu>
     </View>
   );
