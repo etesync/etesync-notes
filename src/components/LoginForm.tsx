@@ -121,6 +121,7 @@ class LoginForm extends React.PureComponent {
           <TextInput
             autoCapitalize="none"
             autoCorrect={false}
+            autoCompleteType="username"
             autoFocus
             returnKeyType="next"
             onSubmitEditing={() => this.formRefs[1].current!.focus()}
@@ -139,6 +140,7 @@ class LoginForm extends React.PureComponent {
           </HelperText>
 
           <PasswordInput
+            autoCompleteType="password"
             returnKeyType={this.state.showAdvanced ? "next" : undefined}
             onSubmitEditing={this.state.showAdvanced ? (() => this.formRefs[2].current!.focus()) : undefined}
             ref={this.formRefs[1]}
