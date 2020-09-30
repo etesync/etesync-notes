@@ -159,7 +159,7 @@ class LoginForm extends React.PureComponent {
           {!C.genericMode && (
             <>
               <ExternalLink href={C.forgotPassword}>
-                <Text>Forget password?</Text>
+                Forget password?
               </ExternalLink>
             </>
           )}

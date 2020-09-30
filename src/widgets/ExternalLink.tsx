@@ -3,25 +3,23 @@
 
 import * as React from "react";
 import { ViewProps, Linking } from "react-native";
-import { Button } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
+import LinkButton from "./LinkButton";
 
 type PropsType = {
   href: string;
 } & ViewProps;
 
-class ExternalLink extends React.PureComponent<PropsType> {
-  public render() {
-    const { href, children, ...props } = this.props;
-    return (
-      <Button
-        accessibilityRole="link"
-        {...props}
-        onPress={() => Linking.openURL(href)}
-      >
-        {children}
-      </Button>
-    );
-  }
-}
+export default function ExternalLink(props_: React.PropsWithChildren<PropsType>) {
+  const { href, children, ...props } = props_;
+  const theme = useTheme();
 
-export default ExternalLink;
+  return (
+    <LinkButton
+      {...props}
+      onPress={() => Linking.openURL(href)}
+    >
+      <Text style={{ color: theme.colors.accent }}>{children}</Text>
+    </LinkButton>
+  );
+}
