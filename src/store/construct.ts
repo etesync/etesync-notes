@@ -4,7 +4,7 @@
 
 import * as Etebase from "etebase";
 
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "../AsyncStorage";
 import { NetInfoStateType } from "@react-native-community/netinfo";
 
 import { combineReducers } from "redux";

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: © 2019 EteSync Authors
 // SPDX-License-Identifier: GPL-3.0-only
 
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "./AsyncStorage";
 
 export enum LogLevel {
   Off = 0,
