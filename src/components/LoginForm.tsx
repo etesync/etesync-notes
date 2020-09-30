@@ -16,6 +16,7 @@ import PasswordInput from "../widgets/PasswordInput";
 
 interface FormErrors {
   username?: string;
+  email?: string;
   password?: string;
   server?: string;
 }
@@ -29,12 +30,14 @@ class LoginForm extends React.PureComponent {
     errors: FormErrors;
 
     server: string;
+    email: string;
     username: string;
     password: string;
   };
 
   public props: {
-    onSubmit: (username: string, password: string, serviceApiUrl?: string) => void;
+    onSubmit?: (username: string, password: string, serviceApiUrl?: string) => void;
+    onSignup?: (username: string, email: string, password: string, serviceApiUrl?: string) => void;
   };
 
   private formRefs: React.RefObject<NativeTextInput>[];
@@ -45,6 +48,7 @@ class LoginForm extends React.PureComponent {
       showAdvanced: alwaysShowAdvanced,
       errors: {},
       server: "",
+      email: "",
       username: "",
       password: "",
     };
@@ -52,7 +56,7 @@ class LoginForm extends React.PureComponent {
     this.toggleAdvancedSettings = this.toggleAdvancedSettings.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
 
-    this.formRefs = [React.createRef<NativeTextInput>(), React.createRef<NativeTextInput>(), React.createRef<NativeTextInput>()];
+    this.formRefs = [React.createRef<NativeTextInput>(), React.createRef<NativeTextInput>(), React.createRef<NativeTextInput>(), React.createRef<NativeTextInput>()];
   }
 
   public handleInputChange(name: string) {
@@ -66,11 +70,19 @@ class LoginForm extends React.PureComponent {
   public generateEncryption() {
     const server = this.state.showAdvanced ? this.state.server : undefined;
 
+    const email = this.state.email;
     const username = this.state.username;
     const password = this.state.password;
 
     const errors: FormErrors = {};
     const fieldRequired = "This field is required!";
+    if (this.props.onSignup) {
+      if (!email) {
+        errors.email = fieldRequired;
+      } else if (!email.includes("@")) {
+        errors.email = "Valid email address required.";
+      }
+    }
     if (!username) {
       errors.username = fieldRequired;
     }
@@ -83,7 +95,11 @@ class LoginForm extends React.PureComponent {
       return;
     }
 
-    this.props.onSubmit(username, password, server);
+    if (this.props.onSubmit) {
+      this.props.onSubmit(username, password, server);
+    } else {
+      this.props.onSignup!(username, email, password, server);
+    }
   }
 
   public toggleAdvancedSettings() {
@@ -104,7 +120,7 @@ class LoginForm extends React.PureComponent {
           value={this.state.server}
           placeholder="E.g. https://api.etebase.com"
           onChangeText={this.handleInputChange("server")}
-          ref={this.formRefs[2]}
+          ref={this.formRefs[3]}
         />
         <HelperText
           type="error"
@@ -124,7 +140,7 @@ class LoginForm extends React.PureComponent {
             autoCompleteType="username"
             autoFocus
             returnKeyType="next"
-            onSubmitEditing={() => this.formRefs[1].current!.focus()}
+            onSubmitEditing={() => (this.formRefs[1].current ?? this.formRefs[2].current)!.focus()}
             ref={this.formRefs[0]}
             error={!!this.state.errors.username}
             onChangeText={this.handleInputChange("username")}
@@ -139,11 +155,37 @@ class LoginForm extends React.PureComponent {
             {this.state.errors.username}
           </HelperText>
 
+          {(this.props.onSignup) && (
+            <>
+              <TextInput
+                autoCapitalize="none"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                autoCorrect={false}
+                returnKeyType="next"
+                onSubmitEditing={() => this.formRefs[2].current!.focus()}
+                ref={this.formRefs[1]}
+                error={!!this.state.errors.email}
+                onChangeText={this.handleInputChange("email")}
+                label="Email address"
+                accessibilityLabel="Email address"
+                value={this.state.email}
+              />
+              <HelperText
+                type="error"
+                visible={!!this.state.errors.email}
+              >
+                {this.state.errors.email}
+              </HelperText>
+            </>
+          )}
+
+
           <PasswordInput
             autoCompleteType="password"
             returnKeyType={this.state.showAdvanced ? "next" : undefined}
-            onSubmitEditing={this.state.showAdvanced ? (() => this.formRefs[2].current!.focus()) : undefined}
-            ref={this.formRefs[1]}
+            onSubmitEditing={() => this.formRefs[3].current?.focus()}
+            ref={this.formRefs[2]}
             error={!!this.state.errors.password}
             label="Password"
             accessibilityLabel="Password"
@@ -191,7 +233,11 @@ class LoginForm extends React.PureComponent {
             mode="contained"
             onPress={this.generateEncryption}
           >
-            <Text>Log In</Text>
+            {this.props.onSignup ? (
+              <Text>Signup</Text>
+            ) : (
+              <Text>Log In</Text>
+            )}
           </Button>
         </View>
       </>

@@ -25,15 +25,19 @@ import LinkButton from "../widgets/LinkButton";
 import { useNavigation } from "@react-navigation/native";
 
 
-const LoginScreen = React.memo(function _LoginScreen() {
+export default React.memo(function SignupScreen() {
   const etebase = useCredentials();
   const dispatch = useAsyncDispatch();
   const navigation = useNavigation();
   const [loading, error, setPromise] = useLoading();
 
-  function onFormSubmit(username: string, password: string, serviceApiUrl?: string) {
+  function onFormSubmit(username: string, email: string, password: string, serviceApiUrl?: string) {
     setPromise((async () => {
-      const etebase = await Etebase.Account.login(username, password, serviceApiUrl ?? C.serviceApiBase);
+      const user: Etebase.User = {
+        username,
+        email,
+      };
+      const etebase = await Etebase.Account.signup(user, password, serviceApiUrl ?? C.serviceApiBase);
       dispatch(login(etebase));
     })());
   }
@@ -45,14 +49,14 @@ const LoginScreen = React.memo(function _LoginScreen() {
   return (
     <ScrollView keyboardAware>
       <Container>
-        <Headline>Please Log In</Headline>
+        <Headline>Signup</Headline>
         {!C.genericMode && (
           <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <Text> or </Text><LinkButton onPress={() => navigation.navigate("Signup")}>create an account</LinkButton>
+            <Text> or </Text><LinkButton onPress={() => navigation.navigate("LoginScreen")}>log in to your account</LinkButton>
           </View>
         )}
         <LoginForm
-          onSubmit={onFormSubmit}
+          onSignup={onFormSubmit}
         />
         <ErrorOrLoadingDialog
           loading={loading}
@@ -63,5 +67,3 @@ const LoginScreen = React.memo(function _LoginScreen() {
     </ScrollView>
   );
 });
-
-export default LoginScreen;

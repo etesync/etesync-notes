@@ -11,6 +11,7 @@ import { Appbar, useTheme } from "react-native-paper";
 import { SyncManager } from "./sync/SyncManager";
 
 import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
@@ -73,6 +74,16 @@ export default React.memo(function RootNavigator() {
             component={LoginScreen}
             options={{
               title: "Login",
+              headerLeft: () => (
+                <MenuButton />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={SignupScreen}
+            options={{
+              title: "Signup",
               headerLeft: () => (
                 <MenuButton />
               ),
