@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { Keyboard } from "react-native";
-import { Card, Portal, Modal, Button, ProgressBar, Paragraph, useTheme } from "react-native-paper";
+import { Keyboard, Platform } from "react-native";
+import { Card, Portal, Modal, Button, ProgressBar, Paragraph, useTheme, Dialog } from "react-native-paper";
 
 import { isPromise, useIsMounted } from "../helpers";
 
@@ -67,6 +67,39 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
     content = props.children;
   }
 
+  const buttons = (
+    <>
+      {props.onCancel &&
+        <Button disabled={loading} theme={buttonThemeOverride} onPress={props.onCancel}>{labelCancel}</Button>
+      }
+      {!error && props.onOk &&
+        <Button disabled={loading} theme={buttonThemeOverride} onPress={onOk}>{labelOk}</Button>
+      }
+    </>
+  );
+
+  if (Platform.OS === "web") {
+    return (
+      <Portal>
+        <Dialog
+          visible={props.visible}
+          onDismiss={props.onCancel}
+          dismissable={props.dismissable && !loading}
+        >
+          <Dialog.Title>
+            {props.title}
+          </Dialog.Title>
+          <Dialog.Content>
+            {content}
+          </Dialog.Content>
+          <Dialog.Actions>
+            {buttons}
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    );
+  }
+
   return (
     <Portal>
       <Modal
@@ -80,12 +113,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
             {content}
           </Card.Content>
           <Card.Actions style={{ justifyContent: "flex-end" }}>
-            {props.onCancel &&
-              <Button disabled={loading} theme={buttonThemeOverride} onPress={props.onCancel}>{labelCancel}</Button>
-            }
-            {!error && props.onOk &&
-              <Button disabled={loading} theme={buttonThemeOverride} onPress={onOk}>{labelOk}</Button>
-            }
+            {buttons}
           </Card.Actions>
         </Card>
       </Modal>
