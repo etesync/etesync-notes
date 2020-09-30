@@ -15,9 +15,9 @@ import * as C from "../constants";
 import PasswordInput from "../widgets/PasswordInput";
 
 interface FormErrors {
-  errorEmail?: string;
-  errorPassword?: string;
-  errorServer?: string;
+  username?: string;
+  password?: string;
+  server?: string;
 }
 
 // Can be used to force always showing advance, e.g. for genericMode
@@ -72,10 +72,10 @@ class LoginForm extends React.PureComponent {
     const errors: FormErrors = {};
     const fieldRequired = "This field is required!";
     if (!username) {
-      errors.errorEmail = fieldRequired;
+      errors.username = fieldRequired;
     }
     if (!password) {
-      errors.errorPassword = fieldRequired;
+      errors.password = fieldRequired;
     }
 
     this.setState({ errors });
@@ -98,7 +98,7 @@ class LoginForm extends React.PureComponent {
           textContentType="URL"
           autoCapitalize="none"
           autoCorrect={false}
-          error={!!this.state.errors.errorServer}
+          error={!!this.state.errors.server}
           label="Server URL"
           accessibilityLabel="Server URL"
           value={this.state.server}
@@ -108,9 +108,9 @@ class LoginForm extends React.PureComponent {
         />
         <HelperText
           type="error"
-          visible={!!this.state.errors.errorServer}
+          visible={!!this.state.errors.server}
         >
-          {this.state.errors.errorServer}
+          {this.state.errors.server}
         </HelperText>
       </>
     );
@@ -126,7 +126,7 @@ class LoginForm extends React.PureComponent {
             returnKeyType="next"
             onSubmitEditing={() => this.formRefs[1].current!.focus()}
             ref={this.formRefs[0]}
-            error={!!this.state.errors.errorEmail}
+            error={!!this.state.errors.username}
             onChangeText={this.handleInputChange("username")}
             label="Username"
             accessibilityLabel="Username"
@@ -134,9 +134,9 @@ class LoginForm extends React.PureComponent {
           />
           <HelperText
             type="error"
-            visible={!!this.state.errors.errorEmail}
+            visible={!!this.state.errors.username}
           >
-            {this.state.errors.errorEmail}
+            {this.state.errors.username}
           </HelperText>
 
           <PasswordInput
@@ -144,7 +144,7 @@ class LoginForm extends React.PureComponent {
             returnKeyType={this.state.showAdvanced ? "next" : undefined}
             onSubmitEditing={this.state.showAdvanced ? (() => this.formRefs[2].current!.focus()) : undefined}
             ref={this.formRefs[1]}
-            error={!!this.state.errors.errorPassword}
+            error={!!this.state.errors.password}
             label="Password"
             accessibilityLabel="Password"
             value={this.state.password}
@@ -152,9 +152,9 @@ class LoginForm extends React.PureComponent {
           />
           <HelperText
             type="error"
-            visible={!!this.state.errors.errorPassword}
+            visible={!!this.state.errors.password}
           >
-            {this.state.errors.errorPassword}
+            {this.state.errors.password}
           </HelperText>
           {!C.genericMode && (
             <>
