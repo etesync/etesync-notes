@@ -7643,10 +7643,10 @@ react-native-screens@~2.10.1:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.10.1.tgz#06d22fae87ef0ce51c616c34a199726db1403b95"
   integrity sha512-Z2kKSk4AwWRQNCBmTjViuBQK0/Lx0jc25TZptn/2gKYUCOuVRvCekoA26u0Tsb3BIQ8tWDsZW14OwDlFUXW1aw==
 
-react-native-sodium@^0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/react-native-sodium/-/react-native-sodium-0.3.9.tgz#cd853b9ef03ee053130d6d731c5d738f65a961db"
-  integrity sha512-eLI2n5Kflvq6OcVHW4estK0EGFlSDk2fHSHst4a2ysO4Hpm5nxf/DCQ7DWcLZYJlE9SX9wk461eF9wKZL/gwfQ==
+react-native-sodium@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/react-native-sodium/-/react-native-sodium-0.3.8.tgz#ccb86a67d2cd6856be227ed962ffc019b32e7642"
+  integrity sha512-G+ZrNUr8yWPOGYSzM+Gc+5wKeLcQBlN7SrFjt9JzbeuNM+cEJlj4ntdoaMe43cciWVPr4yQIpFOu2Qapnk5HRQ==
 
 react-native-unimodules@~0.11.0:
   version "0.11.0"
