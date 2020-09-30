@@ -15,6 +15,7 @@ export default React.memo(React.forwardRef(function PasswordInput(inProps: React
     <PaperTextInput
       ref={ref as any}
       style={[{ backgroundColor: "transparent" }, style]}
+      autoCorrect={false}
       theme={{ colors: { primary: theme.colors.placeholder } }}
       {...props}
     />
