@@ -102,7 +102,8 @@ export default function CollectionEditScreen(props: PropsType) {
       }
 
       const colMgr = etebase.getCollectionManager();
-      const meta = { type: colType, name, description, color };
+      const mtime = (new Date()).getTime();
+      const meta = { type: colType, name, description, color, mtime };
       let collection;
       if (colUid) {
         collection = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
@@ -213,6 +214,9 @@ function RightAction(props: { colUid: string }) {
         onOk={async () => {
           const colMgr = etebase.getCollectionManager();
           const collection = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+          const mtime = (new Date()).getTime();
+          const meta = await collection.getMeta();
+          await collection.setMeta({ ...meta, mtime });
           await collection.delete();
           await colMgr.upload(collection);
           navigation.navigate("home");
