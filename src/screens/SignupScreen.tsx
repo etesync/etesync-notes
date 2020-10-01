@@ -39,6 +39,7 @@ export default React.memo(function SignupScreen() {
       };
       const etebase = await Etebase.Account.signup(user, password, serviceApiUrl ?? C.serviceApiBase);
       dispatch(login(etebase));
+      navigation.navigate("AccountWizard");
     })());
   }
 

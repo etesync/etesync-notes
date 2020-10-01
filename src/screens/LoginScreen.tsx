@@ -35,6 +35,7 @@ const LoginScreen = React.memo(function _LoginScreen() {
     setPromise((async () => {
       const etebase = await Etebase.Account.login(username, password, serviceApiUrl ?? C.serviceApiBase);
       dispatch(login(etebase));
+      navigation.navigate("AccountWizard");
     })());
   }
 

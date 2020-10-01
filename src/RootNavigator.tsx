@@ -93,13 +93,6 @@ export default React.memo(function RootNavigator() {
       ) : (
         <>
           <Stack.Screen
-            name="AccountWizard"
-            component={AccountWizardScreen}
-            options={{
-              title: C.appName,
-            }}
-          />
-          <Stack.Screen
             name="home"
             component={NoteListScreen}
             options={{
@@ -147,6 +140,14 @@ export default React.memo(function RootNavigator() {
         component={DebugLogsScreen}
         options={{
           title: "View Debug Logs",
+        }}
+      />
+      {/* We keep this outside of the guarded routes so we can navigate to it from the login/signup screens */}
+      <Stack.Screen
+        name="AccountWizard"
+        component={AccountWizardScreen}
+        options={{
+          title: C.appName,
         }}
       />
     </Stack.Navigator>
