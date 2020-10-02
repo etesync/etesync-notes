@@ -98,7 +98,6 @@ export default React.memo(function RootNavigator() {
               name="home"
               component={NoteListScreen}
               options={{
-                title: C.appName,
                 headerLeft: () => (
                   <MenuButton />
                 ),

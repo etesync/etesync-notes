@@ -88,7 +88,7 @@ export default function NoteListScreen(props: PropsType) {
     const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
 
     navigation.setOptions({
-      title: cacheCollection?.meta.name ?? C.appName,
+      title: cacheCollection?.meta.name ?? "All Notes",
       headerRight: () => (
         <RightAction colUid={colUid} />
       ),
