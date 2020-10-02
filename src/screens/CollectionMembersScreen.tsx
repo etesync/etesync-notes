@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { View } from "react-native";
 import { Avatar, List, Appbar, Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
@@ -18,6 +18,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorDialog from "../widgets/ErrorDialog";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
+import { pushMessage } from "../store/actions";
 
 type RootStackParamList = {
   CollectionMembersScreen: {
@@ -35,11 +36,11 @@ export default function CollectionMembersScreen(props: PropsType) {
   const [members, setMembers] = React.useState<Etebase.CollectionMember[]>();
   const [revokeUser, setRevokeUser] = React.useState<Etebase.CollectionMember>();
   const [addMemberOpen, setAddMemberOpen] = React.useState(false);
-  const [inviteSuccessOpen, setInviteSuccessOpen] = React.useState(false);
   const [error, setError] = React.useState<string>();
   const collections = useSelector((state: StoreState) => state.cache.collections);
   const syncGate = useSyncGate();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const etebase = useCredentials()!;
 
@@ -97,7 +98,7 @@ export default function CollectionMembersScreen(props: PropsType) {
     await inviteMgr.invite(collection!, username, pubkey, accessLevel);
     await fetchMembers();
     setAddMemberOpen(false);
-    setInviteSuccessOpen(true);
+    dispatch(pushMessage({ message: "Invitation sent", severity: "success" }));
   }
 
   if (syncGate) {
@@ -150,6 +151,7 @@ export default function CollectionMembersScreen(props: PropsType) {
           const memberManager = colMgr.getMemberManager(collection!);
           await memberManager.remove(revokeUser!.username);
           setRevokeUser(undefined);
+          dispatch(pushMessage({ message: "Removed member", severity: "success" }));
           navigation.goBack();
         }}
         onCancel={() => {
@@ -177,17 +179,6 @@ export default function CollectionMembersScreen(props: PropsType) {
           onClose={() => setAddMemberOpen(false)}
         />
       }
-
-      <ConfirmationDialog
-        title="Invite user"
-        labelOk="OK"
-        visible={inviteSuccessOpen}
-        onOk={() => setInviteSuccessOpen(false)}
-      >
-        <Paragraph>
-          Invitation sent. User will be added once the invitation has been accepted.
-        </Paragraph>
-      </ConfirmationDialog>
     </ScrollView>
   );
 }

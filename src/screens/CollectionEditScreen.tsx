@@ -11,7 +11,7 @@ import { SyncManager } from "../sync/SyncManager";
 import { useSyncGate } from "../SyncGate";
 import { useCredentials } from "../credentials";
 import { StoreState, useAsyncDispatch } from "../store";
-import { collectionUpload, performSync } from "../store/actions";
+import { collectionUpload, performSync, pushMessage } from "../store/actions";
 
 import TextInput from "../widgets/TextInput";
 import ScrollView from "../widgets/ScrollView";
@@ -114,6 +114,7 @@ export default function CollectionEditScreen(props: PropsType) {
       }
 
       await dispatch(collectionUpload(colMgr, collection));
+      dispatch(pushMessage({ message: "Collection saved", severity: "success" }));
       navigation.goBack();
       // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
       const syncManager = SyncManager.getManager(etebase);
@@ -219,6 +220,7 @@ function RightAction(props: { colUid: string }) {
           await collection.setMeta({ ...meta, mtime });
           await collection.delete();
           await colMgr.upload(collection);
+          dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
           navigation.navigate("home");
           // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
           const syncManager = SyncManager.getManager(etebase);
