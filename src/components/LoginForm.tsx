@@ -10,6 +10,7 @@ import { Switch, Button, HelperText, Paragraph, TouchableRipple } from "react-na
 import ExternalLink from "../widgets/ExternalLink";
 import Row from "../widgets/Row";
 import TextInput from "../widgets/TextInput";
+import Alert from "../widgets/Alert";
 
 import * as C from "../constants";
 import PasswordInput from "../widgets/PasswordInput";
@@ -234,6 +235,15 @@ class LoginForm extends React.PureComponent {
           >
             <React.Fragment />
           </HelperText>
+
+          {this.props.onSignup && (
+            <Alert
+              style={{ marginBottom: 10 }}
+              severity="warning"
+            >
+              Please make sure you remember your password, as it can't be recovered if lost!
+            </Alert>
+          )}
 
           <Button
             mode="contained"
