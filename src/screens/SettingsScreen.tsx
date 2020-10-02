@@ -17,7 +17,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import PasswordInput from "../widgets/PasswordInput";
 
 import { StoreState, useAsyncDispatch } from "../store";
-import { setSettings, login } from "../store/actions";
+import { setSettings, login, pushMessage } from "../store/actions";
 
 import * as C from "../constants";
 import { startTask, enforcePasswordRules } from "../helpers";
@@ -61,11 +61,12 @@ function ChangePasswordDialog(props: DialogPropsType) {
     }
 
     await startTask(async () => {
+      const serverUrl = etebase.serverUrl;
       logger.info("Changing encryption password");
       logger.info("Verifying old key");
       const username = etebase.user.username;
       try {
-        const etebase = await Etebase.Account.login(username, oldPassword);
+        const etebase = await Etebase.Account.login(username, oldPassword, serverUrl);
         await etebase.logout();
       } catch (e) {
         if (e instanceof Etebase.UnauthorizedError) {
@@ -80,6 +81,8 @@ function ChangePasswordDialog(props: DialogPropsType) {
       try {
         await etebase.changePassword(newPassword);
         dispatch(login(etebase));
+        dispatch(pushMessage({ message: "Password successfully changed.", severity: "success" }));
+        props.onDismiss();
       } catch (e) {
         setErrors({ newPassword: e.toString() });
       }
