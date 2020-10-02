@@ -13,6 +13,7 @@ import TextInput from "../widgets/TextInput";
 
 import * as C from "../constants";
 import PasswordInput from "../widgets/PasswordInput";
+import { enforcePasswordRules } from "../helpers";
 
 interface FormErrors {
   username?: string;
@@ -88,6 +89,11 @@ class LoginForm extends React.PureComponent {
     }
     if (!password) {
       errors.password = fieldRequired;
+    } else if (this.props.onSignup) {
+      const passwordRulesError = enforcePasswordRules(password);
+      if (passwordRulesError) {
+        errors.password = passwordRulesError;
+      }
     }
 
     this.setState({ errors });

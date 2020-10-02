@@ -20,7 +20,7 @@ import { StoreState, useAsyncDispatch } from "../store";
 import { setSettings, login } from "../store/actions";
 
 import * as C from "../constants";
-import { startTask } from "../helpers";
+import { startTask, enforcePasswordRules } from "../helpers";
 import { useNavigation } from "@react-navigation/native";
 
 interface DialogPropsType {
@@ -48,6 +48,11 @@ function ChangePasswordDialog(props: DialogPropsType) {
     }
     if (!newPassword) {
       errors.newPassword = fieldNotEmpty;
+    } else {
+      const passwordRulesError = enforcePasswordRules(newPassword);
+      if (passwordRulesError) {
+        errors.newPassword = passwordRulesError;
+      }
     }
 
     setErrors(errors);
