@@ -1,0 +1,3 @@
+* Remove Expo dependency as it was pulling a lot of unneeded stuff
+* Change the title of the "all notes" page to "All Notes".
+* Fix collection deletion
