@@ -211,6 +211,7 @@ function RightAction(props: { colUid: string }) {
       />
       <ConfirmationDialog
         title="Are you sure?"
+        key={confirmationVisible.toString()}
         visible={confirmationVisible}
         onOk={async () => {
           const colMgr = etebase.getCollectionManager();
@@ -219,7 +220,7 @@ function RightAction(props: { colUid: string }) {
           const meta = await collection.getMeta();
           await collection.setMeta({ ...meta, mtime });
           await collection.delete();
-          await colMgr.upload(collection);
+          await dispatch(collectionUpload(colMgr, collection));
           dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
           navigation.navigate("home");
           // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
