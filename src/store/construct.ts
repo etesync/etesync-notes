@@ -10,13 +10,13 @@ import { NetInfoStateType } from "@react-native-community/netinfo";
 import { combineReducers } from "redux";
 import { persistReducer, createTransform } from "redux-persist";
 
-import { Map as ImmutableMap } from "immutable";
+import { List, Map as ImmutableMap } from "immutable";
 
 import {
   SettingsType,
   fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer, ErrorsData,
   CredentialsData, SyncCollectionsData, SyncGeneralData,
-  collections, items, syncCollections, syncItems, syncGeneral, CachedCollectionsData, CachedItemsData, SyncItemsData,
+  collections, items, syncCollections, syncItems, syncGeneral, CachedCollectionsData, CachedItemsData, SyncItemsData, messagesReducer, Message,
 } from "./reducers";
 
 export interface StoreState {
@@ -38,6 +38,7 @@ export interface StoreState {
   };
   connection: NetInfoStateType | null;
   errors: ErrorsData;
+  messages: List<Message>;
 }
 
 const settingsPersistConfig = {
@@ -134,6 +135,7 @@ const reducers = combineReducers({
   })),
   connection: connectionReducer,
   errors: errorsReducer,
+  messages: messagesReducer,
 });
 
 export default reducers;

@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { Appbar, useTheme } from "react-native-paper";
+import { Appbar, useTheme, Snackbar } from "react-native-paper";
 
 import { SyncManager } from "./sync/SyncManager";
 
@@ -24,11 +24,12 @@ import InvitationsScreen from "./screens/InvitationsScreen";
 import AccountWizardScreen from "./screens/AccountWizardScreen";
 
 import { useCredentials } from "./credentials";
-import { performSync } from "./store/actions";
+import { performSync, popMessage } from "./store/actions";
 
 import { useAppStateCb } from "./helpers";
 
 import * as C from "./constants";
+import { StoreState } from "./store";
 
 const Stack = createStackNavigator();
 
@@ -55,101 +56,130 @@ export default React.memo(function RootNavigator() {
   });
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.colors.primary,
-        },
-        headerTintColor: "#000000",
-        headerBackTitleVisible: false,
-        headerBackTitleStyle: {
-          backgroundColor: "black",
-        },
-      }}
-    >
-      {(etebase === null) ? (
-        <>
-          <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            options={{
-              title: "Login",
-              headerLeft: () => (
-                <MenuButton />
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="Signup"
-            component={SignupScreen}
-            options={{
-              title: "Signup",
-              headerLeft: () => (
-                <MenuButton />
-              ),
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <Stack.Screen
-            name="home"
-            component={NoteListScreen}
-            options={{
-              title: C.appName,
-              headerLeft: () => (
-                <MenuButton />
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="CollectionEdit"
-            component={CollectionEditScreen}
-          />
-          <Stack.Screen
-            name="CollectionChangelog"
-            component={CollectionChangelogScreen}
-            options={{
-              title: "Manage Notebook",
-            }}
-          />
-          <Stack.Screen
-            name="CollectionMembers"
-            component={CollectionMembersScreen}
-            options={{
-              title: "Collection Members",
-            }}
-          />
-          <Stack.Screen
-            name="ItemEdit"
-            component={ItemEditScreen}
-          />
-          <Stack.Screen
-            name="Invitations"
-            component={InvitationsScreen}
-            options={{
-              title: "Collection Invitations",
-            }}
-          />
-        </>
-      )}
-      <Stack.Screen name="Settings" component={SettingsScreen} />
-      <Stack.Screen name="About" component={AboutScreen} />
-      <Stack.Screen
-        name="DebugLogs"
-        component={DebugLogsScreen}
-        options={{
-          title: "View Debug Logs",
+    <>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: theme.colors.primary,
+          },
+          headerTintColor: "#000000",
+          headerBackTitleVisible: false,
+          headerBackTitleStyle: {
+            backgroundColor: "black",
+          },
         }}
-      />
-      {/* We keep this outside of the guarded routes so we can navigate to it from the login/signup screens */}
-      <Stack.Screen
-        name="AccountWizard"
-        component={AccountWizardScreen}
-        options={{
-          title: C.appName,
-        }}
-      />
-    </Stack.Navigator>
+      >
+        {(etebase === null) ? (
+          <>
+            <Stack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{
+                title: "Login",
+                headerLeft: () => (
+                  <MenuButton />
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={SignupScreen}
+              options={{
+                title: "Signup",
+                headerLeft: () => (
+                  <MenuButton />
+                ),
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="home"
+              component={NoteListScreen}
+              options={{
+                title: C.appName,
+                headerLeft: () => (
+                  <MenuButton />
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="CollectionEdit"
+              component={CollectionEditScreen}
+            />
+            <Stack.Screen
+              name="CollectionChangelog"
+              component={CollectionChangelogScreen}
+              options={{
+                title: "Manage Notebook",
+              }}
+            />
+            <Stack.Screen
+              name="CollectionMembers"
+              component={CollectionMembersScreen}
+              options={{
+                title: "Collection Members",
+              }}
+            />
+            <Stack.Screen
+              name="ItemEdit"
+              component={ItemEditScreen}
+            />
+            <Stack.Screen
+              name="Invitations"
+              component={InvitationsScreen}
+              options={{
+                title: "Collection Invitations",
+              }}
+            />
+          </>
+        )}
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="About" component={AboutScreen} />
+        <Stack.Screen
+          name="DebugLogs"
+          component={DebugLogsScreen}
+          options={{
+            title: "View Debug Logs",
+          }}
+        />
+        {/* We keep this outside of the guarded routes so we can navigate to it from the login/signup screens */}
+        <Stack.Screen
+          name="AccountWizard"
+          component={AccountWizardScreen}
+          options={{
+            title: C.appName,
+          }}
+        />
+      </Stack.Navigator>
+      <GlobalMessages />
+    </>
   );
 });
+
+function GlobalMessages() {
+  const dispatch = useDispatch();
+  const message = useSelector((state: StoreState) => state.messages.first(undefined));
+
+  function handleClose() {
+    dispatch(popMessage());
+  }
+
+  // FIXME: handle severity
+  return (
+    <Snackbar
+      key={message?.message}
+      visible={!!message}
+      duration={5000}
+      onDismiss={handleClose}
+      action={{
+        label: "Dismiss",
+        onPress: handleClose,
+      }}
+    >
+      {message?.message}
+    </Snackbar>
+  );
+}
+

@@ -38,6 +38,11 @@ export type SyncGeneralData = {
   lastSyncDate?: Date;
 };
 
+export type Message = {
+  message: string;
+  severity: "error" | "warning" | "info" | "success";
+};
+
 export interface CredentialsData {
   storedSession?: string;
 }
@@ -325,6 +330,19 @@ export const syncCount = handleAction(
   },
   0
 );
+
+export const messagesReducer = handleActions(
+  {
+    [actions.pushMessage.toString()]: (state: List<Message>, action: Action<Message>) => {
+      return state.push(action.payload);
+    },
+    [actions.popMessage.toString()]: (state: List<Message>, _action: Action<unknown>) => {
+      return state.remove(0);
+    },
+  },
+  List([])
+);
+
 
 // FIXME Move all the below (potentially the fetchCount ones too) to their own file
 export interface SettingsType {
