@@ -1,0 +1,16 @@
+Secure, end-to-end encrypted, and privacy respecting note taking app.
+
+In order to use this application you need to have an account with EteSync (paid hosting), or run your own instance (free and open source). Check out https://www.etesync.com/ for more information.
+
+
+Easy to Use
+===========
+EteSync is very easy to use. It's as simple as any of your non-encrypted note taking apps. Security doesn't always have to come at a cost.
+
+Secure & Open
+============
+Thanks to zero-knowledge end-to-end encryption, not even we can see your data. Don't believe us? You shouldn't, just verify yourself, both the client and server are open source.
+
+Full History
+=========
+A full history of your data is saved in an encrypted change history which means you can review, replay and revert any changes you have made at any point in time.
