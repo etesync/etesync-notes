@@ -19,8 +19,6 @@ import NoteEditDialog from "../components/NoteEditDialog";
 import { NoteMetadata } from "../helpers";
 import Menu from "../widgets/Menu";
 
-import * as C from "../constants";
-
 
 function sortMtime(aIn: CachedItem, bIn: CachedItem) {
   const a = aIn.meta.mtime!;
