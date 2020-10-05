@@ -7,7 +7,7 @@
     <key>EXUpdatesURL</key>
     <string>https://expo.etesync.com/etesync-notes/release/1/</string>
     <key>EXUpdatesEnabled</key>
-    <false/>
+    <true/>
     <key>EXUpdatesCheckOnLaunch</key>
     <string>ALWAYS</string>
     <key>EXUpdatesLaunchWaitMs</key>
