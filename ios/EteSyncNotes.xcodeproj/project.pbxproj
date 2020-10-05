@@ -18,7 +18,7 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* notes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = notes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* EteSyncNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EteSyncNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = EteSyncNotes/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = EteSyncNotes/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* notes.app */,
+				13B07F961A680F5B00A75B9A /* EteSyncNotes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,7 +140,7 @@
 			);
 			name = EteSyncNotes;
 			productName = EteSyncNotes;
-			productReference = 13B07F961A680F5B00A75B9A /* notes.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* EteSyncNotes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -329,7 +329,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EteSyncNotes/notes.entitlements;
-				CURRENT_PROJECT_VERSION = 1.3.1;
+				CURRENT_PROJECT_VERSION = 1.3.101;
 				DEVELOPMENT_TEAM = Q83BM862S8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -361,7 +361,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EteSyncNotes/notes.entitlements;
-				CURRENT_PROJECT_VERSION = 1.3.1;
+				CURRENT_PROJECT_VERSION = 1.3.101;
 				DEVELOPMENT_TEAM = Q83BM862S8;
 				INFOPLIST_FILE = EteSyncNotes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
