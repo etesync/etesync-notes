@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as Etebase from "etebase";
 import { View } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Appbar, Paragraph } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -20,6 +20,7 @@ import { setCacheItem, itemBatch, setSettings, setSyncItem, unsetSyncItem } from
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
 import NoteEditDialog from "../components/NoteEditDialog";
+import ConfirmationDialog from "../widgets/ConfirmationDialog";
 
 type RootStackParamList = {
   ItemEditScreen: {
@@ -39,6 +40,7 @@ export default function ItemEditScreen(props: PropsType) {
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const { viewMode } = viewSettings;
   const [noteEditDialogShow, setNoteEditDialogShow] = React.useState(false);
+  const [noteDeleteDialogShow, setNoteDeleteDialogShow] = React.useState(false);
   const dispatch = useAsyncDispatch();
   const syncDispatch = useDispatch();
   const syncItems = useSelector((state: StoreState) => state.sync.items);
@@ -148,6 +150,7 @@ export default function ItemEditScreen(props: PropsType) {
           setViewMode={setViewMode}
           onSave={onSave}
           onEdit={() => setNoteEditDialogShow(true)}
+          onDelete={() => setNoteDeleteDialogShow(true)}
           changed={changed}
         />
       ),
@@ -209,6 +212,27 @@ export default function ItemEditScreen(props: PropsType) {
         }}
         onDismiss={() => setNoteEditDialogShow(false)}
       />
+      <ConfirmationDialog
+        title="Delete Note"
+        visible={noteDeleteDialogShow}
+        onOk={async () => {
+          const colMgr = etebase.getCollectionManager();
+          const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+          const itemMgr = colMgr.getItemManager(col);
+          const item = itemMgr.cacheLoad(cacheItem.cache);
+
+          const meta = await item.getMeta();
+          meta.mtime = (new Date()).getTime();
+          await item.setMeta(meta);
+          await item.delete(true);
+
+          await dispatch(setCacheItem(col, itemMgr, item));
+          navigation.goBack();
+        }}
+        onCancel={() => setNoteDeleteDialogShow(false)}
+      >
+        <Paragraph>Are you sure you would like to delete this note?</Paragraph>
+      </ConfirmationDialog>
     </>
   );
 }
@@ -219,9 +243,10 @@ interface RightActionViewProps {
   setViewMode: (value: boolean) => void;
   onEdit: () => void;
   onSave: () => void;
+  onDelete: () => void;
 }
 
-function RightAction({ viewMode, setViewMode, onSave, onEdit, changed }: RightActionViewProps) {
+function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, changed }: RightActionViewProps) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   return (
@@ -236,10 +261,16 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, changed }: RightAc
           <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
         )}
       >
-        <Menu.Item icon="pencil" title="Edit"
+        <Menu.Item icon="pencil" title="Edit Properties"
           onPress={() => {
             setShowMenu(false);
             onEdit();
+          }}
+        />
+        <Menu.Item icon="delete" title="Delete"
+          onPress={() => {
+            setShowMenu(false);
+            onDelete();
           }}
         />
         <Menu.Item icon="content-save" title="Save"
