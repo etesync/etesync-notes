@@ -15,12 +15,11 @@ import TextInput from "../widgets/TextInput";
 import PasswordInput from "../widgets/PasswordInput";
 import Alert from "../widgets/Alert";
 import Row from "../widgets/Row";
-import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 
 import { useAsyncDispatch } from "../store";
 
 import { login } from "../store/actions";
-import { useLoading, enforcePasswordRules } from "../helpers";
+import { enforcePasswordRules } from "../helpers";
 
 import * as C from "../constants";
 import { useCredentials } from "../credentials";
@@ -32,6 +31,8 @@ interface FormErrors {
   email?: string;
   password?: string;
   server?: string;
+
+  general?: string;
 }
 
 // Can be used to force always showing advance, e.g. for genericMode
@@ -41,12 +42,12 @@ export default React.memo(function SignupScreen() {
   const etebase = useCredentials();
   const dispatch = useAsyncDispatch();
   const navigation = useNavigation();
-  const [loading, error, setPromise] = useLoading();
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [server, setServer] = React.useState("");
   const [showAdvanced, setShowAdvanced] = React.useState(alwaysShowAdvanced);
+  const [loading, setLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<FormErrors>({});
 
   const usernameRef = React.useRef<NativeTextInput>();
@@ -81,7 +82,8 @@ export default React.memo(function SignupScreen() {
       return;
     }
 
-    setPromise((async () => {
+    setLoading(true);
+    try {
       const user: Etebase.User = {
         username,
         email,
@@ -89,7 +91,34 @@ export default React.memo(function SignupScreen() {
       const etebase = await Etebase.Account.signup(user, password, serverUrl ?? C.serviceApiBase);
       dispatch(login(etebase));
       navigation.navigate("AccountWizard");
-    })());
+    } catch (e) {
+      if ((e instanceof Etebase.HttpError) && (e.content)) {
+        let found = false;
+        if (e.content.errors) {
+          for (const field of e.content.errors) {
+            if (field.field === "user.username") {
+              errors.username = field.detail;
+              found = true;
+            } else if (field.field === "user.email") {
+              errors.email = field.detail;
+              found = true;
+            } else if (!field.field) {
+              errors.general = field.detail;
+              found = true;
+            }
+          }
+        }
+
+        if (!found) {
+          errors.general = e.content.detail ?? e.toString();
+        }
+      } else {
+        errors.general = e.toString();
+      }
+      setErrors(errors);
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (etebase) {
@@ -206,6 +235,10 @@ export default React.memo(function SignupScreen() {
             <React.Fragment />
           </HelperText>
 
+          {errors.general && (
+            <Alert severity="error" style={{ marginBottom: 10 }}>{errors.general}</Alert>
+          )}
+
           <Alert
             style={{ marginBottom: 10 }}
             severity="warning"
@@ -216,15 +249,12 @@ export default React.memo(function SignupScreen() {
           <Button
             mode="contained"
             onPress={onSubmit}
+            disabled={loading}
+            loading={loading}
           >
             <Text>Signup</Text>
           </Button>
         </View>
-        <ErrorOrLoadingDialog
-          loading={loading}
-          error={error}
-          onDismiss={() => setPromise(undefined)}
-        />
       </Container>
     </ScrollView>
   );
