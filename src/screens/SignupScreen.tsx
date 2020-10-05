@@ -51,11 +51,9 @@ export default React.memo(function SignupScreen() {
     <ScrollView keyboardAware>
       <Container>
         <Headline>Signup</Headline>
-        {!C.genericMode && (
-          <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <Text> or </Text><LinkButton onPress={() => navigation.navigate("LoginScreen")}>log in to your account</LinkButton>
-          </View>
-        )}
+        <View style={{ alignItems: "center", flexDirection: "row" }}>
+          <Text> or </Text><LinkButton onPress={() => navigation.navigate("LoginScreen")}>log in to your account</LinkButton>
+        </View>
         <LoginForm
           onSignup={onFormSubmit}
         />
