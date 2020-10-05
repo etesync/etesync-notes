@@ -170,7 +170,7 @@ export default function ItemEditScreen(props: PropsType) {
 
   return (
     <>
-      <ScrollView keyboardAware contentContainerStyle={{ flexGrow: 1 }} keyboardDismissMode="on-drag">
+      <ScrollView keyboardAware contentContainerStyle={{ flexGrow: 1, padding: 10 }} keyboardDismissMode="on-drag">
         {viewMode ? (
           <Markdown
             content={content}
@@ -180,7 +180,7 @@ export default function ItemEditScreen(props: PropsType) {
             multiline
             textAlignVertical="top"
             scrollEnabled={false}
-            style={{ flexGrow: 1, paddingHorizontal: 15, paddingVertical: 10 }}
+            style={{ flexGrow: 1, padding: 0, backgroundColor: "transparent" }}
             onChangeText={setContent}
             value={content}
           />
