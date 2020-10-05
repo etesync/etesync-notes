@@ -1,0 +1,4 @@
+* Improve look and feel
+* Disable Expo-updates.
+* Signup: show field-specific errors
+* Set mtime when creating collections
