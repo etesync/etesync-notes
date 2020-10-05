@@ -1,0 +1,2 @@
+* Improve look and feel
+* Make it possible to delete notes
