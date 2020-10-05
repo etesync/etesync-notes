@@ -18,7 +18,6 @@ import { enforcePasswordRules } from "../helpers";
 
 interface FormErrors {
   username?: string;
-  email?: string;
   password?: string;
   server?: string;
 }
@@ -27,20 +26,17 @@ interface FormErrors {
 const alwaysShowAdvanced = false;
 
 interface PropsType {
-  onSubmit?: (username: string, password: string, serviceApiUrl?: string) => void;
-  onSignup?: (username: string, email: string, password: string, serviceApiUrl?: string) => void;
+  onSubmit: (username: string, password: string, serviceApiUrl?: string) => void;
 }
 
 export default function LoginForm(props: PropsType) {
   const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [server, setServer] = React.useState("");
   const [showAdvanced, setShowAdvanced] = React.useState(alwaysShowAdvanced);
   const [errors, setErrors] = React.useState<FormErrors>({});
 
   const usernameRef = React.useRef<NativeTextInput>();
-  const emailRef = React.useRef<NativeTextInput>();
   const passwordRef = React.useRef<NativeTextInput>();
   const serverRef = React.useRef<NativeTextInput>();
 
@@ -49,23 +45,11 @@ export default function LoginForm(props: PropsType) {
 
     const errors: FormErrors = {};
     const fieldRequired = "This field is required!";
-    if (props.onSignup) {
-      if (!email) {
-        errors.email = fieldRequired;
-      } else if (!email.includes("@")) {
-        errors.email = "Valid email address required.";
-      }
-    }
     if (!username) {
       errors.username = fieldRequired;
     }
     if (!password) {
       errors.password = fieldRequired;
-    } else if (props.onSignup) {
-      const passwordRulesError = enforcePasswordRules(password);
-      if (passwordRulesError) {
-        errors.password = passwordRulesError;
-      }
     }
 
     setErrors(errors);
@@ -73,11 +57,7 @@ export default function LoginForm(props: PropsType) {
       return;
     }
 
-    if (props.onSubmit) {
-      props.onSubmit(username, password, serverUrl);
-    } else {
-      props.onSignup!(username, email, password, serverUrl);
-    }
+    props.onSubmit(username, password, serverUrl);
   }
 
   return (
@@ -89,7 +69,7 @@ export default function LoginForm(props: PropsType) {
           autoCompleteType="username"
           autoFocus
           returnKeyType="next"
-          onSubmitEditing={() => (emailRef.current ?? passwordRef.current)!.focus()}
+          onSubmitEditing={() => (passwordRef.current)!.focus()}
           ref={usernameRef}
           error={!!errors.username}
           onChangeText={setUsername}
@@ -103,32 +83,6 @@ export default function LoginForm(props: PropsType) {
         >
           {errors.username}
         </HelperText>
-
-        {(props.onSignup) && (
-          <>
-            <TextInput
-              autoCapitalize="none"
-              keyboardType="email-address"
-              textContentType="emailAddress"
-              autoCorrect={false}
-              returnKeyType="next"
-              onSubmitEditing={() => passwordRef.current!.focus()}
-              ref={emailRef}
-              error={!!errors.email}
-              onChangeText={setEmail}
-              label="Email address"
-              accessibilityLabel="Email address"
-              value={email}
-            />
-            <HelperText
-              type="error"
-              visible={!!errors.email}
-            >
-              {errors.email}
-            </HelperText>
-          </>
-        )}
-
 
         <PasswordInput
           autoCompleteType="password"
@@ -196,24 +150,11 @@ export default function LoginForm(props: PropsType) {
           <React.Fragment />
         </HelperText>
 
-        {props.onSignup && (
-          <Alert
-            style={{ marginBottom: 10 }}
-            severity="warning"
-          >
-            Please make sure you remember your password, as it can't be recovered if lost!
-          </Alert>
-        )}
-
         <Button
           mode="contained"
           onPress={onSubmit}
         >
-          {props.onSignup ? (
-            <Text>Signup</Text>
-          ) : (
-            <Text>Log In</Text>
-          )}
+          <Text>Log In</Text>
         </Button>
       </View>
     </>
