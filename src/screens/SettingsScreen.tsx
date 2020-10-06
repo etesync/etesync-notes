@@ -182,31 +182,33 @@ const SettingsScreen = function _SettingsScreen() {
           />
         </List.Section>
 
-        <List.Section>
-          <List.Subheader>Debugging</List.Subheader>
-          <List.Item
-            title="Enable Logging"
-            description={(settings.logLevel === LogLevel.Off) ? "Click to enable debug logging" : "Click to disable debug logging"}
-            accessible={false}
-            right={(props) =>
-              <Switch
-                {...props}
-                color={theme.colors.accent}
-                value={settings.logLevel !== LogLevel.Off}
-                onValueChange={(value) => {
-                  dispatch(setSettings({ logLevel: (value) ? LogLevel.Debug : LogLevel.Off }));
-                }}
-              />
-            }
-          />
-          <List.Item
-            title="View Logs"
-            description="View previously collected debug logs"
-            onPress={() => {
-              navigation.navigate("DebugLogs");
-            }}
-          />
-        </List.Section>
+        {!C.genericMode && (
+          <List.Section>
+            <List.Subheader>Debugging</List.Subheader>
+            <List.Item
+              title="Enable Logging"
+              description={(settings.logLevel === LogLevel.Off) ? "Click to enable debug logging" : "Click to disable debug logging"}
+              accessible={false}
+              right={(props) =>
+                <Switch
+                  {...props}
+                  color={theme.colors.accent}
+                  value={settings.logLevel !== LogLevel.Off}
+                  onValueChange={(value) => {
+                    dispatch(setSettings({ logLevel: (value) ? LogLevel.Debug : LogLevel.Off }));
+                  }}
+                />
+              }
+            />
+            <List.Item
+              title="View Logs"
+              description="View previously collected debug logs"
+              onPress={() => {
+                navigation.navigate("DebugLogs");
+              }}
+            />
+          </List.Section>
+        )}
       </ScrollView>
 
       <ChangePasswordDialog visible={showChangePasswordDialog} onDismiss={() => setShowChangePasswordDialog(false)} />
