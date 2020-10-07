@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as Etebase from "etebase";
 import { View, ViewProps, KeyboardAvoidingView } from "react-native";
-import { Appbar, Paragraph } from "react-native-paper";
+import { Appbar, Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -284,15 +284,17 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, changed 
 
 interface TextEditorPropsType extends ViewProps {
   content: string;
-  setContent: (value: string) => void,
+  setContent: (value: string) => void;
 }
 
 function TextEditor(props: TextEditorPropsType) {
   const { content, setContent } = props;
+  const theme = useTheme();
+
   return (
     <KeyboardAvoidingView
       behavior="height"
-      style={props.style}
+      style={[{ backgroundColor: theme.colors.background }, props.style]}
     >
       <RawTextInput
         textAlignVertical="top"
