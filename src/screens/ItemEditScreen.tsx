@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import { View } from "react-native";
+import { View, ViewProps, KeyboardAvoidingView } from "react-native";
 import { Appbar, Paragraph } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
@@ -173,22 +173,19 @@ export default function ItemEditScreen(props: PropsType) {
 
   return (
     <>
-      <ScrollView keyboardAware contentContainerStyle={{ flexGrow: 1, padding: 10 }} keyboardDismissMode="on-drag">
-        {viewMode ? (
+      {viewMode ? (
+        <ScrollView keyboardAware contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
           <Markdown
             content={content}
           />
-        ) : (
-          <RawTextInput
-            multiline
-            textAlignVertical="top"
-            scrollEnabled={false}
-            style={{ flexGrow: 1, padding: 0, backgroundColor: "transparent" }}
-            onChangeText={setContent}
-            value={content}
-          />
-        )}
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        <TextEditor
+          style={{ flexGrow: 1, paddingHorizontal: 10 }}
+          setContent={setContent}
+          content={content}
+        />
+      )}
       <NoteEditDialog
         key={noteEditDialogShow.toString()}
         visible={noteEditDialogShow}
@@ -282,5 +279,29 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, changed 
         />
       </Menu>
     </View>
+  );
+}
+
+interface TextEditorPropsType extends ViewProps {
+  content: string;
+  setContent: (value: string) => void,
+}
+
+function TextEditor(props: TextEditorPropsType) {
+  const { content, setContent } = props;
+  return (
+    <KeyboardAvoidingView
+      behavior="height"
+      style={props.style}
+    >
+      <RawTextInput
+        textAlignVertical="top"
+        multiline
+        scrollEnabled
+        style={{ backgroundColor: "transparent" }}
+        onChangeText={setContent}
+        value={content}
+      />
+    </KeyboardAvoidingView>
   );
 }
