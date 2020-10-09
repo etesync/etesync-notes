@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { TextInput as NativeTextInput } from "react-native";
+import { TextInput as NativeTextInput, Linking } from "react-native";
 import { List, HelperText, Switch, useTheme } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -159,8 +159,16 @@ const SettingsScreen = function _SettingsScreen() {
             <List.Subheader>Account</List.Subheader>
             {!C.genericMode &&
               <List.Item
-                title="Account Dashboard (TBD)"
+                title="Account Dashboard"
                 description="Change your payment info, plan and other account settings"
+                onPress={async () => {
+                  try {
+                    const url = await etebase!.getDashboardUrl();
+                    Linking.openURL(url);
+                  } catch (e) {
+                    dispatch(pushMessage({ message: e.message, severity: "error" }));
+                  }
+                }}
               />
             }
             <List.Item
