@@ -20,7 +20,7 @@ interface FormErrors {
 
 
 function titleAccessor(col: CachedCollection) {
-  return col.meta.name;
+  return col.meta.name!;
 }
 
 interface PropsType {

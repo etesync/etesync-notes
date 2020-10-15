@@ -8,7 +8,7 @@ import AsyncStorage from "../AsyncStorage";
 import { NetInfoStateType } from "@react-native-community/netinfo";
 
 import { combineReducers } from "redux";
-import { persistReducer, createTransform } from "redux-persist";
+import { persistReducer, createTransform, createMigrate } from "redux-persist";
 
 import { List, Map as ImmutableMap } from "immutable";
 
@@ -109,11 +109,24 @@ const cacheDeserialize = (state: any, key: string | number) => {
   return state;
 };
 
+const cacheMigrations = {
+  1: (state: any) => {
+    const collections = (state.collections as CachedCollectionsData).map((x) => {
+      return { ...x, collectionType: x.meta.type! };
+    });
+    return {
+      ...state,
+      collections,
+    };
+  },
+};
+
 const cachePersistConfig = {
   key: "cache",
-  version: 0,
+  version: 1,
   storage: AsyncStorage,
   transforms: [createTransform(cacheSerialize, cacheDeserialize)] as any,
+  migrate: createMigrate(cacheMigrations, { debug: false }),
 };
 
 const reducers = combineReducers({

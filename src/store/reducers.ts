@@ -30,7 +30,7 @@ export type SyncItemsData = ImmutableMap<string, ImmutableMap<string, true>>;
 export type CachedItem = { cache: Uint8Array, meta: Etebase.ItemMetadata, isDeleted: boolean };
 export type CachedItems = ImmutableMap<string, CachedItem>;
 export type CachedItemsData = ImmutableMap<string, CachedItems>;
-export type CachedCollection = { cache: Uint8Array, meta: Etebase.CollectionMetadata };
+export type CachedCollection = { cache: Uint8Array, meta: Etebase.ItemMetadata, collectionType: string };
 export type CachedCollectionsData = ImmutableMap<string, CachedCollection>;
 
 export type SyncGeneralData = {

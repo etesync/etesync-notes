@@ -14,7 +14,7 @@
     "@react-navigation/drawer": "^5.9.1",
     "@react-navigation/native": "^5.7.4",
     "@react-navigation/stack": "^5.9.1",
-    "etebase": "^0.14.0",
+    "etebase": "^0.20.0",
     "expo-background-fetch": "^8.5.0",
     "expo-font": "^8.3.0",
     "expo-splash-screen": "^0.6.1",
