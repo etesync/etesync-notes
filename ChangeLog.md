@@ -1,6 +1,9 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.4.0
+* Update etebase dep - improves support for self-hosting + new collection type changes
+
 ## Version 1.3.1
 * Improve look and feel
 * Make it possible to delete notes
