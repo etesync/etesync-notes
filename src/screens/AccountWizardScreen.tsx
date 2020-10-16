@@ -93,11 +93,11 @@ export default function AccountWizardScreen() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    setLoading(true);
     setSyncError(undefined);
     if (!etebase) {
       return;
     }
+    setLoading(true);
     dispatch(performSync((async () => {
       const syncManager = SyncManager.getManager(etebase!);
       const sync = syncManager.sync(true);
@@ -117,6 +117,12 @@ export default function AccountWizardScreen() {
       return true;
     })()));
   }, [etebase, tryCount]);
+
+  React.useEffect(() => {
+    if (etebase === null) {
+      navigation.navigate("LoginScreen");
+    }
+  }, [etebase]);
 
   React.useEffect(() => {
     if (!syncError && !syncGate && ranWizard) {
