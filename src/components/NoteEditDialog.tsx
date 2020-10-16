@@ -70,6 +70,7 @@ export default function NoteEditDialog(props: PropsType) {
       visible={props.visible}
       onOk={onOk}
       onCancel={props.onDismiss}
+      isEditingHack
     >
       <TextInput
         autoFocus

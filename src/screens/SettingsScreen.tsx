@@ -98,6 +98,7 @@ function ChangePasswordDialog(props: DialogPropsType) {
       visible={props.visible}
       onOk={onOk}
       onCancel={props.onDismiss}
+      isEditingHack
     >
       <>
         <PasswordInput

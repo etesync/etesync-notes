@@ -18,6 +18,8 @@ interface PropsType {
   labelOk?: string;
   loading?: boolean;
   loadingText?: string;
+  // XXX: Hack to allow editing in dialogs
+  isEditingHack?: boolean;
 }
 
 export default React.memo(function ConfirmationDialog(props: PropsType) {
@@ -78,42 +80,47 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
     </>
   );
 
+  const FakePortal = (props.isEditingHack) ? React.Fragment : Portal;
+
   if (Platform.OS === "web") {
     return (
-      <Dialog
+      <FakePortal>
+        <Dialog
+          visible={props.visible}
+          onDismiss={props.onCancel}
+          dismissable={props.dismissable && !loading}
+        >
+          <Dialog.Title>
+            {props.title}
+          </Dialog.Title>
+          <Dialog.Content>
+            {content}
+          </Dialog.Content>
+          <Dialog.Actions>
+            {buttons}
+          </Dialog.Actions>
+        </Dialog>
+      </FakePortal>
+    );
+  }
+
+  return (
+    <FakePortal>
+      <Modal
         visible={props.visible}
         onDismiss={props.onCancel}
         dismissable={props.dismissable && !loading}
       >
-        <Dialog.Title>
-          {props.title}
-        </Dialog.Title>
-        <Dialog.Content>
-          {content}
-        </Dialog.Content>
-        <Dialog.Actions>
-          {buttons}
-        </Dialog.Actions>
-      </Dialog>
-    );
-  }
-
-  // XXX It's not in a portal because of #25
-  return (
-    <Modal
-      visible={props.visible}
-      onDismiss={props.onCancel}
-      dismissable={props.dismissable && !loading}
-    >
-      <Card accessible={false}>
-        <Card.Title title={props.title} />
-        <Card.Content>
-          {content}
-        </Card.Content>
-        <Card.Actions style={{ justifyContent: "flex-end" }}>
-          {buttons}
-        </Card.Actions>
-      </Card>
-    </Modal>
+        <Card accessible={false}>
+          <Card.Title title={props.title} />
+          <Card.Content>
+            {content}
+          </Card.Content>
+          <Card.Actions style={{ justifyContent: "flex-end" }}>
+            {buttons}
+          </Card.Actions>
+        </Card>
+      </Modal>
+    </FakePortal>
   );
 });
