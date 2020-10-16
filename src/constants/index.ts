@@ -6,6 +6,7 @@ import { Platform } from "react-native";
 export const appName = "EteSync Notes";
 export const homePage = "https://www.etesync.com/";
 export const faq = homePage + "faq/";
+export const pricing = homePage + "pricing/";
 export const sourceCode = "https://github.com/etesync/etesync-notes";
 export const reportIssue = sourceCode + "/issues";
 export const contactEmail = "contact-notes@etesync.com";

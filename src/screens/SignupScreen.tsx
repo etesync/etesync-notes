@@ -5,7 +5,7 @@ import * as React from "react";
 
 import * as Etebase from "etebase";
 
-import { View, TextInput as NativeTextInput } from "react-native";
+import { View, TextInput as NativeTextInput, Linking } from "react-native";
 import { Switch, Button, Text, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
 
 import { Headline } from "../widgets/Typography";
@@ -132,6 +132,14 @@ export default React.memo(function SignupScreen() {
         <View style={{ alignItems: "center", flexDirection: "row" }}>
           <Text> or </Text><LinkButton onPress={() => navigation.navigate("LoginScreen")}>log in to your account</LinkButton>
         </View>
+
+        <Alert
+          style={{ marginTop: 10 }}
+          severity="info"
+          onPress={() => Linking.openURL(C.pricing)}
+        >
+          You are signing up for a free trial. Click here for pricing information.
+        </Alert>
         <View>
           <TextInput
             autoCapitalize="none"
