@@ -5,6 +5,7 @@ import * as React from "react";
 import { TextInput as NativeTextInput, Linking } from "react-native";
 import { List, HelperText, Switch, useTheme } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import * as Updates from "expo-updates";
 
 import * as Etebase from "etebase";
 
@@ -214,6 +215,24 @@ const SettingsScreen = function _SettingsScreen() {
               description="View previously collected debug logs"
               onPress={() => {
                 navigation.navigate("DebugLogs");
+              }}
+            />
+            <List.Item
+              title="Download Updates"
+              description="Download and run app updates"
+              onPress={async () => {
+                try {
+                  const check = await Updates.checkForUpdateAsync();
+                  if (!check.isAvailable) {
+                    dispatch(pushMessage({ message: "Dowloading update", severity: "info" }));
+                    await Updates.fetchUpdateAsync();
+                    await Updates.reloadAsync();
+                  } else {
+                    dispatch(pushMessage({ message: "Already on most recent version", severity: "info" }));
+                  }
+                } catch (e) {
+                  dispatch(pushMessage({ message: `Error: ${e.message}`, severity: "error" }));
+                }
               }}
             />
           </List.Section>
