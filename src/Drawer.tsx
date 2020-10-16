@@ -103,20 +103,20 @@ export default function Drawer(props: PropsType) {
 
   return (
     <>
-      <SafeAreaView style={{ backgroundColor: "#424242" }}>
-        <View style={{ height: StatusBar.currentHeight }} />
-        <Container style={{ backgroundColor: "transparent" }}>
-          <Image
-            style={{ width: 48, height: 48, marginBottom: 15 }}
-            source={require("./images/icon.png")}
-          />
-          <Subheading style={{ color: "white" }}>{C.appName}</Subheading>
-          {etebase &&
-            <Text style={{ color: "white" }}>{etebase.user.username}</Text>
-          }
-        </Container>
-      </SafeAreaView>
       <ScrollView style={{ flex: 1 }}>
+        <SafeAreaView style={{ backgroundColor: "#424242" }}>
+          <View style={{ height: StatusBar.currentHeight }} />
+          <Container style={{ backgroundColor: "transparent" }}>
+            <Image
+              style={{ width: 48, height: 48, marginBottom: 15 }}
+              source={require("./images/icon.png")}
+            />
+            <Subheading style={{ color: "white" }}>{C.appName}</Subheading>
+            {etebase &&
+              <Text style={{ color: "white" }}>{etebase.user.username}</Text>
+            }
+          </Container>
+        </SafeAreaView>
         {loggedIn && (
           <>
             <List.Item
