@@ -11,7 +11,7 @@ export default function RawTextInput(props_: React.ComponentProps<typeof TextInp
 
   return (
     <TextInput
-      style={[{ color: theme.colors.text, backgroundColor: theme.colors.surface }, style]}
+      style={[{ color: theme.colors.text, backgroundColor: theme.colors.background }, style]}
       {...props}
     />
   );

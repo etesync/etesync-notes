@@ -297,7 +297,7 @@ function TextEditor(props: TextEditorPropsType) {
         textAlignVertical="top"
         multiline
         scrollEnabled
-        style={{ flexGrow: 1, backgroundColor: "transparent" }}
+        style={{ flexGrow: 1 }}
         onChangeText={setContent}
         value={content}
       />
