@@ -292,10 +292,7 @@ function TextEditor(props: TextEditorPropsType) {
   const theme = useTheme();
 
   return (
-    <KeyboardAvoidingView
-      behavior="height"
-      style={[{ backgroundColor: theme.colors.background }, props.style]}
-    >
+    <>
       <RawTextInput
         textAlignVertical="top"
         multiline
@@ -304,6 +301,10 @@ function TextEditor(props: TextEditorPropsType) {
         onChangeText={setContent}
         value={content}
       />
-    </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={[{ backgroundColor: theme.colors.background }, props.style]}
+      />
+    </>
   );
 }
