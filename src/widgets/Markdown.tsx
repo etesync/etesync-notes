@@ -18,7 +18,7 @@ const Markdown = React.memo(function _Markdown(props: { content: string }) {
         link: { color: theme.colors.accent, textDecorationLine: "underline" },
         hr: { backgroundColor: theme.colors.placeholder },
         blockquote: { backgroundColor: blockBackgroundColor },
-        code_inline: { backgroundColor: blockBackgroundColor },
+        code_inline: { backgroundColor: blockBackgroundColor, padding: 0 },
         code_block: { backgroundColor: blockBackgroundColor },
         fence: { backgroundColor: blockBackgroundColor },
       }}
