@@ -3,16 +3,17 @@
 
 import * as React from "react";
 import { View, ViewProps, StyleSheet } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text, useTheme, TouchableRipple } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type PropsType = ViewProps & {
   severity: "error" | "warning" | "info" | "success";
+  onPress?: () => void;
 };
 
 export default function Alert(props_: React.PropsWithChildren<PropsType>) {
   const theme = useTheme();
-  const { children, style, severity, ...props } = props_;
+  const { children, style, severity, onPress, ...props } = props_;
   const icons = {
     error: "information-outline",
     warning: "alert-outline",
@@ -24,12 +25,14 @@ export default function Alert(props_: React.PropsWithChildren<PropsType>) {
   return (
     <View style={[styles.root, stylesColor[severity], style]}>
       <Icon name={icons[severity]} style={[styles.icon, stylesIcon[severity]]} size={24} />
-      <Text
-        style={[styles.text, stylesColor[severity]]}
-        {...props}
-      >
-        {children}
-      </Text>
+      <TouchableRipple style={styles.touchable} onPress={onPress}>
+        <Text
+          style={[styles.text, stylesColor[severity]]}
+          {...props}
+        >
+          {children}
+        </Text>
+      </TouchableRipple>
     </View>
   );
 }
@@ -44,6 +47,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 12,
+  },
+  touchable: {
+    flex: 1,
   },
   text: {
     flex: 1,
