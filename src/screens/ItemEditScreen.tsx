@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as Etebase from "etebase";
-import { View, ViewProps, KeyboardAvoidingView } from "react-native";
+import { View, ViewProps, KeyboardAvoidingView, Platform } from "react-native";
 import { Appbar, Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { useDebouncedCallback } from "use-debounce";
@@ -303,7 +303,7 @@ function TextEditor(props: TextEditorPropsType) {
       />
       <KeyboardAvoidingView
         behavior="padding"
-        style={[{ backgroundColor: theme.colors.background }, props.style]}
+        style={[{ backgroundColor: theme.colors.background }, props.style, (Platform.OS === "web") && { display: "none" }]}
       />
     </>
   );
