@@ -3,7 +3,6 @@
     "name": "EteSync Notes",
     "slug": "etesync_notes",
     "version": "1.4.0",
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
