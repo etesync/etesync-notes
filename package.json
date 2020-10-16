@@ -32,7 +32,7 @@
     "react-native-gesture-handler": "~1.7.0",
     "react-native-get-random-values": "^1.5.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.2",
-    "react-native-markdown-display": "^6.1.6",
+    "react-native-markdown-display": "^7.0.0-alpha",
     "react-native-paper": "^4.2.0",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
