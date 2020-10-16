@@ -222,7 +222,7 @@ function RightAction(props: { colUid: string }) {
           await collection.delete();
           await dispatch(collectionUpload(colMgr, collection));
           dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
-          navigation.navigate("home");
+          navigation.navigate("home", {});
           // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
           const syncManager = SyncManager.getManager(etebase);
           dispatch(performSync(syncManager.sync())); // not awaiting on puprose

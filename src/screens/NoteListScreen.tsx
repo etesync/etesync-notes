@@ -80,10 +80,12 @@ export default function NoteListScreen(props: PropsType) {
   const syncGate = useSyncGate();
   const theme = useTheme();
 
-  const colUid = props.route.params?.colUid;
+  const colUid_ = props.route.params?.colUid;
+  const cacheCollection = (colUid_) ? cacheCollections.get(colUid_) : undefined;
+  // We only want to set colUid if a collection actually exists
+  const colUid = (cacheCollection) ? colUid_ : undefined;
 
   React.useEffect(() => {
-    const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
 
     navigation.setOptions({
       title: cacheCollection?.meta.name ?? "All Notes",
