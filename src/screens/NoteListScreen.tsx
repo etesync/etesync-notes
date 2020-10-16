@@ -5,7 +5,7 @@ import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View, Platform } from "react-native";
 import { Appbar, List, useTheme, FAB } from "react-native-paper";
-import { useNavigation, RouteProp } from "@react-navigation/native";
+import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -214,7 +214,7 @@ function RightAction(props: RightActionPropsType) {
     await sync;
   }
 
-  React.useEffect(() => {
+  useFocusEffect(React.useCallback(() => {
     if (Platform.OS !== "web") {
       return () => true;
     }
@@ -228,7 +228,7 @@ function RightAction(props: RightActionPropsType) {
     const interval = 5 * 60 * 1000;
     const id = setInterval(autoRefresh, interval);
     return () => clearInterval(id);
-  }, [etebase]);
+  }, [etebase]));
 
   return (
     <View style={{ flexDirection: "row" }}>
