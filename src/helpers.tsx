@@ -48,7 +48,7 @@ export function startTask<T = any>(func: () => Promise<T> | T, delay = 0): Promi
   });
 }
 
-function isFunction(f: any): f is Function {
+function isFunction(f: any): f is Function { // eslint-disable-line @typescript-eslint/ban-types
   return f instanceof Function;
 }
 
