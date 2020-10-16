@@ -80,43 +80,40 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
 
   if (Platform.OS === "web") {
     return (
-      <Portal>
-        <Dialog
-          visible={props.visible}
-          onDismiss={props.onCancel}
-          dismissable={props.dismissable && !loading}
-        >
-          <Dialog.Title>
-            {props.title}
-          </Dialog.Title>
-          <Dialog.Content>
-            {content}
-          </Dialog.Content>
-          <Dialog.Actions>
-            {buttons}
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-    );
-  }
-
-  return (
-    <Portal>
-      <Modal
+      <Dialog
         visible={props.visible}
         onDismiss={props.onCancel}
         dismissable={props.dismissable && !loading}
       >
-        <Card accessible={false}>
-          <Card.Title title={props.title} />
-          <Card.Content>
-            {content}
-          </Card.Content>
-          <Card.Actions style={{ justifyContent: "flex-end" }}>
-            {buttons}
-          </Card.Actions>
-        </Card>
-      </Modal>
-    </Portal>
+        <Dialog.Title>
+          {props.title}
+        </Dialog.Title>
+        <Dialog.Content>
+          {content}
+        </Dialog.Content>
+        <Dialog.Actions>
+          {buttons}
+        </Dialog.Actions>
+      </Dialog>
+    );
+  }
+
+  // XXX It's not in a portal because of #25
+  return (
+    <Modal
+      visible={props.visible}
+      onDismiss={props.onCancel}
+      dismissable={props.dismissable && !loading}
+    >
+      <Card accessible={false}>
+        <Card.Title title={props.title} />
+        <Card.Content>
+          {content}
+        </Card.Content>
+        <Card.Actions style={{ justifyContent: "flex-end" }}>
+          {buttons}
+        </Card.Actions>
+      </Card>
+    </Modal>
   );
 });
