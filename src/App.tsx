@@ -22,6 +22,9 @@ enableScreens();
 const DrawerNavigation = createDrawerNavigator();
 
 function InnerApp() {
+  // XXX Workaround for react-navigation #7561 (flashing drawer)
+  const [initRender, setInitRender] = React.useState(true);
+  React.useEffect(() => setInitRender(false), []);
   const colorScheme = useColorScheme();
 
   const baseTheme = (colorScheme === "dark") ? DarkTheme : DefaultTheme;
@@ -41,7 +44,10 @@ function InnerApp() {
       <ErrorBoundary>
         <SettingsGate>
           <NavigationContainer>
-            <DrawerNavigation.Navigator drawerContent={({ navigation }) => <Drawer navigation={navigation} />}>
+            <DrawerNavigation.Navigator
+              drawerContent={({ navigation }) => <Drawer navigation={navigation} />}
+              drawerStyle={initRender ? { width: 0 } : null}
+            >
               <DrawerNavigation.Screen name="Root" component={RootNavigator} />
             </DrawerNavigation.Navigator>
           </NavigationContainer>
