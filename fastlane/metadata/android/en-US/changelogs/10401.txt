@@ -1,0 +1,10 @@
+* Orientation: don't lock the screen orientation to portrait.
+* Improve the drawer layout in landscape mode
+* Fix text input issues in note name creation/editing on Android
+* Autorefresh: fix to only happen in the main notes list screen.
+* Note editing: fix scrolling when keyboard is open to not hide content.
+* Markdown display: fix inline code in browsers.
+* Logout: fix navigation to login screen on logout.
+* Collection deletion: fix empty collection list after removing collections.
+* Signup page: add a notice about signing up for trial.
+* Fix flashing Drawer on launch on Android

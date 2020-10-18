@@ -1,6 +1,18 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.4.1
+* Orientation: don't lock the screen orientation to portrait.
+* Improve the drawer layout in landscape mode
+* Fix text input issues in note name creation/editing on Android
+* Autorefresh: fix to only happen in the main notes list screen.
+* Note editing: fix scrolling when keyboard is open to not hide content.
+* Markdown display: fix inline code in browsers.
+* Logout: fix navigation to login screen on logout.
+* Collection deletion: fix empty collection list after removing collections.
+* Signup page: add a notice about signing up for trial.
+* Fix flashing Drawer on launch on Android
+
 ## Version 1.4.0
 * Update etebase dep - improves support for self-hosting + new collection type changes
 
