@@ -11,6 +11,9 @@ Secure, end-to-end encrypted, and privacy respecting notes application.
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.etesync.notes)
+[<img src="https://www.etesync.com/static/img/app-store-badge.c31e7b1c6a83.png"
+     alt="Download on the App Store"
+     height="80">](https://apps.apple.com/us/app/etesync-notes/id1533806351)
 
 ![GitHub tag](https://img.shields.io/github/tag/etesync/etesync-notes.svg)
 [![Chat on freenode](https://img.shields.io/badge/irc.freenode.net-%23EteSync-blue.svg)](https://webchat.freenode.net/?channels=#etesync)
