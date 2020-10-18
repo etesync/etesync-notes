@@ -134,8 +134,8 @@ android {
         applicationId 'com.etesync.notes'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10400
-        versionName "1.4.0"
+        versionCode 10401
+        versionName "1.4.1"
     }
     splits {
         abi {
