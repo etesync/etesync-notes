@@ -67,6 +67,7 @@
     "babel-preset-expo": "^8.3.0",
     "eslint": "^7.9.0",
     "eslint-plugin-react": "^7.21.2",
+    "expo": "^39.0.3",
     "jest": "~25.2.6",
     "license-checker": "^25.0.1",
     "react-test-renderer": "~16.13.1",
