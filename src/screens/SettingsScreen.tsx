@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { TextInput as NativeTextInput, Linking } from "react-native";
-import { List, HelperText, Switch, useTheme } from "react-native-paper";
+import { List, HelperText, Switch, useTheme, Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import * as Updates from "expo-updates";
 
@@ -24,6 +24,7 @@ import * as C from "../constants";
 import { startTask, enforcePasswordRules } from "../helpers";
 import { useNavigation } from "@react-navigation/native";
 import Alert from "../widgets/Alert";
+import Select from "../widgets/Select";
 
 interface DialogPropsType {
   visible: boolean;
@@ -142,6 +143,44 @@ function ChangePasswordDialog(props: DialogPropsType) {
   );
 }
 
+function DarkModePreferenceSelector() {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const [selectDarkModeOpen, setDarkModePreferenceOpen] = React.useState(false);
+  const darkModePreference = useSelector((state: StoreState) => state.settings.theme);
+  const prettyName = {
+    auto: "Auto",
+    dark: "Dark",
+    light: "Light",
+  };
+
+  return (
+    <List.Item
+      title="Theme"
+      description="Set the app's theme to dark, light or auto"
+      right={(props) =>
+        <Select
+          {...props}
+          visible={selectDarkModeOpen}
+          onDismiss={() => setDarkModePreferenceOpen(false)}
+          options={["auto", "dark", "light"]}
+          titleAccossor={(x) => prettyName[x]}
+          onChange={(selected) => {
+            setDarkModePreferenceOpen(false);
+            if (selected === darkModePreference) {
+              return;
+            }
+            dispatch(setSettings({ theme: selected as typeof darkModePreference }));
+          }}
+          anchor={(
+            <Button mode="contained" color={theme.colors.accent} onPress={() => setDarkModePreferenceOpen(true)}>{prettyName[darkModePreference]}</Button>
+          )}
+        />
+      }
+    />
+  );
+}
+
 const SettingsScreen = function _SettingsScreen() {
   const etebase = useCredentials();
   const navigation = useNavigation();
@@ -183,6 +222,7 @@ const SettingsScreen = function _SettingsScreen() {
 
         <List.Section>
           <List.Subheader>General</List.Subheader>
+          <DarkModePreferenceSelector />
           <List.Item
             title="About"
             description="About and open source licenses"

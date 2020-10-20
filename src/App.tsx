@@ -17,6 +17,8 @@ import SettingsGate from "./SettingsGate";
 
 import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
+import { useSelector } from "react-redux";
+import { StoreState } from "./store";
 enableScreens();
 
 const DrawerNavigation = createDrawerNavigator();
@@ -25,8 +27,9 @@ function InnerApp() {
   // XXX Workaround for react-navigation #7561 (flashing drawer)
   const [initRender, setInitRender] = React.useState(true);
   React.useEffect(() => setInitRender(false), []);
-  const colorScheme = useColorScheme();
-
+  const colorScheme_ = useColorScheme();
+  const darkModePreference = useSelector((state: StoreState) => state.settings.theme);
+  const colorScheme = (darkModePreference === "auto") ? colorScheme_ : darkModePreference;
   const baseTheme = (colorScheme === "dark") ? DarkTheme : DefaultTheme;
 
   const theme: typeof DefaultTheme = {
