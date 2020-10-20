@@ -1,0 +1,2 @@
+* Make it possible to set dark mode from settings
+* Android: fix update checking

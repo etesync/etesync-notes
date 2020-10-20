@@ -1,6 +1,10 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.4.2
+* Make it possible to set dark mode from settings
+* Android: fix update checking
+
 ## Version 1.4.1
 * Orientation: don't lock the screen orientation to portrait.
 * Improve the drawer layout in landscape mode
