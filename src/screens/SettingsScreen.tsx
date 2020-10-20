@@ -263,7 +263,7 @@ const SettingsScreen = function _SettingsScreen() {
               onPress={async () => {
                 try {
                   const check = await Updates.checkForUpdateAsync();
-                  if (!check.isAvailable) {
+                  if (check.isAvailable) {
                     dispatch(pushMessage({ message: "Dowloading update", severity: "info" }));
                     await Updates.fetchUpdateAsync();
                     await Updates.reloadAsync();
