@@ -3,6 +3,8 @@ set -e
 yarn lint --max-warnings 0
 yarn tsc
 
+# XXX Hack so that we have access to the expo utilities
+yarn add expo
 
 SSH_HOST=notes.etesync.com
 SSH_PORT=22
@@ -35,3 +37,5 @@ APP_VERSION=1
 rm -rf "$OUTPUTDIR"
 yarn run expo export --dump-sourcemap --public-url ${PUBLIC_URL}/${DEPLOY_PATH}/${APP_VERSION}
 rsync -e "ssh -p ${SSH_PORT}" -P --delete -rvzc ${OUTPUTDIR}/ ${SSH_USER}@${SSH_HOST}:${SSH_TARGET_DIR}/${DEPLOY_PATH}/${APP_VERSION}
+
+yarn remove expo
