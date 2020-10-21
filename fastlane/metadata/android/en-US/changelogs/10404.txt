@@ -1,0 +1,1 @@
+* Login: add an error when trying to use EteSync 1.0 accounts with EteSync Notes

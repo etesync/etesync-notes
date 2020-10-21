@@ -1,6 +1,9 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.4.4
+* Login: add an error when trying to use EteSync 1.0 accounts with EteSync Notes
+
 ## Version 1.4.3
 * Remove mistakingly added extra permissions (due to Expo being added as a dev dep)
 
