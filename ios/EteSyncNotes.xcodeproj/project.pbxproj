@@ -329,7 +329,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EteSyncNotes/notes.entitlements;
-				CURRENT_PROJECT_VERSION = 1.4.103;
+				CURRENT_PROJECT_VERSION = 1.4.104;
 				DEVELOPMENT_TEAM = Q83BM862S8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -339,7 +339,7 @@
 				INFOPLIST_FILE = EteSyncNotes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.4.3;
+				MARKETING_VERSION = 1.4.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -361,12 +361,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = EteSyncNotes/notes.entitlements;
-				CURRENT_PROJECT_VERSION = 1.4.103;
+				CURRENT_PROJECT_VERSION = 1.4.104;
 				DEVELOPMENT_TEAM = Q83BM862S8;
 				INFOPLIST_FILE = EteSyncNotes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.4.3;
+				MARKETING_VERSION = 1.4.4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
