@@ -45,6 +45,8 @@ export default function LoginForm(props: PropsType) {
     const fieldRequired = "This field is required!";
     if (!username) {
       errors.username = fieldRequired;
+    } else if (username.includes("@")) {
+      errors.username = "EteSync 2.0 account required (this looks like a 1.0 account).";
     }
     if (!password) {
       errors.password = fieldRequired;
