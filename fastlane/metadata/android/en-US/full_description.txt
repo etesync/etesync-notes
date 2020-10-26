@@ -1,5 +1,7 @@
 Secure, end-to-end encrypted, and privacy respecting note taking app.
 
+For syncing your contacts, calendars and tasks, please use the EteSync Sync app.
+
 In order to use this application you need to have an account with EteSync (paid hosting), or run your own instance (free and open source). Check out https://www.etesync.com/ for more information.
 
 
