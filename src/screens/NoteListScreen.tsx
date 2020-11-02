@@ -217,6 +217,12 @@ function RightAction(props: RightActionPropsType) {
   }
 
   useFocusEffect(React.useCallback(() => {
+    if (!etebase) {
+      return;
+    }
+
+    refresh();
+
     if (Platform.OS !== "web") {
       return () => true;
     }
