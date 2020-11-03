@@ -71,7 +71,7 @@ export class SyncManager {
     while (!done) {
       const collections = await colMgr.list(this.COLLECTION_TYPES, { stoken, limit });
       for (const col of collections.data) {
-        const collectionType = await col.getCollectionType();
+        const collectionType = col.getCollectionType();
         if (this.COLLECTION_TYPES.includes(collectionType)) {
           if (col.isDeleted) {
             store.dispatch(unsetCacheCollection(colMgr, col.uid));

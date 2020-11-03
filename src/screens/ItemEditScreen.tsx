@@ -103,9 +103,9 @@ export default function ItemEditScreen(props: PropsType) {
       const itemMgr = colMgr.getItemManager(col);
       const item = itemMgr.cacheLoad(cacheItem.cache);
 
-      const meta = await item.getMeta();
+      const meta = item.getMeta();
       meta.mtime = (new Date()).getTime();
-      await item.setMeta(meta);
+      item.setMeta(meta);
       await item.setContent(content);
 
       await dispatch(setCacheItem(col, itemMgr, item));
@@ -197,10 +197,10 @@ export default function ItemEditScreen(props: PropsType) {
           const itemMgr = colMgr.getItemManager(col);
           const item = itemMgr.cacheLoad(cacheItem.cache);
 
-          const meta = await item.getMeta();
+          const meta = item.getMeta();
           meta.name = name;
           meta.mtime = (new Date()).getTime();
-          await item.setMeta(meta);
+          item.setMeta(meta);
 
           await dispatch(setCacheItem(col, itemMgr, item));
           setChanged(true);
@@ -218,10 +218,10 @@ export default function ItemEditScreen(props: PropsType) {
           const itemMgr = colMgr.getItemManager(col);
           const item = itemMgr.cacheLoad(cacheItem.cache);
 
-          const meta = await item.getMeta();
+          const meta = item.getMeta();
           meta.mtime = (new Date()).getTime();
-          await item.setMeta(meta);
-          await item.delete(true);
+          item.setMeta(meta);
+          item.delete(true);
 
           await dispatch(setCacheItem(col, itemMgr, item));
           navigation.goBack();
