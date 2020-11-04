@@ -1,6 +1,14 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.5.0
+* Main page: fix the "home" title flashing on launch.
+* LoginForm: make it more clear that people should use usernames, not emails.
+* Allow clear-text traffic (HTTP).
+* Fix automatic sync when apps move to foreground + launch
+* Update etebase dep.
+* Settings: add font size setting.
+
 ## Version 1.4.4
 * Login: add an error when trying to use EteSync 1.0 accounts with EteSync Notes
 

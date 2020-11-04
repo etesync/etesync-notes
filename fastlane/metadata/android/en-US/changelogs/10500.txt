@@ -1,0 +1,6 @@
+* Main page: fix the "home" title flashing on launch.
+* LoginForm: make it more clear that people should use usernames, not emails.
+* Allow clear-text traffic (HTTP).
+* Fix automatic sync when apps move to foreground + launch
+* Update etebase dep.
+* Settings: add font size setting.
