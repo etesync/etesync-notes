@@ -181,6 +181,47 @@ function DarkModePreferenceSelector() {
   );
 }
 
+function FontSizePreferenceSelector() {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const [selectFontSizeOpen, setFontSizePreferenceOpen] = React.useState(false);
+  const fontSizePreference = useSelector((state: StoreState) => state.settings.fontSize);
+  const prettyName = {
+    8: "Extra Small",
+    12: "Small",
+    16: "Medium",
+    20: "Large",
+    24: "Extra Large",
+  };
+
+  return (
+    <List.Item
+      title="Font Size"
+      description="Set the content's font size"
+      right={(props) =>
+        <Select
+          {...props}
+          visible={selectFontSizeOpen}
+          onDismiss={() => setFontSizePreferenceOpen(false)}
+          options={Object.keys(prettyName)}
+          titleAccossor={(x) => prettyName[x]}
+          onChange={(selected_) => {
+            setFontSizePreferenceOpen(false);
+            const selected = (selected_ !== null) ? parseInt(selected_) : null;
+            if (selected === fontSizePreference) {
+              return;
+            }
+            dispatch(setSettings({ fontSize: selected as typeof fontSizePreference }));
+          }}
+          anchor={(
+            <Button mode="contained" color={theme.colors.accent} onPress={() => setFontSizePreferenceOpen(true)}>{fontSizePreference && prettyName[fontSizePreference]}</Button>
+          )}
+        />
+      }
+    />
+  );
+}
+
 const SettingsScreen = function _SettingsScreen() {
   const etebase = useCredentials();
   const navigation = useNavigation();
@@ -223,6 +264,7 @@ const SettingsScreen = function _SettingsScreen() {
         <List.Section>
           <List.Subheader>General</List.Subheader>
           <DarkModePreferenceSelector />
+          <FontSizePreferenceSelector />
           <List.Item
             title="About"
             description="About and open source licenses"

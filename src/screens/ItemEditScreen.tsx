@@ -289,6 +289,7 @@ interface TextEditorPropsType extends ViewProps {
 
 function TextEditor(props: TextEditorPropsType) {
   const { content, setContent } = props;
+  const fontSize = useSelector((state: StoreState) => state.settings.fontSize);
   const theme = useTheme();
 
   return (
@@ -297,7 +298,7 @@ function TextEditor(props: TextEditorPropsType) {
         textAlignVertical="top"
         multiline
         scrollEnabled
-        style={{ flexGrow: 1 }}
+        style={{ flexGrow: 1, fontSize }}
         onChangeText={setContent}
         value={content}
       />

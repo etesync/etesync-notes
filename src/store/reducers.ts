@@ -350,6 +350,7 @@ export interface SettingsType {
   logLevel: LogLevel;
   ranWizrd: boolean;
   theme: "auto" | "dark" | "light";
+  fontSize: number;
   viewSettings: {
     viewMode: boolean;
     filterBy: string | null;
@@ -368,6 +369,7 @@ export const settingsReducer = handleActions(
     logLevel: LogLevel.Off,
     ranWizrd: false,
     theme: "auto",
+    fontSize: 16,
     viewSettings: {
       viewMode: false,
       filterBy: null,
