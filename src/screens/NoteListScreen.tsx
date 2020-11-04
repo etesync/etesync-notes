@@ -218,7 +218,7 @@ function RightAction(props: RightActionPropsType) {
 
   useFocusEffect(React.useCallback(() => {
     if (!etebase) {
-      return;
+      return () => true;
     }
 
     refresh();
