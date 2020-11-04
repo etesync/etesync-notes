@@ -1,4 +1,9 @@
 {
+  "private": true,
+  "name": "etesync-notes",
+  "version": "1.0.0",
+  "description": "Etebase TypeScript API for the web and node",
+  "author": "EteSync",
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
@@ -71,8 +76,5 @@
     "license-checker": "^25.0.1",
     "react-test-renderer": "~16.13.1",
     "typescript": "~3.9.5"
-  },
-  "private": true,
-  "name": "etesync-notes",
-  "version": "1.0.0"
+  }
 }
