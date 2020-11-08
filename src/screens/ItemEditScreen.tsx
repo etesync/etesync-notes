@@ -298,13 +298,13 @@ function TextEditor(props: TextEditorPropsType) {
         textAlignVertical="top"
         multiline
         scrollEnabled
-        style={{ flexGrow: 1, fontSize }}
+        style={[{ flexGrow: 1, fontSize }, props.style]}
         onChangeText={setContent}
         value={content}
       />
       <KeyboardAvoidingView
         behavior="padding"
-        style={[{ backgroundColor: theme.colors.background }, props.style, (Platform.OS === "web") && { display: "none" }]}
+        style={[{ backgroundColor: theme.colors.background }, (Platform.OS === "web") && { display: "none" }]}
       />
     </>
   );
