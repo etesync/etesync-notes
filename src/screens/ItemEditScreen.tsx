@@ -181,7 +181,7 @@ export default function ItemEditScreen(props: PropsType) {
         </ScrollView>
       ) : (
         <TextEditor
-          style={{ flexGrow: 1, paddingHorizontal: 10 }}
+          style={{ flexGrow: 1, padding: 10 }}
           setContent={setContent}
           content={content}
         />
