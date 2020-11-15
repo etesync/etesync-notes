@@ -181,7 +181,8 @@ export default function ItemEditScreen(props: PropsType) {
         </ScrollView>
       ) : (
         <TextEditor
-          style={{ flexGrow: 1, padding: 10 }}
+          style={{ flexGrow: 1 }}
+          contentStyle={{ padding: 10 }}
           setContent={setContent}
           content={content}
         />
@@ -285,6 +286,7 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, changed 
 interface TextEditorPropsType extends ViewProps {
   content: string;
   setContent: (value: string) => void;
+  contentStyle?: ViewProps["style"];
 }
 
 function TextEditor(props: TextEditorPropsType) {
@@ -293,19 +295,19 @@ function TextEditor(props: TextEditorPropsType) {
   const theme = useTheme();
 
   return (
-    <>
+    <KeyboardAvoidingView
+      behavior="padding"
+      enabled={(Platform.OS === "ios")}
+      style={[{ backgroundColor: theme.colors.background }, props.style]}
+    >
       <RawTextInput
         textAlignVertical="top"
         multiline
         scrollEnabled
-        style={[{ flexGrow: 1, fontSize }, props.style]}
+        style={[{ flexGrow: 1, fontSize }, props.contentStyle]}
         onChangeText={setContent}
         value={content}
       />
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={[{ backgroundColor: theme.colors.background }, (Platform.OS === "web") && { display: "none" }]}
-      />
-    </>
+    </KeyboardAvoidingView>
   );
 }
