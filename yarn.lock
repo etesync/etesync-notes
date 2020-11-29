@@ -7489,10 +7489,10 @@ react-native-keyboard-aware-scroll-view@^0.9.2:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-markdown-display@^7.0.0-alpha:
-  version "7.0.0-alpha"
-  resolved "https://registry.yarnpkg.com/react-native-markdown-display/-/react-native-markdown-display-7.0.0-alpha.tgz#48a4cca67c6b78e10174145672af4d5521f3e134"
-  integrity sha512-uFgXjtJi5yU8p7AYXHS4Y7phCpmfc0mtiPz0+c5xl1Y/qvdW0Jf9wrqyKxw85/FDnHA2EQC8GnkDT0RtXME57A==
+react-native-markdown-display@^7.0.0-alpha.2:
+  version "7.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-native-markdown-display/-/react-native-markdown-display-7.0.0-alpha.2.tgz#a48a70d3cb5c510a52ecf7f1509a4a3d14d728aa"
+  integrity sha512-Od1a4wJEcVGwO1bh02sHivsEkKKpu99+ew/OtmVTPRmfT8V3B0aTut7k7ICV0Vej9F4ZjylRHvm28/maYUBeGw==
   dependencies:
     css-to-react-native "^3.0.0"
     markdown-it "^10.0.0"
