@@ -26,7 +26,7 @@ import ExternalLink from "./widgets/ExternalLink";
 import { useCredentials } from "./credentials";
 
 function emailDevelopers(error: Error, logs: string | undefined) {
-  const subject = encodeURIComponent("EteSync iOS: Crash Report");
+  const subject = encodeURIComponent(`${C.appName}: Crash Report`);
   const bodyJson = {
     version: expo.version,
     error: {
