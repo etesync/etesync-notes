@@ -1,0 +1,3 @@
+* Markdown: fix lists not wrapping at the end of screen
+* Fix editing the bottom of notes on iOS
+* Note editing: fix padding issues
