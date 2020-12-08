@@ -3,7 +3,7 @@
   <h1 align="center">EteSync - Encrypt Everything</h1>
 </p>
 
-Secure, end-to-end encrypted, and privacy respecting notes application.
+Secure, end-to-end encrypted, and privacy-respecting notes application.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
@@ -23,3 +23,46 @@ Secure, end-to-end encrypted, and privacy respecting notes application.
 Please see the [EteSync website](https://www.etesync.com) for more information.
 
 EteSync is licensed under the [GPLv3 License](LICENSE).
+
+The App is a react native app that uses the react-native-web library to run in the browser.
+
+# Usage
+
+A live instance is available on https://notes.etesync.com/
+
+# Support Developing the App
+
+Find more information about setting up the development environments here https://reactnative.dev/docs/environment-setup.
+
+## Prerequisites
+
+Before you can build the App from source, you need to make sure you have `yarn` and `node` installed.
+
+- Clone this repository `git clone https://github.com/mrichtsfeld/etesync-notes.git`
+- Enter the newly created folder `cd etesync-notes`
+- Run `yarn` and wait until all of the deps are installed
+
+## Run the Web App
+
+- Install expo `npm install -g expo-cli`
+- Run `yarn web`
+
+## Run the iOS App (OS X only)
+
+Make sure XCode and developer tools are installed.
+
+- Install cocoapods `brew install cocoapods`
+- Enter the root directory of the project and then the iOS directory `cd ios`
+- Run `pod install` and wait for it to complete
+- exit the iOS directory `cd ..`
+- Run `yarn start` in one shell
+- And run `yarn ios` in another shell (this will start the simulator)
+
+## Run the Android App
+
+- Install all tools for your environment https://reactnative.dev/docs/environment-setup
+- Start your virtual device by opening Android studio and in the bottom right corner click "Configure" and select "AVD Manager"
+- If no device for the required build environment is available, create a new one
+- Run `yarn start` in one shell
+- And run `yarn android` in another shell (this will connect the emulator) - the first build may take some time
+- If you run into this issue `Task :app:validateSigningDebug FAILED` download the [debug.keystore](https://raw.githubusercontent.com/facebook/react-native/master/template/android/app/debug.keystore) and copy it into your `android/app` folder
