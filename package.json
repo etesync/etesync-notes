@@ -28,6 +28,7 @@
     "expo-updates": "~0.3.2",
     "immutable": "^4.0.0-rc.12",
     "localforage": "^1.9.0",
+    "markdown-it-task-checkbox": "^1.0.6",
     "moment": "^2.29.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
