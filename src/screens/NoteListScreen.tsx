@@ -170,6 +170,7 @@ export default function NoteListScreen(props: PropsType) {
         onDismiss={() => setNewItemDialogShow(false)}
       />
       <FAB
+        visible={!newItemDialogShow}
         icon="plus"
         accessibilityLabel="New"
         color="white"
