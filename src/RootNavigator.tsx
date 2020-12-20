@@ -101,6 +101,9 @@ export default React.memo(function RootNavigator() {
                 headerLeft: () => (
                   <MenuButton />
                 ),
+                cardStyle: {
+                  maxHeight: "100%",
+                },
               }}
             />
             <Stack.Screen
