@@ -176,6 +176,7 @@ export default function ItemEditScreen(props: PropsType) {
       {viewMode ? (
         <ScrollView keyboardAware contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
           <Markdown
+            setContent={setContent}
             content={content}
           />
         </ScrollView>

@@ -66,10 +66,15 @@ const markdownItTasklist: MarkdownIt.PluginSimple = function (md) {
         if (token.children != null) {
           token.children[0].content = token.children[0].content.slice(3);
         }
-        // list_item ancestor
-        attrSet(tokens[i - 2], "class", "task-list-item");
-        attrSet(tokens[i - 2], "checked", checked ? "true" : "false");
-        // bullet_list ancestor
+        // list_item_open ancestor
+        const li = tokens[i - 2];
+        attrSet(li, "class", "task-list-item");
+        attrSet(li, "checked", checked ? "true" : "false");
+        if (li.map != null) {
+          attrSet(li, "startline", li.map[0].toString());
+          attrSet(li, "endline", li.map[1].toString());
+        }
+        // bullet_list_open ancestor
         attrSet(tokens[parentToken(tokens, i - 2)], "class", "task-list");
       }
     }

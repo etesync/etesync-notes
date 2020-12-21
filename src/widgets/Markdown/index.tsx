@@ -2,41 +2,47 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { Linking, StyleSheet, View } from "react-native";
+import { Linking, StyleSheet, View, ViewProps } from "react-native";
 import { Checkbox, TouchableRipple, useTheme } from "react-native-paper";
 import MarkdownDisplay, { MarkdownIt, renderRules, RenderRules } from "react-native-markdown-display";
 import TaskList from "./markdown-it-tasklist";
+import toggleCheckbox from "./toggle-checkbox";
 
-const rules: RenderRules = {
-  list_item: (node, children, parent, styles, inheritedStyles) => {
-    if (node.attributes.class === "task-list-item") {
-      return (
-        <TouchableRipple key={node.key}>
-          <View style={tasklistStyles.listItem}>
-            <Checkbox.Android
-              status={node.attributes.checked === "true" ? "checked" : "unchecked"}
-              accessible={false}
-            />
-            <View style={styles._VIEW_SAFE_bullet_list_content}>{children}</View>
-          </View>
-        </TouchableRipple>
-      );
-    } else if (renderRules.list_item != null) {
-      return renderRules.list_item(node, children, parent, styles, inheritedStyles);
-    } else {
-      return null;
-    }
-  },
-  textgroup: (node, children, parent, styles, inheritedStyles) => {
-    if (renderRules.textgroup != null) {
-      const hasTasklistParent = parent.findIndex((p) => p.attributes?.class === "task-list-item") !== -1;
-      const style = hasTasklistParent ? { textgroup: tasklistStyles.textgroup } : styles;
+const getRules = (content: string, setContent: (value: string) => void): RenderRules => {
+  return {
+    list_item: (node, children, parent, styles, inheritedStyles) => {
+      if (node.attributes.class === "task-list-item") {
+        return (
+          <TouchableRipple
+            key={node.key}
+            onPress={() => toggleCheckbox(content, node.attributes.startline, node.attributes.endline, setContent)}
+          >
+            <View style={tasklistStyles.listItem}>
+              <Checkbox.Android
+                status={node.attributes.checked === "true" ? "checked" : "unchecked"}
+                accessible={false}
+              />
+              <View style={styles._VIEW_SAFE_bullet_list_content}>{children}</View>
+            </View>
+          </TouchableRipple>
+        );
+      } else if (renderRules.list_item != null) {
+        return renderRules.list_item(node, children, parent, styles, inheritedStyles);
+      } else {
+        return null;
+      }
+    },
+    textgroup: (node, children, parent, styles, inheritedStyles) => {
+      if (renderRules.textgroup != null) {
+        const hasTasklistParent = parent.findIndex((p) => p.attributes?.class === "task-list-item") !== -1;
+        const style = hasTasklistParent ? { textgroup: tasklistStyles.textgroup } : styles;
 
-      return renderRules.textgroup(node, children, parent, style, inheritedStyles);
-    } else {
-      return null;
-    }
-  },
+        return renderRules.textgroup(node, children, parent, style, inheritedStyles);
+      } else {
+        return null;
+      }
+    },
+  };
 };
 
 const tasklistStyles = StyleSheet.create({
@@ -56,10 +62,17 @@ const tasklistStyles = StyleSheet.create({
 
 const markdownItInstance = MarkdownIt().use(TaskList);
 
-const Markdown = React.memo(function _Markdown(props: { content: string }) {
+interface MarkdownPropsType extends ViewProps {
+  content: string;
+  setContent: (value: string) => void;
+}
+
+const Markdown = React.memo(function _Markdown(props: MarkdownPropsType) {
+  const { content, setContent } = props;
   const theme = useTheme();
 
   const blockBackgroundColor = (theme.dark) ? "#555555" : "#cccccc";
+  const rules = getRules(content, setContent);
 
   return (
     <MarkdownDisplay
@@ -80,7 +93,7 @@ const Markdown = React.memo(function _Markdown(props: { content: string }) {
         return true;
       }}
     >
-      {props.content}
+      {content}
     </MarkdownDisplay>
   );
 });
