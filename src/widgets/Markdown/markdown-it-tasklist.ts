@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: © 2016 Revin Guillen
+// SPDX-License-Identifier: MIT
 //
 // Markdown-it plugin to render GitHub-style task lists; see
 //
