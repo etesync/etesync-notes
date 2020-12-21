@@ -3,31 +3,21 @@
 
 import * as React from "react";
 import { Linking, StyleSheet, View } from "react-native";
-import { Checkbox, Text, TouchableRipple, useTheme } from "react-native-paper";
+import { Checkbox, TouchableRipple, useTheme } from "react-native-paper";
 import MarkdownDisplay, { MarkdownIt, renderRules, RenderRules } from "react-native-markdown-display";
-import TaskCheckbox from "markdown-it-task-checkbox";
+import TaskList from "./markdown-it-tasklist";
 
 const rules: RenderRules = {
-  label: (node, _children, _parent, _styles) => 
-    <Text
-      key={node.key}
-      style={defaultStyles.label}
-    >
-      {node.children[0].content}
-    </Text>
-  ,
-  checkbox_input: (node, _children, _parent, _styles) => 
-    <Checkbox.Android
-      key={node.key}
-      status={node.attributes.checked === "true" ? "checked" : "unchecked"}
-      disabled
-    />,
   list_item: (node, children, parent, styles, inheritedStyles) => {
     if (node.attributes.class === "task-list-item") {
       return (
         <TouchableRipple key={node.key}>
-          <View style={defaultStyles.container} pointerEvents="none">
-            {children}
+          <View style={tasklistStyles.listItem}>
+            <Checkbox.Android
+              status={node.attributes.checked === "true" ? "checked" : "unchecked"}
+              accessible={false}
+            />
+            <View style={styles._VIEW_SAFE_bullet_list_content}>{children}</View>
           </View>
         </TouchableRipple>
       );
@@ -37,34 +27,34 @@ const rules: RenderRules = {
       return null;
     }
   },
-  textgroup: (node, children, parent, styles) => {
-    const list = parent.find((p) => p.type === "bullet_list");
-    if (list != null && list.attributes.class === "task-list") {
-      return (
-        <React.Fragment key={node.key}>
-          {children}
-        </React.Fragment>
-      );
-    } else if (renderRules.textgroup != null) {
-      return renderRules.textgroup(node, children, parent, styles);
+  textgroup: (node, children, parent, styles, inheritedStyles) => {
+    if (renderRules.textgroup != null) {
+      const hasTasklistParent = parent.findIndex((p) => p.attributes?.class === "task-list-item") !== -1;
+      const style = hasTasklistParent ? { textgroup: tasklistStyles.textgroup } : styles;
+
+      return renderRules.textgroup(node, children, parent, style, inheritedStyles);
     } else {
       return null;
     }
   },
 };
 
-const defaultStyles = StyleSheet.create({
-  container: {
+const tasklistStyles = StyleSheet.create({
+  listItem: {
+    display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
   },
-  label: {
-    fontSize: 16,
+  textgroup: {
+    fontSize: 16, // Same as in Checkbox.Item
+    minHeight: 36, // Same as Checkbox.Android
+    paddingVertical: 6, // Same as Checkbox.Android
+    display: "flex", // The rest is to center on web
+    flex: 1,
+    alignItems: "center",
   },
 });
 
-const markdownItInstance = MarkdownIt().use(TaskCheckbox);
+const markdownItInstance = MarkdownIt().use(TaskList);
 
 const Markdown = React.memo(function _Markdown(props: { content: string }) {
   const theme = useTheme();
