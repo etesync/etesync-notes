@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="editor">
+      <p>Hello World!</p>
+      <p>Some initial <strong>bold</strong> text</p>
+      <p><br></p>
+    </div>
+  <script type="module" crossorigin="anonymous">
+    import getCss from './editor-css.js'
+    import getJs from './toastui-editor.js'
+
+    const theme = {
+      colors : {
+        text: 'black',
+        background: 'white',
+        accent: '#0091ea',
+        primary: '#ff91ea',
+        disabled: '#aaa'
+      }
+    }
+    const style = document.createElement('style')
+    style.appendChild(document.createTextNode(getCss(theme)))
+    document.head.appendChild(style)
+
+    eval(getJs())
+
+    const Editor = toastui.Editor
+    const editor = new Editor({
+      el: document.querySelector('#editor'),
+      initialValue: '#Header\n\nText',
+      initialEditType: 'wysiwyg',
+      toolbarItems: [
+        'heading',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'divider',
+        'hr',
+        'quote',
+        'divider',
+        'ul',
+        'ol',
+        'task',
+        'divider',
+        'link',
+        'divider',
+        'code',
+        'codeblock'
+      ],
+      usageStatistics: false
+    })
+    const cm = document.getElementsByClassName('cm-s-default')[0]
+    if (cm != null) {
+      cm.classList.remove("cm-s-default");
+      cm.classList.add("cm-s-ayu-dark");
+    }
+  </script>
+  </body>
+</html>

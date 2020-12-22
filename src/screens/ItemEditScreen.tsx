@@ -21,6 +21,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
 import NoteEditDialog from "../components/NoteEditDialog";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
+import RichTextEditor from "../widgets/RichTextEditor";
 
 type RootStackParamList = {
   ItemEditScreen: {
@@ -181,12 +182,16 @@ export default function ItemEditScreen(props: PropsType) {
           />
         </ScrollView>
       ) : (
-        <TextEditor
-          style={{ flexGrow: 1 }}
-          contentStyle={{ padding: 10 }}
+        <RichTextEditor
           setContent={setContent}
           content={content}
         />
+        // <TextEditor
+        //   style={{ flexGrow: 1 }}
+        //   contentStyle={{ padding: 10 }}
+        //   setContent={setContent}
+        //   content={content}
+        // />
       )}
       <NoteEditDialog
         key={noteEditDialogShow.toString()}
