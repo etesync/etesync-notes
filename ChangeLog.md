@@ -1,6 +1,11 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.6.0
+* Add task (checkbox) support to note preview (including toggling them)
+* Make the Android icon adaptive (much nicer looking)
+* Fix FAB positioning on the web
+
 ## Version 1.5.1
 * Markdown: fix lists not wrapping at the end of screen
 * Fix editing the bottom of notes on iOS
