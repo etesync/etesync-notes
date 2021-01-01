@@ -66,6 +66,9 @@ export default React.memo(function RootNavigator() {
           headerBackTitleStyle: {
             backgroundColor: "black",
           },
+          cardStyle: {
+            maxHeight: "100%",
+          },
         }}
       >
         {(etebase === null) ? (
@@ -101,9 +104,6 @@ export default React.memo(function RootNavigator() {
                 headerLeft: () => (
                   <MenuButton />
                 ),
-                cardStyle: {
-                  maxHeight: "100%",
-                },
               }}
             />
             <Stack.Screen
