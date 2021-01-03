@@ -9,6 +9,7 @@ import * as Etebase from "etebase";
 
 import * as actions from "./actions";
 import { LogLevel } from "../logging";
+import { FontFamilyKey } from "../helpers";
 
 interface BaseModel {
   uid: string;
@@ -355,6 +356,8 @@ export interface SettingsType {
     viewMode: boolean;
     filterBy: string | null;
     sortBy: "name" | "mtime";
+    editorFontFamily: FontFamilyKey;
+    viewerFontFamily: FontFamilyKey;
   };
 }
 
@@ -374,6 +377,8 @@ export const settingsReducer = handleActions(
       viewMode: false,
       filterBy: null,
       sortBy: "name",
+      editorFontFamily: "monospace",
+      viewerFontFamily: "regular",
     },
   }
 );

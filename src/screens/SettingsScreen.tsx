@@ -24,6 +24,7 @@ import * as C from "../constants";
 import { startTask, enforcePasswordRules } from "../helpers";
 import { useNavigation } from "@react-navigation/native";
 import Alert from "../widgets/Alert";
+import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
 
 interface DialogPropsType {
@@ -222,6 +223,76 @@ function FontSizePreferenceSelector() {
   );
 }
 
+function EditorFontFamilyPreferenceSelector() {
+  const dispatch = useDispatch();
+  const [selectEditorFontFamilyOpen, setEditorFontFamilyPreferenceOpen] = React.useState(false);
+  const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
+  const { editorFontFamily } = viewSettings;
+
+  return (
+    <List.Item
+      title="Editor Font"
+      description="Set the font used in the note editor"
+      right={(props) =>
+        <FontSelector
+          {...props}
+          visible={selectEditorFontFamilyOpen}
+          selected={editorFontFamily ?? "monospace"}
+          onOpen={() => setEditorFontFamilyPreferenceOpen(true)}
+          onDismiss={() => setEditorFontFamilyPreferenceOpen(false)}
+          onChange={(selected) => {
+            setEditorFontFamilyPreferenceOpen(false);
+            if (selected == null || selected === editorFontFamily) {
+              return;
+            }
+            dispatch(setSettings({
+              viewSettings: {
+                ...viewSettings,
+                editorFontFamily: selected,
+              },
+            }));
+          }}
+        />
+      }
+    />
+  );
+}
+
+function ViewerFontFamilyPreferenceSelector() {
+  const dispatch = useDispatch();
+  const [selectViewerFontFamilyOpen, setViewerFontFamilyPreferenceOpen] = React.useState(false);
+  const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
+  const { viewerFontFamily } = viewSettings;
+
+  return (
+    <List.Item
+      title="Preview Font"
+      description="Set the font used in the note preview"
+      right={(props) =>
+        <FontSelector
+          {...props}
+          visible={selectViewerFontFamilyOpen}
+          selected={viewerFontFamily ?? "regular"}
+          onOpen={() => setViewerFontFamilyPreferenceOpen(true)}
+          onDismiss={() => setViewerFontFamilyPreferenceOpen(false)}
+          onChange={(selected) => {
+            setViewerFontFamilyPreferenceOpen(false);
+            if (selected == null || selected === viewerFontFamily) {
+              return;
+            }
+            dispatch(setSettings({
+              viewSettings: {
+                ...viewSettings,
+                viewerFontFamily: selected as typeof viewerFontFamily,
+              },
+            }));
+          }}
+        />
+      }
+    />
+  );
+}
+
 const SettingsScreen = function _SettingsScreen() {
   const etebase = useCredentials();
   const navigation = useNavigation();
@@ -265,6 +336,8 @@ const SettingsScreen = function _SettingsScreen() {
           <List.Subheader>General</List.Subheader>
           <DarkModePreferenceSelector />
           <FontSizePreferenceSelector />
+          <EditorFontFamilyPreferenceSelector />
+          <ViewerFontFamilyPreferenceSelector />
           <List.Item
             title="About"
             description="About and open source licenses"

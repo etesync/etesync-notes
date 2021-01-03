@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { Linking, Platform, StyleSheet, View, ViewProps } from "react-native";
-import { Checkbox, useTheme } from "react-native-paper";
+import { Linking, StyleSheet, View, ViewProps } from "react-native";
+import { Checkbox, DefaultTheme, useTheme } from "react-native-paper";
 import MarkdownDisplay, { MarkdownIt, renderRules, RenderRules } from "react-native-markdown-display";
 import { useSelector } from "react-redux";
+import { fontFamilies, FontFamilyKey } from "../../helpers";
 import { StoreState } from "../../store";
 import TaskList from "./markdown-it-tasklist";
 import toggleCheckbox from "./toggle-checkbox";
 
-const getStyles = (theme: ReactNativePaper.Theme, fontSize: number) => {
+const getStyles = (theme: typeof DefaultTheme, fontSize: number, fontFamilyKey: FontFamilyKey) => {
   const defaults = {
     header: {
       fontWeight: "bold",
@@ -18,11 +19,6 @@ const getStyles = (theme: ReactNativePaper.Theme, fontSize: number) => {
       marginBottom: 10,
     },
     margin: 16,
-    monospaceFont: Platform.select({
-      ios: "Courier",
-      android: "monospace",
-      default: "SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace",
-    }),
   };
 
   const extraColors = (theme.dark) ? {
@@ -41,6 +37,7 @@ const getStyles = (theme: ReactNativePaper.Theme, fontSize: number) => {
     body: {
       color: theme.colors.text,
       fontSize,
+      fontFamily: fontFamilies[fontFamilyKey],
     },
     heading1: {
       ...defaults.header,
@@ -101,14 +98,14 @@ const getStyles = (theme: ReactNativePaper.Theme, fontSize: number) => {
       backgroundColor: extraColors.blockBackground,
       borderWidth: 0,
       color: extraColors.blockText,
-      fontFamily: defaults.monospaceFont,
+      fontFamily: fontFamilies.monospace,
       padding: 3,
     },
     code_block: {
       backgroundColor: extraColors.blockBackground,
       borderColor: extraColors.border,
       color: extraColors.blockText,
-      fontFamily: defaults.monospaceFont,
+      fontFamily: fontFamilies.monospace,
       marginBottom: defaults.margin,
       padding: defaults.margin,
     },
@@ -116,7 +113,7 @@ const getStyles = (theme: ReactNativePaper.Theme, fontSize: number) => {
       backgroundColor: extraColors.blockBackground,
       borderColor: extraColors.border,
       color: extraColors.blockText,
-      fontFamily: defaults.monospaceFont,
+      fontFamily: fontFamilies.monospace,
       marginBottom: defaults.margin,
       padding: defaults.margin,
     },
@@ -202,12 +199,13 @@ const Markdown = React.memo(function _Markdown(props: MarkdownPropsType) {
   const { content, setContent } = props;
   const theme = useTheme();
   const fontSize = useSelector((state: StoreState) => state.settings.fontSize);
+  const fontFamilyKey = useSelector((state: StoreState) => state.settings.viewSettings.viewerFontFamily) ?? "regular";
 
   return (
     <MarkdownDisplay
       markdownit={markdownItInstance}
       rules={getRules(content, setContent)}
-      style={getStyles(theme, fontSize)}
+      style={getStyles(theme, fontSize, fontFamilyKey)}
       mergeStyle
       onLinkPress={(url) => {
         Linking.openURL(url);
