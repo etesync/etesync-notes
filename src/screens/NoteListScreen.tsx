@@ -16,7 +16,7 @@ import { useAsyncDispatch, StoreState } from "../store";
 import { performSync, setCacheItem, setSettings, setSyncItem } from "../store/actions";
 import { useCredentials } from "../credentials";
 import NoteEditDialog from "../components/NoteEditDialog";
-import { NoteMetadata } from "../helpers";
+import { NoteMetadata, navigateTo404 } from "../helpers";
 import Menu from "../widgets/Menu";
 
 
@@ -80,10 +80,13 @@ export default function NoteListScreen(props: PropsType) {
   const syncGate = useSyncGate();
   const theme = useTheme();
 
-  const colUid_ = props.route.params?.colUid;
-  const cacheCollection = (colUid_) ? cacheCollections.get(colUid_) : undefined;
-  // We only want to set colUid if a collection actually exists
-  const colUid = (cacheCollection) ? colUid_ : undefined;
+  const colUid = props.route.params?.colUid;
+  const cacheCollection = (colUid && colUid.length > 0) ? cacheCollections.get(colUid) : undefined;
+  
+  if (colUid && colUid.length > 0 && cacheCollection == null) {
+    navigateTo404(navigation);
+    return null;
+  }
 
   React.useEffect(() => {
 

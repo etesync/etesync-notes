@@ -19,7 +19,7 @@ import Container from "../widgets/Container";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 
-import { useLoading, defaultColor } from "../helpers";
+import { useLoading, defaultColor, navigateTo404 } from "../helpers";
 
 import ColorPicker from "../widgets/ColorPicker";
 import * as C from "../constants";
@@ -52,7 +52,7 @@ export default function CollectionEditScreen(props: PropsType) {
   const [loading, error, setPromise] = useLoading();
   const colType = C.colType;
 
-  const colUid: string = props.route.params.colUid ?? "";
+  const colUid: string = props.route.params?.colUid ?? "";
   React.useEffect(() => {
     if (syncGate) {
       return;
@@ -66,6 +66,8 @@ export default function CollectionEditScreen(props: PropsType) {
       if (meta.color !== undefined) {
         setColor(meta.color);
       }
+    } else if (colUid.length > 0) {
+      navigateTo404(navigation);
     }
 
   }, [syncGate, colUid]);
