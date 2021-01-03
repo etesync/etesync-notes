@@ -215,9 +215,7 @@ function RightAction(props: RightActionPropsType) {
 
   async function refresh() {
     const syncManager = SyncManager.getManager(etebase!);
-    const sync = syncManager.sync();
     syncDispatch(performSync(syncManager.sync())); // not awaiting on puprose
-    await sync;
   }
 
   useFocusEffect(React.useCallback(() => {

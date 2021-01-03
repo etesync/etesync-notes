@@ -15,12 +15,6 @@ interface BaseModel {
   uid: string;
 }
 
-
-export interface ErrorsData {
-  fatal: List<Error>;
-  other: List<Error>;
-}
-
 export interface SyncCollectionsEntryData extends BaseModel {
   stoken: string;
 }
@@ -235,45 +229,27 @@ export const fetchCount = handleAction(
 
 export const errorsReducer = handleActions(
   {
-    [actions.performSync.toString()]: (state: ErrorsData, action: Action<any>) => {
+    [actions.performSync.toString()]: (state: List<Error>, action: Action<any>) => {
       if (action.error) {
-        return {
-          ...state,
-          fatal: state.fatal.push(action.payload),
-        };
+        return state.push(action.payload);
       }
 
       return state;
     },
-    [actions.addNonFatalError.toString()]: (state: ErrorsData, action: Action<Error>) => {
-      return {
-        ...state,
-        other: state.other.push(action.payload),
-      };
+    [actions.addError.toString()]: (state: List<Error>, action: Action<Error>) => {
+      return state.push(action.payload);
     },
-    [actions.popNonFatalError.toString()]: (state: ErrorsData, _action: Action<any>) => {
-      return {
-        ...state,
-        other: state.other.pop(),
-      };
+    [actions.popError.toString()]: (state: List<Error>, _action: Action<any>) => {
+      return state.pop();
     },
-    [actions.clearErros.toString()]: (state: ErrorsData, _action: Action<any>) => {
-      return {
-        fatal: state.fatal.clear(),
-        other: state.other.clear(),
-      };
+    [actions.clearErrors.toString()]: (state: List<Error>, _action: Action<any>) => {
+      return state.clear();
     },
-    [actions.logout.toString()]: (state: ErrorsData, _action: any) => {
-      return {
-        fatal: state.fatal.clear(),
-        other: state.other.clear(),
-      };
+    [actions.logout.toString()]: (state: List<Error>, _action: any) => {
+      return state.clear();
     },
   },
-  {
-    fatal: List<Error>([]),
-    other: List<Error>([]),
-  }
+  List<Error>([])
 );
 
 export interface ConnectionInfo {
@@ -343,7 +319,6 @@ export const messagesReducer = handleActions(
   },
   List([])
 );
-
 
 // FIXME Move all the below (potentially the fetchCount ones too) to their own file
 export interface SettingsType {

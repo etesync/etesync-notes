@@ -9,7 +9,7 @@ import * as TaskManager from "expo-task-manager";
 import { store, persistor, StoreState, asyncDispatch } from "../store";
 
 import { credentialsSelector } from "../credentials";
-import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addNonFatalError, performSync, itemBatch, setSyncStatus } from "../store/actions";
+import { setSyncCollection, setSyncGeneral, setCacheCollection, unsetCacheCollection, setCacheItemMulti, addError, performSync, itemBatch, setSyncStatus } from "../store/actions";
 import * as C from "../constants";
 import { startTask, arrayToChunkIterator } from "../helpers";
 
@@ -142,10 +142,10 @@ export class SyncManager {
         // Ignore network errors
         return null;
       } else if (e instanceof Etebase.PermissionDeniedError) {
-        store.dispatch(addNonFatalError(e));
+        store.dispatch(addError(e));
         return null;
       } else if (e instanceof Etebase.HttpError) {
-        store.dispatch(addNonFatalError(e));
+        store.dispatch(addError(e));
         return null;
       }
       throw e;

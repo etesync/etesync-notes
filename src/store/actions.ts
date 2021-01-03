@@ -133,7 +133,6 @@ export const itemBatch = createAction(
   }
 );
 
-
 export const setSyncCollection = createAction(
   "SET_SYNC_COLLECTION",
   (uid: string, stoken: string) => {
@@ -204,21 +203,21 @@ export const setSyncStatus = createAction(
   }
 );
 
-export const addNonFatalError = createAction(
-  "ADD_NON_FATAL_ERROR",
+export const addError = createAction(
+  "ADD_ERROR",
   (e: Error) => {
     return e;
   }
 );
 
-export const popNonFatalError = createAction(
-  "POP_NON_FATAL_ERROR",
+export const popError = createAction(
+  "POP_ERROR",
   () => {
     return null;
   }
 );
 
-export const clearErros = createAction(
+export const clearErrors = createAction(
   "CLEAR_ERRORS",
   (_etebase: Etebase.Account) => {
     return true;

@@ -5,6 +5,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, Linking, Clipboard } from "react-native";
 import { Button, Text, Paragraph, HelperText } from "react-native-paper";
+import { List } from "immutable";
 
 import * as Updates from "expo-updates";
 
@@ -18,7 +19,7 @@ import { logger, LogLevel, getLogs } from "./logging";
 import Container from "./widgets/Container";
 import { expo } from "../app.json";
 import * as C from "./constants";
-import { setSettings, popNonFatalError, login } from "./store/actions";
+import { setSettings, popError, login } from "./store/actions";
 import LogoutDialog from "./components/LogoutDialog";
 import ConfirmationDialog from "./widgets/ConfirmationDialog";
 import PasswordInput from "./widgets/PasswordInput";
@@ -42,10 +43,26 @@ function emailDevelopers(error: Error, logs: string | undefined) {
 function SessionExpiredDialog() {
   const etebase = useCredentials()!;
   const dispatch = useDispatch();
+  const [fetchFailed, setFetchFailed] = React.useState(false);
   const [password, setPassword] = React.useState("");
   const [errorPassword, setErrorPassword] = React.useState<string>();
 
-  return (
+  React.useEffect(() => {
+    const fetch = async () => {
+      try {
+        await etebase.fetchToken();
+
+        dispatch(login(etebase));
+        dispatch(popError());
+      } catch (e) {
+        setFetchFailed(true);
+      }
+    };
+
+    fetch();
+  }, []);
+
+  return fetchFailed ? (
     <ConfirmationDialog
       title="Session expired"
       visible
@@ -56,17 +73,17 @@ function SessionExpiredDialog() {
         }
 
         try {
-          await etebase.fetchToken();
+          const { user, serverUrl } = etebase;
+          const newEtebase = await Etebase.Account.login(user.username, password, serverUrl);
 
-          dispatch(login(etebase));
-
-          store.dispatch(popNonFatalError());
+          dispatch(login(newEtebase));
+          dispatch(popError());
         } catch (e) {
           setErrorPassword(e.message);
         }
       }}
       onCancel={() => {
-        store.dispatch(popNonFatalError());
+        dispatch(popError());
       }}
     >
       <>
@@ -95,24 +112,25 @@ function SessionExpiredDialog() {
         )}
       </>
     </ConfirmationDialog>
-  );
+  ) : null;
 }
 
 function ErrorBoundaryInner(props: React.PropsWithChildren<{ error: Error | undefined }>) {
   const etesync = useCredentials();
   const [showLogout, setShowLogout] = React.useState(false);
-  const errors = useSelector((state: StoreState) => state.errors);
-  const error = props.error ?? errors.fatal?.last(undefined);
-  const nonFatalErrorCount = errors.other?.count() ?? 0;
-  const nonFatalError = errors.other?.last(undefined);
+  const stateErrors: List<Error> = useSelector((state: StoreState) => state.errors);
   const [logs, setLogs] = React.useState<string>();
+
+  const errors = props.error ? stateErrors.concat(props.error) : stateErrors;
+  const fatalErrors = errors.filterNot((error) => error instanceof Etebase.PermissionDeniedError || error instanceof Etebase.HttpError || error instanceof Etebase.UnauthorizedError);
 
   React.useEffect(() => {
     getLogs().then((value) => setLogs(value.join("\n")));
   }, []);
 
   const buttonStyle = { marginVertical: 5 };
-  if (error) {
+  if (fatalErrors.count() > 0) {
+    const error = fatalErrors.last<Error>();
     logger.critical(error.toString());
     const content = `${error.message}\n${error.stack}\n${logs}`;
     return (
@@ -144,23 +162,23 @@ function ErrorBoundaryInner(props: React.PropsWithChildren<{ error: Error | unde
   }
 
   let nonFatalErrorDialog;
-  if (nonFatalError) {
-    if (nonFatalError instanceof Etebase.UnauthorizedError) {
-
+  if (errors.count() > 0) {
+    const error = errors.last<Error>();
+    if (error instanceof Etebase.UnauthorizedError) {
       nonFatalErrorDialog = (
         <SessionExpiredDialog />
       );
     } else {
       nonFatalErrorDialog = (
         <ConfirmationDialog
-          title={`Error (${nonFatalErrorCount} remaining)`}
-          visible={!!nonFatalError}
+          title={`Error (${errors.count()} remaining)`}
+          visible={!!error}
           onOk={() => {
-            store.dispatch(popNonFatalError());
+            store.dispatch(popError());
           }}
         >
           <Paragraph>
-            {nonFatalError?.toString()}
+            {error.toString()}
           </Paragraph>
         </ConfirmationDialog>
       );
