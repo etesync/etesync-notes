@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { AppState, AppStateStatus } from "react-native";
+import { AppState, AppStateStatus, Platform } from "react-native";
 import * as Etebase from "etebase";
 import { NavigationProp } from "@react-navigation/native";
 
@@ -161,3 +161,23 @@ export function navigateTo404(navigation: NavigationProp<Record<string, object |
     message,
   });
 }
+
+export declare type FontFamilyKey = "regular" | "monospace" | "serif";
+ 
+export const fontFamilies = Platform.select({
+  web: {
+    regular: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    monospace: 'SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace',
+    serif: '"Times New Roman", Georgia, serif',
+  },
+  ios: {
+    regular: "System",
+    monospace: "Courier",
+    serif: "Times New Roman",
+  },
+  default: {
+    regular: "sans-serif",
+    monospace: "monospace",
+    serif: "serif",
+  },
+});

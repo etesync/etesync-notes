@@ -21,7 +21,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
 import NoteEditDialog from "../components/NoteEditDialog";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
-import { navigateTo404 } from "../helpers";
+import { fontFamilies, navigateTo404 } from "../helpers";
 
 type RootStackParamList = {
   ItemEditScreen: {
@@ -306,6 +306,8 @@ interface TextEditorPropsType extends ViewProps {
 function TextEditor(props: TextEditorPropsType) {
   const { content, setContent } = props;
   const fontSize = useSelector((state: StoreState) => state.settings.fontSize);
+  const fontFamilyKey = useSelector((state: StoreState) => state.settings.viewSettings.editorFontFamily) ?? "monospace";
+  const fontFamily = fontFamilies[fontFamilyKey];
   const theme = useTheme();
 
   return (
@@ -318,7 +320,7 @@ function TextEditor(props: TextEditorPropsType) {
         textAlignVertical="top"
         multiline
         scrollEnabled
-        style={[{ flexGrow: 1, fontSize }, props.contentStyle]}
+        style={[{ flexGrow: 1, fontSize, fontFamily }, props.contentStyle]}
         onChangeText={setContent}
         value={content}
       />
