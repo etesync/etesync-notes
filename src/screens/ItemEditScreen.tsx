@@ -21,6 +21,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
 import NoteEditDialog from "../components/NoteEditDialog";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
+import { navigateTo404 } from "../helpers";
 
 type RootStackParamList = {
   ItemEditScreen: {
@@ -61,8 +62,20 @@ export default function ItemEditScreen(props: PropsType) {
 
   const colUid = props.route.params.colUid;
   const itemUid = props.route.params.itemUid;
+  const cacheCollection = cacheItems.get(colUid);
+  const hasItem = cacheCollection?.has(itemUid);
+
+  if (cacheCollection == null || !hasItem) {
+    navigateTo404(
+      navigation,
+      (cacheCollection != null) ? "Note not found" : undefined,
+      (cacheCollection != null) ? "This note can't be found" : undefined
+    );
+    return null;
+  }
+
   const changed = syncItems.hasIn([colUid, itemUid]);
-  const cacheItem = cacheItems.get(colUid)!.get(itemUid)!;
+  const cacheItem = cacheCollection.get(itemUid)!;
 
   function setChanged(value: boolean) {
     if (changed === value) {

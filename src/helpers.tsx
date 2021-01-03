@@ -4,6 +4,7 @@
 import * as React from "react";
 import { AppState, AppStateStatus } from "react-native";
 import * as Etebase from "etebase";
+import { NavigationProp } from "@react-navigation/native";
 
 import { logger } from "./logging";
 
@@ -151,4 +152,12 @@ export function enforcePasswordRules(password: string): string | undefined {
     return `Passwourds should be at least ${PASSWORD_MIN_LENGTH} digits long.`;
   }
   return undefined;
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function navigateTo404(navigation: NavigationProp<Record<string, object | undefined>>, title = "Notebook not found", message = "This notebook can't be found") {
+  navigation.navigate("404", {
+    title,
+    message,
+  });
 }

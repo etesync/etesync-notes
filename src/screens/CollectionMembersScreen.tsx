@@ -19,6 +19,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorDialog from "../widgets/ErrorDialog";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
 import { pushMessage } from "../store/actions";
+import { navigateTo404 } from "../helpers";
 
 type RootStackParamList = {
   CollectionMembersScreen: {
@@ -46,11 +47,17 @@ export default function CollectionMembersScreen(props: PropsType) {
 
   const revokeUserIsAdmin = revokeUser?.accessLevel === Etebase.CollectionAccessLevel.Admin;
 
-  const { colUid } = props.route.params;
+  const colUid = props.route.params?.colUid ?? "";
+  const cacheCollection = collections.get(colUid);
+
+  if (cacheCollection == null) {
+    navigateTo404(navigation);
+    return null;
+  }
 
   async function fetchMembers() {
     const colMgr = etebase.getCollectionManager();
-    const col = colMgr.cacheLoad(collections.get(colUid)!.cache);
+    const col = colMgr.cacheLoad(cacheCollection!.cache);
     if (col.accessLevel !== Etebase.CollectionAccessLevel.Admin) {
       setError(`Only the owner of the collection can view and modify its members.`);
       return;

@@ -15,7 +15,7 @@ import Container from "../widgets/Container";
 import Menu from "../widgets/Menu";
 import { Title } from "../widgets/Typography";
 
-import { defaultColor } from "../helpers";
+import { defaultColor, navigateTo404 } from "../helpers";
 
 import ColorBox from "../widgets/ColorBox";
 
@@ -55,9 +55,9 @@ export default function CollectionChangelogScreen(props: PropsType) {
     return syncGate;
   }
 
-
   if (!cachedCollection || !colCachedItems) {
-    return <Text>Error</Text>;
+    navigateTo404(navigation);
+    return null;
   }
 
   const { meta } = cachedCollection;

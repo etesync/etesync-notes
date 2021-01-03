@@ -22,6 +22,7 @@ import CollectionChangelogScreen from "./screens/CollectionChangelogScreen";
 import CollectionMembersScreen from "./screens/CollectionMembersScreen";
 import InvitationsScreen from "./screens/InvitationsScreen";
 import AccountWizardScreen from "./screens/AccountWizardScreen";
+import NotFoundScreen from "./screens/NotFoundScreen";
 
 import { useCredentials } from "./credentials";
 import { performSync, popMessage } from "./store/actions";
@@ -111,6 +112,10 @@ export default React.memo(function RootNavigator() {
               component={CollectionEditScreen}
             />
             <Stack.Screen
+              name="CollectionCreate"
+              component={CollectionEditScreen}
+            />
+            <Stack.Screen
               name="CollectionChangelog"
               component={CollectionChangelogScreen}
               options={{
@@ -152,6 +157,16 @@ export default React.memo(function RootNavigator() {
           component={AccountWizardScreen}
           options={{
             title: C.appName,
+          }}
+        />
+        <Stack.Screen
+          name="404"
+          component={NotFoundScreen}
+          options={{
+            title: "Page Not Found",
+            headerLeft: () => (
+              <MenuButton />
+            ),
           }}
         />
       </Stack.Navigator>

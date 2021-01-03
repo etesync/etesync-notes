@@ -23,6 +23,33 @@ enableScreens();
 
 const DrawerNavigation = createDrawerNavigator();
 
+const linking = {
+  prefixes: ["https://notes.etesync.com", "com.etesync.notes://"],
+  config: {
+    screens: {
+      Root: {
+        path: "",
+        screens: {
+          home: "notes/:colUid?",
+          LoginScreen: "login",
+          Signup: "signup",
+          CollectionCreate: "notes/new-notebook",
+          CollectionEdit: "notes/:colUid/edit",
+          CollectionChangelog: "notes/:colUid/manage",
+          CollectionMembers: "notes/:colUid/members",
+          ItemEdit: "notes/:colUid/:itemUid",
+          Invitations: "invitations",
+          Settings: "settings",
+          About: "settings/about",
+          DebugLogs: "settings/logs",
+          AccountWizard: "account-wizard",
+          "404": "*",
+        },
+      },
+    },
+  },
+};
+
 function InnerApp() {
   // XXX Workaround for react-navigation #7561 (flashing drawer)
   const [initRender, setInitRender] = React.useState(true);
@@ -46,7 +73,7 @@ function InnerApp() {
     <PaperProvider theme={theme}>
       <ErrorBoundary>
         <SettingsGate>
-          <NavigationContainer>
+          <NavigationContainer linking={linking}>
             <DrawerNavigation.Navigator
               drawerContent={({ navigation }) => <Drawer navigation={navigation} />}
               drawerStyle={initRender ? { width: 0 } : null}
