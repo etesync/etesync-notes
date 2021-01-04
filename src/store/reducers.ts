@@ -321,6 +321,8 @@ export const messagesReducer = handleActions(
 );
 
 // FIXME Move all the below (potentially the fetchCount ones too) to their own file
+export type ViewModeKey = "last" | "viewer" | "editor";
+
 export interface SettingsType {
   locale: string;
   logLevel: LogLevel;
@@ -328,7 +330,8 @@ export interface SettingsType {
   theme: "auto" | "dark" | "light";
   fontSize: number;
   viewSettings: {
-    viewMode: boolean;
+    defaultViewMode: ViewModeKey;
+    lastViewMode: boolean;
     filterBy: string | null;
     sortBy: "name" | "mtime";
     editorFontFamily: FontFamilyKey;
@@ -349,7 +352,8 @@ export const settingsReducer = handleActions(
     theme: "auto",
     fontSize: 16,
     viewSettings: {
-      viewMode: false,
+      defaultViewMode: "last",
+      lastViewMode: false,
       filterBy: null,
       sortBy: "name",
       editorFontFamily: "monospace",

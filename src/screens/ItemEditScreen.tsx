@@ -39,7 +39,8 @@ export default function ItemEditScreen(props: PropsType) {
   const [loading, setLoading] = React.useState(true);
   const [content, setContent_] = React.useState("");
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
-  const { viewMode } = viewSettings;
+  const { defaultViewMode, lastViewMode } = viewSettings;
+  const [viewMode, setViewMode] = React.useState((defaultViewMode === "last") ? lastViewMode : (defaultViewMode === "viewer"));
   const [noteEditDialogShow, setNoteEditDialogShow] = React.useState(false);
   const [noteDeleteDialogShow, setNoteDeleteDialogShow] = React.useState(false);
   const dispatch = useAsyncDispatch();
@@ -51,11 +52,12 @@ export default function ItemEditScreen(props: PropsType) {
   const navigation = useNavigation();
   const syncGate = useSyncGate();
 
-  function setViewMode(viewMode: boolean) {
+  function setLastViewMode(viewMode: boolean) {
+    setViewMode(viewMode);
     syncDispatch(setSettings({
       viewSettings: {
         ...viewSettings,
-        viewMode,
+        lastViewMode: viewMode,
       },
     }));
   }
@@ -160,7 +162,7 @@ export default function ItemEditScreen(props: PropsType) {
       headerRight: () => (
         <RightAction
           viewMode={viewMode}
-          setViewMode={setViewMode}
+          setViewMode={setLastViewMode}
           onSave={onSave}
           onEdit={() => setNoteEditDialogShow(true)}
           onDelete={() => setNoteDeleteDialogShow(true)}
@@ -168,7 +170,7 @@ export default function ItemEditScreen(props: PropsType) {
         />
       ),
     });
-  }, [navigation, colUid, cacheItem, viewMode, setViewMode, changed]);
+  }, [navigation, colUid, cacheItem, viewMode, setLastViewMode, changed]);
 
   function setContent(content: string) {
     setChanged(true);
@@ -306,7 +308,7 @@ interface TextEditorPropsType extends ViewProps {
 function TextEditor(props: TextEditorPropsType) {
   const { content, setContent } = props;
   const fontSize = useSelector((state: StoreState) => state.settings.fontSize);
-  const fontFamilyKey = useSelector((state: StoreState) => state.settings.viewSettings.editorFontFamily) ?? "monospace";
+  const fontFamilyKey = useSelector((state: StoreState) => state.settings.viewSettings.editorFontFamily);
   const fontFamily = fontFamilies[fontFamilyKey];
   const theme = useTheme();
 

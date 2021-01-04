@@ -199,7 +199,7 @@ const Markdown = React.memo(function _Markdown(props: MarkdownPropsType) {
   const { content, setContent } = props;
   const theme = useTheme();
   const fontSize = useSelector((state: StoreState) => state.settings.fontSize);
-  const fontFamilyKey = useSelector((state: StoreState) => state.settings.viewSettings.viewerFontFamily) ?? "regular";
+  const fontFamilyKey = useSelector((state: StoreState) => state.settings.viewSettings.viewerFontFamily);
 
   return (
     <MarkdownDisplay
