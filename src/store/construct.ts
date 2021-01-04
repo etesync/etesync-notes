@@ -14,7 +14,7 @@ import { List, Map as ImmutableMap } from "immutable";
 
 import {
   SettingsType,
-  fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer, ErrorsData,
+  fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer,
   CredentialsData, SyncCollectionsData, SyncGeneralData,
   collections, items, syncCollections, syncItems, syncGeneral, CachedCollectionsData, CachedItemsData, SyncItemsData, messagesReducer, Message,
 } from "./reducers";
@@ -37,14 +37,33 @@ export interface StoreState {
     items: CachedItemsData;
   };
   connection: NetInfoStateType | null;
-  errors: ErrorsData;
+  errors: List<Error>;
   messages: List<Message>;
 }
 
+const settingsMigrations = {
+  1: (state: any) => {
+    const oldViewSettings = { ...state.viewSettings };
+    const viewSettings = {
+      defaultViewMode: "last",
+      lastViewMode: oldViewSettings.viewMode ?? false,
+      filterBy: oldViewSettings.filterBy,
+      sortBy: oldViewSettings.sortBy,
+      editorFontFamily: oldViewSettings.editorFontFamily ?? "monospace",
+      viewerFontFamily: oldViewSettings.viewerFontFamily ?? "regular",
+    };
+    return {
+      ...state,
+      viewSettings,
+    };
+  },
+};
+
 const settingsPersistConfig = {
   key: "settings",
-  version: 0,
+  version: 1,
   storage: AsyncStorage,
+  migrate: createMigrate(settingsMigrations, { debug: false }),
 };
 
 const credentialsPersistConfig = {

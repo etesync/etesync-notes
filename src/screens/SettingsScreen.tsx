@@ -19,6 +19,7 @@ import PasswordInput from "../widgets/PasswordInput";
 
 import { StoreState, useAsyncDispatch } from "../store";
 import { setSettings, login, pushMessage } from "../store/actions";
+import { ViewModeKey } from "../store/reducers";
 
 import * as C from "../constants";
 import { startTask, enforcePasswordRules } from "../helpers";
@@ -293,6 +294,53 @@ function ViewerFontFamilyPreferenceSelector() {
   );
 }
 
+function ViewModePreferenceSelector() {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const [selectViewModeOpen, setViewModePreferenceOpen] = React.useState(false);
+  const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
+  const { defaultViewMode } = viewSettings;
+
+  const options: ViewModeKey[] = ["last", "viewer", "editor"];
+
+  const prettyName: Record<ViewModeKey, string> = {
+    last: "Last used",
+    viewer: "Preview",
+    editor: "Editor",
+  };
+
+  return (
+    <List.Item
+      title="Default View Mode"
+      description="Set the default view mode for notes"
+      right={(props) =>
+        <Select
+          {...props}
+          visible={selectViewModeOpen}
+          onDismiss={() => setViewModePreferenceOpen(false)}
+          options={options}
+          titleAccossor={(x) => prettyName[x]}
+          onChange={(selected) => {
+            setViewModePreferenceOpen(false);
+            if (!selected || selected === defaultViewMode) {
+              return;
+            }
+            dispatch(setSettings({
+              viewSettings: {
+                ...viewSettings,
+                defaultViewMode: selected,
+              },
+            }));
+          }}
+          anchor={(
+            <Button mode="contained" color={theme.colors.accent} onPress={() => setViewModePreferenceOpen(true)}>{prettyName[defaultViewMode]}</Button>
+          )}
+        />
+      }
+    />
+  );
+}
+
 const SettingsScreen = function _SettingsScreen() {
   const etebase = useCredentials();
   const navigation = useNavigation();
@@ -338,6 +386,7 @@ const SettingsScreen = function _SettingsScreen() {
           <FontSizePreferenceSelector />
           <EditorFontFamilyPreferenceSelector />
           <ViewerFontFamilyPreferenceSelector />
+          <ViewModePreferenceSelector />
           <List.Item
             title="About"
             description="About and open source licenses"
