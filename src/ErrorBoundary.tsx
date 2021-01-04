@@ -19,7 +19,7 @@ import { logger, LogLevel, getLogs } from "./logging";
 import Container from "./widgets/Container";
 import { expo } from "../app.json";
 import * as C from "./constants";
-import { setSettings, popError, login } from "./store/actions";
+import { setSettings, addError, popError, login } from "./store/actions";
 import LogoutDialog from "./components/LogoutDialog";
 import ConfirmationDialog from "./widgets/ConfirmationDialog";
 import PasswordInput from "./widgets/PasswordInput";
@@ -55,7 +55,11 @@ function SessionExpiredDialog() {
         dispatch(login(etebase));
         dispatch(popError());
       } catch (e) {
-        setFetchFailed(true);
+        if (e instanceof Etebase.UnauthorizedError) {
+          setFetchFailed(true);
+        } else {
+          dispatch(addError(e));
+        }
       }
     };
 
