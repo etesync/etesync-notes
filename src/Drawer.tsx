@@ -3,10 +3,10 @@
 
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { ParamListBase } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Image, Linking, View, StatusBar } from "react-native";
 import { Divider, List, Text, Paragraph } from "react-native-paper";
+import { IconSource } from "react-native-paper/lib/typescript/src/components/Icon";
 import SafeAreaView from "react-native-safe-area-view";
 
 import { StoreState } from "./store";
@@ -21,8 +21,15 @@ import LogoutDialog from "./components/LogoutDialog";
 
 import * as C from "./constants";
 import { useCredentials } from "./credentials";
+import { RootStackParamList } from "./RootStackParamList";
 
-const menuItems = [
+type MenuItem = {
+  title: string;
+  path: keyof RootStackParamList;
+  icon: IconSource;
+};
+
+const menuItems: MenuItem[] = [
   {
     title: "Settings",
     path: "Settings",
@@ -96,7 +103,7 @@ export default function Drawer(props: PropsType) {
   const [showFingerprint, setShowFingerprint] = React.useState(false);
   const [showLogout, setShowLogout] = React.useState(false);
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
-  const navigation = props.navigation as DrawerNavigationProp<ParamListBase>;
+  const navigation = props.navigation as DrawerNavigationProp<RootStackParamList, keyof RootStackParamList>;
   const etebase = useCredentials();
   const loggedIn = !!etebase;
   const syncCount = useSelector((state: StoreState) => state.syncCount);
@@ -123,7 +130,7 @@ export default function Drawer(props: PropsType) {
               title="All Notes"
               onPress={() => {
                 navigation.closeDrawer();
-                navigation.navigate("home", { colUid: "" });
+                navigation.navigate("Home", { colUid: "" });
               }}
               left={(props) => <List.Icon {...props} icon="note-multiple" />}
             />
@@ -135,7 +142,7 @@ export default function Drawer(props: PropsType) {
                   title={meta.name}
                   onPress={() => {
                     navigation.closeDrawer();
-                    navigation.navigate("home", { colUid: uid });
+                    navigation.navigate("Home", { colUid: uid });
                   }}
                   left={(props) => <List.Icon {...props} icon="notebook" />}
                 />

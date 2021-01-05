@@ -2,22 +2,18 @@ import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { Subheading, Title, useTheme } from "react-native-paper";
 import { RouteProp, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../RootStackParamList";
 
-type NotFoundParamList = {
-  "404": {
-    title?: string;
-    message?: string;
-    help?: string;
-  };
-};
+type NavigationProp = StackNavigationProp<RootStackParamList, "404">;
 
 interface PropsType {
-  route: RouteProp<NotFoundParamList, "404">;
+  route: RouteProp<RootStackParamList, "404">;
 }
 
 export default function NotFound(props: PropsType) {
   const { title, message, help } = props.route.params ?? {};
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const theme = useTheme();
 
   React.useEffect(() => {

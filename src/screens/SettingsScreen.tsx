@@ -24,9 +24,11 @@ import { ViewModeKey } from "../store/reducers";
 import * as C from "../constants";
 import { startTask, enforcePasswordRules } from "../helpers";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import Alert from "../widgets/Alert";
 import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
+import { RootStackParamList } from "../RootStackParamList";
 
 interface DialogPropsType {
   visible: boolean;
@@ -341,9 +343,11 @@ function ViewModePreferenceSelector() {
   );
 }
 
+type NavigationProp = StackNavigationProp<RootStackParamList, "Settings">;
+
 const SettingsScreen = function _SettingsScreen() {
   const etebase = useCredentials();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const dispatch = useDispatch();
   const theme = useTheme();
   const settings = useSelector((state: StoreState) => state.settings);

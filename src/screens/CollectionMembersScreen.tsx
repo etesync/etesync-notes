@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { View } from "react-native";
 import { Avatar, List, Appbar, Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 import { useSyncGate } from "../SyncGate";
 import { useCredentials } from "../credentials";
@@ -20,15 +21,12 @@ import ErrorDialog from "../widgets/ErrorDialog";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
 import { pushMessage } from "../store/actions";
 import { navigateTo404 } from "../helpers";
+import { RootStackParamList } from "../RootStackParamList";
 
-type RootStackParamList = {
-  CollectionMembersScreen: {
-    colUid: string;
-  };
-};
+type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionMembers">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "CollectionMembersScreen">;
+  route: RouteProp<RootStackParamList, "CollectionMembers">;
 }
 
 
@@ -40,7 +38,7 @@ export default function CollectionMembersScreen(props: PropsType) {
   const [error, setError] = React.useState<string>();
   const collections = useSelector((state: StoreState) => state.cache.collections);
   const syncGate = useSyncGate();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const dispatch = useDispatch();
   const theme = useTheme();
   const etebase = useCredentials()!;

@@ -19,9 +19,31 @@ import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 import { useSelector } from "react-redux";
 import { StoreState } from "./store";
+import { RootStackParamList } from "./RootStackParamList";
 enableScreens();
 
 const DrawerNavigation = createDrawerNavigator();
+
+type RootStackScreens = {
+  [route in keyof RootStackParamList]: string;
+};
+
+const rootStackScreens: RootStackScreens = {
+  Home: "notes/:colUid?",
+  Login: "login",
+  Signup: "signup",
+  CollectionCreate: "notes/new-notebook",
+  CollectionEdit: "notes/:colUid/edit",
+  CollectionChangelog: "notes/:colUid/manage",
+  CollectionMembers: "notes/:colUid/members",
+  NoteEdit: "notes/:colUid/:itemUid",
+  Invitations: "invitations",
+  Settings: "settings",
+  About: "settings/about",
+  DebugLogs: "settings/logs",
+  AccountWizard: "account-wizard",
+  "404": "*",
+};
 
 const linking = {
   prefixes: ["https://notes.etesync.com", "com.etesync.notes://"],
@@ -29,22 +51,7 @@ const linking = {
     screens: {
       Root: {
         path: "",
-        screens: {
-          home: "notes/:colUid?",
-          LoginScreen: "login",
-          Signup: "signup",
-          CollectionCreate: "notes/new-notebook",
-          CollectionEdit: "notes/:colUid/edit",
-          CollectionChangelog: "notes/:colUid/manage",
-          CollectionMembers: "notes/:colUid/members",
-          ItemEdit: "notes/:colUid/:itemUid",
-          Invitations: "invitations",
-          Settings: "settings",
-          About: "settings/about",
-          DebugLogs: "settings/logs",
-          AccountWizard: "account-wizard",
-          "404": "*",
-        },
+        screens: rootStackScreens,
       },
     },
   },

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { TextInput as NativeTextInput } from "react-native";
 import { Text, HelperText, Button, Appbar, Paragraph } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 import { SyncManager } from "../sync/SyncManager";
 import { useSyncGate } from "../SyncGate";
@@ -19,7 +20,8 @@ import Container from "../widgets/Container";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 
-import { useLoading, defaultColor, navigateTo404 } from "../helpers";
+import { useLoading, defaultColor, navigateTo404, DefaultNavigationProp } from "../helpers";
+import { RootStackParamList } from "../RootStackParamList";
 
 import ColorPicker from "../widgets/ColorPicker";
 import * as C from "../constants";
@@ -29,14 +31,10 @@ interface FormErrors {
   color?: string;
 }
 
-type RootStackParamList = {
-  CollectionEditScreen: {
-    colUid?: string;
-  };
-};
+type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionEdit"> | StackNavigationProp<RootStackParamList, "CollectionCreate">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "CollectionEditScreen">;
+  route: RouteProp<RootStackParamList, "CollectionEdit"> | RouteProp<RootStackParamList, "CollectionCreate">;
 }
 
 export default function CollectionEditScreen(props: PropsType) {
@@ -47,7 +45,7 @@ export default function CollectionEditScreen(props: PropsType) {
   const dispatch = useAsyncDispatch();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const syncGate = useSyncGate();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const etebase = useCredentials()!;
   const [loading, error, setPromise] = useLoading();
   const colType = C.colType;
@@ -192,7 +190,7 @@ export default function CollectionEditScreen(props: PropsType) {
 
 function RightAction(props: { colUid: string }) {
   const [confirmationVisible, setConfirmationVisible] = React.useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<DefaultNavigationProp>();
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
@@ -224,7 +222,7 @@ function RightAction(props: { colUid: string }) {
           collection.delete();
           await dispatch(collectionUpload(colMgr, collection));
           dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
-          navigation.navigate("home", {});
+          navigation.navigate("Home", { colUid: "" });
           // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
           const syncManager = SyncManager.getManager(etebase);
           dispatch(performSync(syncManager.sync())); // not awaiting on puprose

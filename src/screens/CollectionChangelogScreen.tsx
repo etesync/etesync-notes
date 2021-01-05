@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { FlatList, View } from "react-native";
 import { Divider, Appbar, Text, List, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 import { useSyncGate } from "../SyncGate";
 import { StoreState } from "../store";
@@ -15,25 +16,22 @@ import Container from "../widgets/Container";
 import Menu from "../widgets/Menu";
 import { Title } from "../widgets/Typography";
 
-import { defaultColor, navigateTo404 } from "../helpers";
+import { defaultColor, DefaultNavigationProp, navigateTo404 } from "../helpers";
+import { RootStackParamList } from "../RootStackParamList";
 
 import ColorBox from "../widgets/ColorBox";
 
 const iconDeleted = (props: any) => (<List.Icon {...props} color="#F20C0C" icon="delete" />);
 const iconChanged = (props: any) => (<List.Icon {...props} color="#FEB115" icon="pencil" />);
 
-type RootStackParamList = {
-  CollectionChangelogScreen: {
-    colUid?: string;
-  };
-};
+type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionChangelog">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "CollectionChangelogScreen">;
+  route: RouteProp<RootStackParamList, "CollectionChangelog">;
 }
 
 export default function CollectionChangelogScreen(props: PropsType) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const syncGate = useSyncGate();
   const theme = useTheme();
   const cachedCollections = useSelector((state: StoreState) => state.cache.collections);
@@ -116,7 +114,7 @@ export default function CollectionChangelogScreen(props: PropsType) {
 
 function RightAction(props: { colUid: string }) {
   const [showMenu, setShowMenu] = React.useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<DefaultNavigationProp>();
   const colUid = props.colUid;
 
   return (

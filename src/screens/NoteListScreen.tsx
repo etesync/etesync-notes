@@ -6,6 +6,7 @@ import moment from "moment";
 import { StyleSheet, FlatList, View, Platform } from "react-native";
 import { Appbar, List, useTheme, FAB } from "react-native-paper";
 import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -16,8 +17,9 @@ import { useAsyncDispatch, StoreState } from "../store";
 import { performSync, setCacheItem, setSettings, setSyncItem } from "../store/actions";
 import { useCredentials } from "../credentials";
 import NoteEditDialog from "../components/NoteEditDialog";
-import { NoteMetadata, navigateTo404 } from "../helpers";
+import { NoteMetadata, navigateTo404, DefaultNavigationProp } from "../helpers";
 import Menu from "../widgets/Menu";
+import { RootStackParamList } from "../RootStackParamList";
 
 
 function sortMtime(aIn: CachedItem, bIn: CachedItem) {
@@ -58,14 +60,10 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-type RootStackParamList = {
-  NoteListScreen: {
-    colUid?: string;
-  };
-};
+type NavigationProp = StackNavigationProp<RootStackParamList, "Home">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "NoteListScreen">;
+  route: RouteProp<RootStackParamList, "Home">;
 }
 
 export default function NoteListScreen(props: PropsType) {
@@ -76,7 +74,7 @@ export default function NoteListScreen(props: PropsType) {
   const { sortBy } = viewSettings;
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const syncGate = useSyncGate();
   const theme = useTheme();
 
@@ -132,7 +130,7 @@ export default function NoteListScreen(props: PropsType) {
         key={item.uid}
         title={name}
         description={mtime?.format("llll")}
-        onPress={() => { navigation.navigate("ItemEdit", { colUid: item.colUid, itemUid: item.uid }) }}
+        onPress={() => { navigation.navigate("NoteEdit", { colUid: item.colUid, itemUid: item.uid }) }}
       />
     );
   }
@@ -166,7 +164,7 @@ export default function NoteListScreen(props: PropsType) {
           const item = await itemMgr.create(meta, "");
           await dispatch(setCacheItem(col, itemMgr, item));
           dispatch(setSyncItem(colUid, item.uid));
-          navigation.navigate("ItemEdit", { colUid, itemUid: item.uid });
+          navigation.navigate("NoteEdit", { colUid, itemUid: item.uid });
           setNewItemDialogShow(false);
         }}
         initialColUid={colUid}
@@ -205,7 +203,7 @@ function RightAction(props: RightActionPropsType) {
   const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
   const selecetdStyle = { color: "green" };
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
-  const navigation = useNavigation();
+  const navigation = useNavigation<DefaultNavigationProp>();
   const { colUid } = props;
 
   function setShowSortMenu(value: boolean) {

@@ -15,11 +15,13 @@ import { SyncManager } from "../sync/SyncManager";
 import { store } from "../store";
 import { useCredentials } from "../credentials";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { useSyncGate } from "../SyncGate";
 import { useDispatch } from "react-redux";
 import { performSync } from "../store/actions";
 
 import * as C from "../constants";
+import { RootStackParamList } from "../RootStackParamList";
 
 const wizardPages = [
   (props: PagePropsType) => (
@@ -82,6 +84,8 @@ function SetupCollectionsPage(props: PagePropsType) {
   );
 }
 
+type NavigationProp = StackNavigationProp<RootStackParamList, "AccountWizard">;
+
 export default function AccountWizardScreen() {
   const [tryCount, setTryCount] = React.useState(0);
   const [ranWizard, setRanWizard] = React.useState(false);
@@ -89,7 +93,7 @@ export default function AccountWizardScreen() {
   const etebase = useCredentials();
   const dispatch = useDispatch();
   const syncGate = useSyncGate();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -120,13 +124,13 @@ export default function AccountWizardScreen() {
 
   React.useEffect(() => {
     if (etebase === null) {
-      navigation.navigate("LoginScreen");
+      navigation.navigate("Login");
     }
   }, [etebase]);
 
   React.useEffect(() => {
     if (!syncError && !syncGate && ranWizard) {
-      navigation.navigate("home", undefined);
+      navigation.navigate("Home", { colUid: "" });
     }
   }, [ranWizard, syncError, syncGate]);
 
