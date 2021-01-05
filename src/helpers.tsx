@@ -4,9 +4,10 @@
 import * as React from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
 import * as Etebase from "etebase";
-import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 import { logger } from "./logging";
+import { RootStackParamList } from "./RootStackParamList";
 
 export const defaultColor = "#8BC34A";
 
@@ -154,8 +155,9 @@ export function enforcePasswordRules(password: string): string | undefined {
   return undefined;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function navigateTo404(navigation: NavigationProp<Record<string, object | undefined>>, title = "Notebook not found", message = "This notebook can't be found") {
+export type DefaultNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+
+export function navigateTo404(navigation: DefaultNavigationProp, title = "Notebook not found", message = "This notebook can't be found") {
   navigation.navigate("404", {
     title,
     message,

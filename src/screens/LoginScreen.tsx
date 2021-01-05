@@ -23,12 +23,15 @@ import * as C from "../constants";
 import { useCredentials } from "../credentials";
 import LinkButton from "../widgets/LinkButton";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../RootStackParamList";
 
+type NavigationProp = StackNavigationProp<RootStackParamList, "Login">;
 
 const LoginScreen = React.memo(function _LoginScreen() {
   const etebase = useCredentials();
   const dispatch = useAsyncDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const [loading, error, setPromise] = useLoading();
 
   function onFormSubmit(username: string, password: string, serviceApiUrl?: string) {

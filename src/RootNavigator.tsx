@@ -16,8 +16,8 @@ import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
+import NoteEditScreen from "./screens/NoteEditScreen";
 import CollectionEditScreen from "./screens/CollectionEditScreen";
-import ItemEditScreen from "./screens/ItemEditScreen";
 import CollectionChangelogScreen from "./screens/CollectionChangelogScreen";
 import CollectionMembersScreen from "./screens/CollectionMembersScreen";
 import InvitationsScreen from "./screens/InvitationsScreen";
@@ -31,8 +31,9 @@ import { useAppStateCb } from "./helpers";
 
 import * as C from "./constants";
 import { StoreState } from "./store";
+import { RootStackParamList } from "./RootStackParamList";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const MenuButton = React.memo(function MenuButton() {
   const navigation = useNavigation() as DrawerNavigationProp<any>;
@@ -75,7 +76,7 @@ export default React.memo(function RootNavigator() {
         {(etebase === null) ? (
           <>
             <Stack.Screen
-              name="LoginScreen"
+              name="Login"
               component={LoginScreen}
               options={{
                 title: "Login",
@@ -98,8 +99,9 @@ export default React.memo(function RootNavigator() {
         ) : (
           <>
             <Stack.Screen
-              name="home"
+              name="Home"
               component={NoteListScreen}
+              initialParams={{ colUid: "" }}
               options={{
                 title: C.appName,
                 headerLeft: () => (
@@ -130,8 +132,8 @@ export default React.memo(function RootNavigator() {
               }}
             />
             <Stack.Screen
-              name="ItemEdit"
-              component={ItemEditScreen}
+              name="NoteEdit"
+              component={NoteEditScreen}
             />
             <Stack.Screen
               name="Invitations"

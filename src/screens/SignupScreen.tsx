@@ -25,6 +25,8 @@ import * as C from "../constants";
 import { useCredentials } from "../credentials";
 import LinkButton from "../widgets/LinkButton";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../RootStackParamList";
 
 interface FormErrors {
   username?: string;
@@ -35,13 +37,15 @@ interface FormErrors {
   general?: string;
 }
 
+type NavigationProp = StackNavigationProp<RootStackParamList, "Signup">;
+
 // Can be used to force always showing advance, e.g. for genericMode
 const alwaysShowAdvanced = false;
 
 export default React.memo(function SignupScreen() {
   const etebase = useCredentials();
   const dispatch = useAsyncDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -130,7 +134,7 @@ export default React.memo(function SignupScreen() {
       <Container>
         <Headline>Signup</Headline>
         <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Text> or </Text><LinkButton onPress={() => navigation.navigate("LoginScreen")}>log in to your account</LinkButton>
+          <Text> or </Text><LinkButton onPress={() => navigation.navigate("Login")}>log in to your account</LinkButton>
         </View>
 
         <Alert

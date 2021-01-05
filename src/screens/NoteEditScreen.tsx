@@ -6,6 +6,7 @@ import * as Etebase from "etebase";
 import { View, ViewProps, KeyboardAvoidingView, Platform } from "react-native";
 import { Appbar, Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useSyncGate } from "../SyncGate";
@@ -22,19 +23,15 @@ import Menu from "../widgets/Menu";
 import NoteEditDialog from "../components/NoteEditDialog";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import { fontFamilies, navigateTo404 } from "../helpers";
+import { RootStackParamList } from "../RootStackParamList";
 
-type RootStackParamList = {
-  ItemEditScreen: {
-    colUid: string;
-    itemUid: string;
-  };
-};
+type NavigationProp = StackNavigationProp<RootStackParamList, "NoteEdit">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "ItemEditScreen">;
+  route: RouteProp<RootStackParamList, "NoteEdit">;
 }
 
-export default function ItemEditScreen(props: PropsType) {
+export default function NoteEditScreen(props: PropsType) {
   const onSaveDoRef = React.useRef<() => void>();
   const [loading, setLoading] = React.useState(true);
   const [content, setContent_] = React.useState("");
@@ -49,7 +46,7 @@ export default function ItemEditScreen(props: PropsType) {
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
   const etebase = useCredentials()!;
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const syncGate = useSyncGate();
 
   function setLastViewMode(viewMode: boolean) {
