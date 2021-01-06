@@ -136,17 +136,21 @@ export default function Drawer(props: PropsType) {
             />
             <Divider />
             <List.Section title="Notebooks">
-              {Array.from(cacheCollections.map(({ meta }, uid) => (
-                <List.Item
-                  key={uid}
-                  title={meta.name}
-                  onPress={() => {
-                    navigation.closeDrawer();
-                    navigation.navigate("Home", { colUid: uid });
-                  }}
-                  left={(props) => <List.Icon {...props} icon="notebook" />}
-                />
-              )).values())}
+              {Array.from(cacheCollections
+                .sort((a, b) => (a.meta!.name!.toUpperCase() >= b.meta!.name!.toUpperCase()) ? 1 : -1)
+                .map(({ meta }, uid) => (
+                  <List.Item
+                    key={uid}
+                    title={meta.name}
+                    onPress={() => {
+                      navigation.closeDrawer();
+                      navigation.navigate("Home", { colUid: uid });
+                    }}
+                    left={(props) => <List.Icon {...props} icon="notebook" />}
+                  />
+                ))
+                .values()
+              )}
               <List.Item
                 title="Create new notebook"
                 onPress={() => {
