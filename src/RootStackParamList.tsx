@@ -7,6 +7,14 @@ export type RootStackParamList = {
   CollectionEdit: { colUid: string };
   CollectionChangelog: { colUid: string };
   CollectionMembers: { colUid: string };
+  NoteCreate: {
+    colUid: string;
+    itemUid?: undefined;
+  } | undefined;
+  NoteProps: {
+    colUid: string;
+    itemUid: string;
+  };
   NoteEdit: {
     colUid: string;
     itemUid: string;

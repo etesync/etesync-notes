@@ -13,11 +13,10 @@ import { useSyncGate } from "../SyncGate";
 import { CachedItem } from "../store";
 
 import { SyncManager } from "../sync/SyncManager";
-import { useAsyncDispatch, StoreState } from "../store";
-import { performSync, setCacheItem, setSettings, setSyncItem } from "../store/actions";
+import { StoreState } from "../store";
+import { performSync, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
-import NoteEditDialog from "../components/NoteEditDialog";
-import { NoteMetadata, navigateTo404, DefaultNavigationProp } from "../helpers";
+import { navigateTo404, DefaultNavigationProp } from "../helpers";
 import Menu from "../widgets/Menu";
 import { RootStackParamList } from "../RootStackParamList";
 
@@ -67,9 +66,6 @@ interface PropsType {
 }
 
 export default function NoteListScreen(props: PropsType) {
-  const etebase = useCredentials()!;
-  const dispatch = useAsyncDispatch();
-  const [newItemDialogShow, setNewItemDialogShow] = React.useState(false);
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const { sortBy } = viewSettings;
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
@@ -80,7 +76,7 @@ export default function NoteListScreen(props: PropsType) {
 
   const colUid = props.route.params?.colUid;
   const cacheCollection = (colUid && colUid.length > 0) ? cacheCollections.get(colUid) : undefined;
-  
+
   if (colUid && colUid.length > 0 && cacheCollection == null) {
     navigateTo404(navigation);
     return null;
@@ -119,7 +115,6 @@ export default function NoteListScreen(props: PropsType) {
   if (syncGate) {
     return syncGate;
   }
-
   function renderEntry(param: { item: CachedItem & { colUid: string, uid: string } }) {
     const item = param.item;
     const name = item.meta.name!;
@@ -150,33 +145,12 @@ export default function NoteListScreen(props: PropsType) {
         )}
       />
 
-      <NoteEditDialog
-        key={newItemDialogShow.toString()}
-        visible={newItemDialogShow}
-        onOk={async (colUid, name) => {
-          const colMgr = etebase.getCollectionManager();
-          const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
-          const itemMgr = colMgr.getItemManager(col);
-          const meta: NoteMetadata = {
-            name,
-            mtime: (new Date()).getTime(),
-          };
-          const item = await itemMgr.create(meta, "");
-          await dispatch(setCacheItem(col, itemMgr, item));
-          dispatch(setSyncItem(colUid, item.uid));
-          navigation.navigate("NoteEdit", { colUid, itemUid: item.uid });
-          setNewItemDialogShow(false);
-        }}
-        initialColUid={colUid}
-        onDismiss={() => setNewItemDialogShow(false)}
-      />
       <FAB
-        visible={!newItemDialogShow}
         icon="plus"
         accessibilityLabel="New"
         color="white"
         style={styles.fab}
-        onPress={() => setNewItemDialogShow(true)}
+        onPress={() => navigation.navigate("NoteCreate", { colUid })}
       />
     </>
   );

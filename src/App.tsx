@@ -36,6 +36,8 @@ const rootStackScreens: RootStackScreens = {
   CollectionEdit: "notes/:colUid/edit",
   CollectionChangelog: "notes/:colUid/manage",
   CollectionMembers: "notes/:colUid/members",
+  NoteCreate: "notes/new-note",
+  NoteProps: "notes/:colUid/:itemUid/properties",
   NoteEdit: "notes/:colUid/:itemUid",
   Invitations: "invitations",
   Settings: "settings",

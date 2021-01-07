@@ -20,7 +20,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCacheItem, itemBatch, setSettings, setSyncItem, unsetSyncItem } from "../store/actions";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
-import NoteEditDialog from "../components/NoteEditDialog";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import { fontFamilies, navigateTo404 } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
@@ -38,7 +37,6 @@ export default function NoteEditScreen(props: PropsType) {
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const { defaultViewMode, lastViewMode } = viewSettings;
   const [viewMode, setViewMode] = React.useState((defaultViewMode === "last") ? lastViewMode : (defaultViewMode === "viewer"));
-  const [noteEditDialogShow, setNoteEditDialogShow] = React.useState(false);
   const [noteDeleteDialogShow, setNoteDeleteDialogShow] = React.useState(false);
   const dispatch = useAsyncDispatch();
   const syncDispatch = useDispatch();
@@ -161,7 +159,7 @@ export default function NoteEditScreen(props: PropsType) {
           viewMode={viewMode}
           setViewMode={setLastViewMode}
           onSave={onSave}
-          onEdit={() => setNoteEditDialogShow(true)}
+          onEdit={() => navigation.navigate("NoteProps", { colUid, itemUid })}
           onDelete={() => setNoteDeleteDialogShow(true)}
           changed={changed}
         />
@@ -200,29 +198,6 @@ export default function NoteEditScreen(props: PropsType) {
           content={content}
         />
       )}
-      <NoteEditDialog
-        key={noteEditDialogShow.toString()}
-        visible={noteEditDialogShow}
-        colUid={colUid}
-        item={cacheItem}
-        onOk={async (_colUid, name) => {
-          const colMgr = etebase.getCollectionManager();
-          const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
-          const itemMgr = colMgr.getItemManager(col);
-          const item = itemMgr.cacheLoad(cacheItem.cache);
-
-          const meta = item.getMeta();
-          meta.name = name;
-          meta.mtime = (new Date()).getTime();
-          item.setMeta(meta);
-
-          await dispatch(setCacheItem(col, itemMgr, item));
-          setChanged(true);
-
-          setNoteEditDialogShow(false);
-        }}
-        onDismiss={() => setNoteEditDialogShow(false)}
-      />
       <ConfirmationDialog
         title="Delete Note"
         visible={noteDeleteDialogShow}
