@@ -158,6 +158,7 @@ export default function NotePropertiesScreen(props: PropsType) {
         <TextInput
           autoFocus
           returnKeyType="next"
+          onSubmitEditing={() => setSelectOpen(true)}
           error={!!errors.name}
           onChangeText={setName}
           label="Name"
