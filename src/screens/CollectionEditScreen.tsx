@@ -5,7 +5,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { TextInput as NativeTextInput } from "react-native";
 import { Text, HelperText, Button, Appbar, Paragraph } from "react-native-paper";
-import { useNavigation, RouteProp } from "@react-navigation/native";
+import { useNavigation, RouteProp, useNavigationState, CommonActions } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { SyncManager } from "../sync/SyncManager";
@@ -46,26 +46,29 @@ export default function CollectionEditScreen(props: PropsType) {
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const syncGate = useSyncGate();
   const navigation = useNavigation<NavigationProp>();
+  const navigationState = (navigation.canGoBack()) ? useNavigationState((state) => state.routes[state.index - 1]) : null;
   const etebase = useCredentials()!;
   const [loading, error, setPromise] = useLoading();
   const colType = C.colType;
 
-  const colUid: string = props.route.params?.colUid ?? "";
+  const colUid = props.route.params?.colUid;
   React.useEffect(() => {
     if (syncGate) {
       return;
     }
 
-    const passedCollection = cacheCollections.get(colUid);
-    if (passedCollection) {
-      const { meta } = passedCollection;
-      setName(meta.name!);
-      setDescription(meta.description ?? "");
-      if (meta.color !== undefined) {
-        setColor(meta.color);
+    if (colUid) {
+      const passedCollection = cacheCollections.get(colUid);
+      if (passedCollection) {
+        const { meta } = passedCollection;
+        setName(meta.name!);
+        setDescription(meta.description ?? "");
+        if (meta.color !== undefined) {
+          setColor(meta.color);
+        }
+      } else {
+        navigateTo404(navigation);
       }
-    } else if (colUid.length > 0) {
-      navigateTo404(navigation);
     }
 
   }, [syncGate, colUid]);
@@ -114,8 +117,24 @@ export default function CollectionEditScreen(props: PropsType) {
       }
 
       await dispatch(collectionUpload(colMgr, collection));
-      dispatch(pushMessage({ message: "Collection saved", severity: "success" }));
-      navigation.goBack();
+      if (colUid) {
+        dispatch(pushMessage({ message: "Notebook saved", severity: "success" }));
+        navigation.goBack();
+      } else {
+        dispatch(pushMessage({ message: "Notebook created", severity: "success" }));
+
+        const previousScreen = navigationState?.name;
+        if (navigationState && previousScreen === "NoteCreate") {
+          // We change the colUid 
+          navigation.dispatch({
+            ...CommonActions.setParams({ colUid: collection.uid }),
+            source: navigationState.key,
+          });
+        } else {
+          // We're gonna navigate to the notebook's page
+          navigation.replace("Home", { colUid: collection.uid });
+        }
+      }
       // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
       const syncManager = SyncManager.getManager(etebase);
       dispatch(performSync(syncManager.sync())); // not awaiting on puprose
@@ -188,7 +207,7 @@ export default function CollectionEditScreen(props: PropsType) {
   );
 }
 
-function RightAction(props: { colUid: string }) {
+function RightAction(props: { colUid: string | undefined }) {
   const [confirmationVisible, setConfirmationVisible] = React.useState(false);
   const navigation = useNavigation<DefaultNavigationProp>();
   const etebase = useCredentials()!;
