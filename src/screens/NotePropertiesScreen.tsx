@@ -190,7 +190,7 @@ export default function NotePropertiesScreen(props: PropsType) {
                 disabled={!!itemUid}
               >
                 <TextInputWithIcon
-                  editable
+                  editable={false}
                   label="Notebook"
                   accessibilityLabel="Notebook"
                   value={collection?.meta.name ?? "No Notebooks"}
