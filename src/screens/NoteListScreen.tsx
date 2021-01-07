@@ -67,6 +67,7 @@ interface PropsType {
 }
 
 export default function NoteListScreen(props: PropsType) {
+  const [is404, setIs404] = React.useState(false);
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
   const [newItemDialogShow, setNewItemDialogShow] = React.useState(false);
@@ -79,21 +80,20 @@ export default function NoteListScreen(props: PropsType) {
   const theme = useTheme();
 
   const colUid = props.route.params?.colUid;
-  const cacheCollection = (colUid && colUid.length > 0) ? cacheCollections.get(colUid) : undefined;
-  
-  if (colUid && colUid.length > 0 && cacheCollection == null) {
-    navigateTo404(navigation);
-    return null;
-  }
 
   React.useEffect(() => {
+    const cacheCollection = (colUid && colUid.length > 0) ? cacheCollections.get(colUid) : undefined;
 
-    navigation.setOptions({
-      title: cacheCollection?.meta.name ?? "All Notes",
-      headerRight: () => (
-        <RightAction colUid={colUid} />
-      ),
-    });
+    if (cacheCollection) {
+      navigation.setOptions({
+        title: cacheCollection?.meta.name ?? "All Notes",
+        headerRight: () => (
+          <RightAction colUid={colUid} />
+        ),
+      });
+    } else if (navigation.isFocused() && colUid) {
+      setIs404(true);
+    }
   }, [navigation, cacheCollections, colUid]);
 
   const entriesList = React.useMemo(() => {
@@ -118,6 +118,11 @@ export default function NoteListScreen(props: PropsType) {
 
   if (syncGate) {
     return syncGate;
+  }
+
+  if (is404) {
+    navigateTo404(navigation);
+    return null;
   }
 
   function renderEntry(param: { item: CachedItem & { colUid: string, uid: string } }) {
