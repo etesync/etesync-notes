@@ -90,8 +90,12 @@ export default function CollectionMembersScreen(props: PropsType) {
   }, [etebase, collection]);
 
   React.useEffect(() => {
+    if (!etebase) {
+      return;
+    }
+
     fetchMembers();
-  }, []);
+  }, [etebase, colUid]);
 
   async function onMemberAdd(username: string, pubkey: Uint8Array, accessLevel: Etebase.CollectionAccessLevel) {
     const inviteMgr = etebase.getInvitationManager();
