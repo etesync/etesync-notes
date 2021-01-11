@@ -21,7 +21,8 @@ import { setCacheItem, itemBatch, setSettings, setSyncItem, unsetSyncItem } from
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
-import { fontFamilies, navigateTo404 } from "../helpers";
+import NotFound from "../widgets/NotFound";
+import { fontFamilies } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "NoteEdit">;
@@ -60,19 +61,16 @@ export default function NoteEditScreen(props: PropsType) {
   const colUid = props.route.params.colUid;
   const itemUid = props.route.params.itemUid;
   const cacheCollection = cacheItems.get(colUid);
-  const hasItem = cacheCollection?.has(itemUid);
+  const cacheItem = cacheCollection?.get(itemUid);
 
-  if (cacheCollection == null || !hasItem) {
-    navigateTo404(
-      navigation,
-      (cacheCollection != null) ? "Note not found" : undefined,
-      (cacheCollection != null) ? "This note can't be found" : undefined
-    );
-    return null;
+  if (!cacheCollection) {
+    return <NotFound />;
+  }
+  if (!cacheItem) {
+    return <NotFound message="This note can't be found" />;
   }
 
   const changed = syncItems.hasIn([colUid, itemUid]);
-  const cacheItem = cacheCollection.get(itemUid)!;
 
   function setChanged(value: boolean) {
     if (changed === value) {
@@ -133,7 +131,7 @@ export default function NoteEditScreen(props: PropsType) {
     const colMgr = etebase.getCollectionManager();
     const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
     const itemMgr = colMgr.getItemManager(col);
-    const item = itemMgr.cacheLoad(cacheItem.cache);
+    const item = itemMgr.cacheLoad(cacheItem!.cache);
     await item.setContent(content);
     await dispatch(itemBatch(col, itemMgr, [item]));
     setChanged(false);

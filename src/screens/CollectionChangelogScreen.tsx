@@ -15,9 +15,10 @@ import { CachedItem } from "../store/reducers";
 import Container from "../widgets/Container";
 import Menu from "../widgets/Menu";
 import { Title } from "../widgets/Typography";
+import NotFound from "../widgets/NotFound";
 
-import { defaultColor, DefaultNavigationProp, navigateTo404 } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { defaultColor } from "../helpers";
+import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
 
 import ColorBox from "../widgets/ColorBox";
 
@@ -54,8 +55,7 @@ export default function CollectionChangelogScreen(props: PropsType) {
   }
 
   if (!cachedCollection || !colCachedItems) {
-    navigateTo404(navigation);
-    return null;
+    return <NotFound />;
   }
 
   const { meta } = cachedCollection;

@@ -19,9 +19,10 @@ import ScrollView from "../widgets/ScrollView";
 import Container from "../widgets/Container";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
+import NotFound from "../widgets/NotFound";
 
-import { useLoading, defaultColor, navigateTo404, DefaultNavigationProp } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { useLoading, defaultColor } from "../helpers";
+import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
 
 import ColorPicker from "../widgets/ColorPicker";
 import * as C from "../constants";
@@ -66,8 +67,6 @@ export default function CollectionEditScreen(props: PropsType) {
         if (meta.color !== undefined) {
           setColor(meta.color);
         }
-      } else {
-        navigateTo404(navigation);
       }
     }
 
@@ -84,6 +83,10 @@ export default function CollectionEditScreen(props: PropsType) {
 
   if (syncGate) {
     return syncGate;
+  }
+
+  if (colUid && !cacheCollections.has(colUid)) {
+    return <NotFound />;
   }
 
   function onSave() {

@@ -21,8 +21,9 @@ import Container from "../widgets/Container";
 import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 import Select from "../widgets/Select";
 import TextInputWithIcon from "../widgets/TextInputWithIcon";
+import NotFound from "../widgets/NotFound";
 
-import { useLoading, navigateTo404, NoteMetadata } from "../helpers";
+import { useLoading, NoteMetadata } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
 
 interface FormErrors {
@@ -75,15 +76,11 @@ export default function NotePropertiesScreen(props: PropsType) {
             setName(meta.name!);
             setCachedItem(cachedItem);
           } else {
-            navigateTo404(
-              navigation,
-              "Note not found",
-              "This note can't be found"
-            );
+            setCachedItem(undefined);
           }
         }
       } else {
-        navigateTo404(navigation);
+        setCollection(undefined);
       }
     }
 
@@ -97,6 +94,13 @@ export default function NotePropertiesScreen(props: PropsType) {
 
   if (syncGate) {
     return syncGate;
+  }
+
+  if (colUid && !collection) {
+    return <NotFound />;
+  }
+  if (itemUid && !cachedItem) {
+    return <NotFound message="This note can't be found" />;
   }
 
   function onSave() {

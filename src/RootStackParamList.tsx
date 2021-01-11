@@ -1,4 +1,6 @@
 
+import { StackNavigationProp } from "@react-navigation/stack";
+
 export type RootStackParamList = {
   Home: { colUid: string };
   Login: undefined;
@@ -24,9 +26,7 @@ export type RootStackParamList = {
   About: undefined;
   DebugLogs: undefined;
   AccountWizard: undefined;
-  "404": {
-    title?: string;
-    message?: string;
-    help?: string;
-  };
+  "404": undefined;
 };
+
+export type DefaultNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
