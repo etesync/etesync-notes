@@ -48,16 +48,6 @@ export default function NoteEditScreen(props: PropsType) {
   const navigation = useNavigation<NavigationProp>();
   const syncGate = useSyncGate();
 
-  function setLastViewMode(viewMode: boolean) {
-    setViewMode(viewMode);
-    syncDispatch(setSettings({
-      viewSettings: {
-        ...viewSettings,
-        lastViewMode: viewMode,
-      },
-    }));
-  }
-
   const colUid = props.route.params.colUid;
   const itemUid = props.route.params.itemUid;
   const cacheCollection = cacheItems.get(colUid);
@@ -71,18 +61,6 @@ export default function NoteEditScreen(props: PropsType) {
   }
 
   const changed = syncItems.hasIn([colUid, itemUid]);
-
-  function setChanged(value: boolean) {
-    if (changed === value) {
-      return;
-    }
-
-    if (value) {
-      syncDispatch(setSyncItem(colUid, itemUid));
-    } else {
-      syncDispatch(unsetSyncItem(colUid, itemUid));
-    }
-  }
 
   React.useEffect(() => {
     (async () => {
@@ -99,6 +77,22 @@ export default function NoteEditScreen(props: PropsType) {
       onSaveDoRef.current?.();
     };
   }, []);
+
+  React.useEffect(() => {
+    navigation.setOptions({
+      title: cacheItem.meta.name,
+      headerRight: () => (
+        <RightAction
+          viewMode={viewMode}
+          setViewMode={setLastViewMode}
+          onSave={onSave}
+          onEdit={() => navigation.navigate("NoteProps", { colUid, itemUid })}
+          onDelete={() => setNoteDeleteDialogShow(true)}
+          changed={changed}
+        />
+      ),
+    });
+  }, [navigation, colUid, cacheItem, viewMode, setLastViewMode, changed]);
 
   const persistItem = useDebouncedCallback(
     async (content: string) => {
@@ -122,6 +116,24 @@ export default function NoteEditScreen(props: PropsType) {
     // The max wait time:
     { maxWait: 10000 }
   );
+
+  function setChanged(value: boolean) {
+    if (changed === value) {
+      return;
+    }
+
+    if (value) {
+      syncDispatch(setSyncItem(colUid, itemUid));
+    } else {
+      syncDispatch(unsetSyncItem(colUid, itemUid));
+    }
+  }
+
+  function setContent(content: string) {
+    setChanged(true);
+    persistItem.callback(content);
+    setContent_(content);
+  }
 
   async function onSaveDo() {
     if (!changed) {
@@ -149,26 +161,14 @@ export default function NoteEditScreen(props: PropsType) {
     }
   }
 
-  React.useEffect(() => {
-    navigation.setOptions({
-      title: cacheItem.meta.name,
-      headerRight: () => (
-        <RightAction
-          viewMode={viewMode}
-          setViewMode={setLastViewMode}
-          onSave={onSave}
-          onEdit={() => navigation.navigate("NoteProps", { colUid, itemUid })}
-          onDelete={() => setNoteDeleteDialogShow(true)}
-          changed={changed}
-        />
-      ),
-    });
-  }, [navigation, colUid, cacheItem, viewMode, setLastViewMode, changed]);
-
-  function setContent(content: string) {
-    setChanged(true);
-    persistItem.callback(content);
-    setContent_(content);
+  function setLastViewMode(viewMode: boolean) {
+    setViewMode(viewMode);
+    syncDispatch(setSettings({
+      viewSettings: {
+        ...viewSettings,
+        lastViewMode: viewMode,
+      },
+    }));
   }
 
   if (syncGate) {
