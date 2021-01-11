@@ -39,6 +39,10 @@ export default function InvitationsScreen() {
   const syncGate = useSyncGate();
 
   React.useEffect(() => {
+    if (!etebase) {
+      return;
+    }
+  
     loadInvitations(etebase).then(setInvitations);
   }, [etebase]);
 
