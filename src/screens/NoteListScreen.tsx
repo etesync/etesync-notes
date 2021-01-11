@@ -74,7 +74,7 @@ export default function NoteListScreen(props: PropsType) {
   const syncGate = useSyncGate();
   const theme = useTheme();
 
-  const colUid = props.route.params?.colUid;
+  const colUid = props.route.params?.colUid || undefined;
   const cacheCollection = (colUid && colUid.length > 0) ? cacheCollections.get(colUid) : undefined;
 
   if (colUid && colUid.length > 0 && cacheCollection == null) {
