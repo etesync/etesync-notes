@@ -4,10 +4,8 @@
 import * as React from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
 import * as Etebase from "etebase";
-import { StackNavigationProp } from "@react-navigation/stack";
 
 import { logger } from "./logging";
-import { RootStackParamList } from "./RootStackParamList";
 
 export const defaultColor = "#8BC34A";
 
@@ -153,15 +151,6 @@ export function enforcePasswordRules(password: string): string | undefined {
     return `Passwourds should be at least ${PASSWORD_MIN_LENGTH} digits long.`;
   }
   return undefined;
-}
-
-export type DefaultNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
-
-export function navigateTo404(navigation: DefaultNavigationProp, title = "Notebook not found", message = "This notebook can't be found") {
-  navigation.navigate("404", {
-    title,
-    message,
-  });
 }
 
 export declare type FontFamilyKey = "regular" | "monospace" | "serif";

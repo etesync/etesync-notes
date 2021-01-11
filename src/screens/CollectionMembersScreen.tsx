@@ -12,15 +12,15 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useSyncGate } from "../SyncGate";
 import { useCredentials } from "../credentials";
 import { StoreState } from "../store";
+import { pushMessage } from "../store/actions";
 
 import ScrollView from "../widgets/ScrollView";
 import Container from "../widgets/Container";
 import LoadingIndicator from "../widgets/LoadingIndicator";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorDialog from "../widgets/ErrorDialog";
+import NotFound from "../widgets/NotFound";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
-import { pushMessage } from "../store/actions";
-import { navigateTo404 } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionMembers">;
@@ -47,11 +47,6 @@ export default function CollectionMembersScreen(props: PropsType) {
 
   const colUid = props.route.params?.colUid ?? "";
   const cacheCollection = collections.get(colUid);
-
-  if (cacheCollection == null) {
-    navigateTo404(navigation);
-    return null;
-  }
 
   async function fetchMembers() {
     const colMgr = etebase.getCollectionManager();
@@ -108,6 +103,12 @@ export default function CollectionMembersScreen(props: PropsType) {
 
   if (syncGate) {
     return syncGate;
+  }
+
+  if (!cacheCollection) {
+    return (
+      <NotFound />
+    );
   }
 
   if (error) {

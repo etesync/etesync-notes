@@ -10,15 +10,14 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
-import { CachedItem } from "../store";
-
+import { CachedItem, StoreState } from "../store";
 import { SyncManager } from "../sync/SyncManager";
-import { StoreState } from "../store";
 import { performSync, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
-import { navigateTo404, DefaultNavigationProp } from "../helpers";
+
 import Menu from "../widgets/Menu";
-import { RootStackParamList } from "../RootStackParamList";
+import NotFound from "../widgets/NotFound";
+import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
 
 
 function sortMtime(aIn: CachedItem, bIn: CachedItem) {
@@ -75,12 +74,7 @@ export default function NoteListScreen(props: PropsType) {
   const theme = useTheme();
 
   const colUid = props.route.params?.colUid || undefined;
-  const cacheCollection = (colUid && colUid.length > 0) ? cacheCollections.get(colUid) : undefined;
-
-  if (colUid && colUid.length > 0 && cacheCollection == null) {
-    navigateTo404(navigation);
-    return null;
-  }
+  const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
 
   React.useEffect(() => {
 
@@ -115,6 +109,11 @@ export default function NoteListScreen(props: PropsType) {
   if (syncGate) {
     return syncGate;
   }
+
+  if (colUid && !cacheCollection) {
+    return <NotFound />;
+  }
+
   function renderEntry(param: { item: CachedItem & { colUid: string, uid: string } }) {
     const item = param.item;
     const name = item.meta.name!;
@@ -150,7 +149,7 @@ export default function NoteListScreen(props: PropsType) {
         accessibilityLabel="New"
         color="white"
         style={styles.fab}
-        onPress={() => navigation.navigate("NoteCreate", { colUid })}
+        onPress={() => navigation.navigate("NoteCreate", colUid ? { colUid } : undefined)}
       />
     </>
   );
