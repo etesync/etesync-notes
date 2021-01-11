@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Image, Linking, View, StatusBar } from "react-native";
 import { Divider, List, Text, Paragraph } from "react-native-paper";
-import { IconSource } from "react-native-paper/lib/typescript/src/components/Icon";
-import SafeAreaView from "react-native-safe-area-view";
+import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { StoreState } from "./store";
 

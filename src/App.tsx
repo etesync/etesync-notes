@@ -15,6 +15,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import Drawer from "./Drawer";
 import SettingsGate from "./SettingsGate";
 
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 import { useSelector } from "react-redux";
@@ -99,10 +100,12 @@ function InnerApp() {
 class App extends React.Component {
   public render() {
     return (
-      <AppearanceProvider>
-        <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-        <InnerApp />
-      </AppearanceProvider>
+      <SafeAreaProvider>
+        <AppearanceProvider>
+          <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
+          <InnerApp />
+        </AppearanceProvider>
+      </SafeAreaProvider>
     );
   }
 }
