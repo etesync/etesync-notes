@@ -48,21 +48,23 @@ export default function NoteEditScreen(props: PropsType) {
   const navigation = useNavigation<NavigationProp>();
   const syncGate = useSyncGate();
 
-  const colUid = props.route.params.colUid;
-  const itemUid = props.route.params.itemUid;
-  const cacheCollection = cacheItems.get(colUid);
-  const cacheItem = cacheCollection?.get(itemUid);
-
-  if (!cacheCollection) {
-    return <NotFound />;
-  }
-  if (!cacheItem) {
-    return <NotFound message="This note can't be found" />;
-  }
+  const { colUid, itemUid } = props.route.params;
+  const cacheCollection = (colUid) ? cacheItems.get(colUid) : undefined;
+  const cacheItem = (cacheCollection && itemUid) ? cacheCollection.get(itemUid) : undefined;
 
   const changed = syncItems.hasIn([colUid, itemUid]);
 
   React.useEffect(() => {
+    return () => {
+      onSaveDoRef.current?.();
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (syncGate || !cacheItem) {
+      return;
+    }
+
     (async () => {
       const colMgr = etebase.getCollectionManager();
       const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
@@ -72,15 +74,11 @@ export default function NoteEditScreen(props: PropsType) {
       setContent_(content);
       setLoading(false);
     })();
-
-    return () => {
-      onSaveDoRef.current?.();
-    };
-  }, []);
+  }, [syncGate, colUid, itemUid]);
 
   React.useEffect(() => {
     navigation.setOptions({
-      title: cacheItem.meta.name,
+      title: cacheItem?.meta.name ?? "Note Not Found",
       headerRight: () => (
         <RightAction
           viewMode={viewMode}
@@ -103,7 +101,7 @@ export default function NoteEditScreen(props: PropsType) {
       const colMgr = etebase.getCollectionManager();
       const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
       const itemMgr = colMgr.getItemManager(col);
-      const item = itemMgr.cacheLoad(cacheItem.cache);
+      const item = itemMgr.cacheLoad(cacheItem!.cache);
 
       const meta = item.getMeta();
       meta.mtime = (new Date()).getTime();
@@ -173,6 +171,13 @@ export default function NoteEditScreen(props: PropsType) {
 
   if (syncGate) {
     return syncGate;
+  }
+  
+  if (!cacheCollection) {
+    return <NotFound />;
+  }
+  if (!cacheItem) {
+    return <NotFound message="This note can't be found" />;
   }
 
   if (loading) {
