@@ -58,10 +58,10 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "Home">;
+type NavigationProp = StackNavigationProp<RootStackParamList, "Home"> | StackNavigationProp<RootStackParamList, "Collection">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "Home">;
+  route: RouteProp<RootStackParamList, "Home"> | RouteProp<RootStackParamList, "Collection">;
 }
 
 export default function NoteListScreen(props: PropsType) {

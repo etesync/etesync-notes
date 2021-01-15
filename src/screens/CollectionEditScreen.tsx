@@ -135,7 +135,7 @@ export default function CollectionEditScreen(props: PropsType) {
           });
         } else {
           // We're gonna navigate to the notebook's page
-          navigation.replace("Home", { colUid: collection.uid });
+          navigation.replace("Collection", { colUid: collection.uid });
         }
       }
       // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
@@ -244,7 +244,7 @@ function RightAction(props: { colUid: string | undefined }) {
           collection.delete();
           await dispatch(collectionUpload(colMgr, collection));
           dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
-          navigation.navigate("Home", { colUid: "" });
+          navigation.navigate("Home");
           // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
           const syncManager = SyncManager.getManager(etebase);
           dispatch(performSync(syncManager.sync())); // not awaiting on puprose

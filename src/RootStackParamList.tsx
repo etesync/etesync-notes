@@ -2,10 +2,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
-  Home: { colUid: string };
+  Home: undefined;
   Login: undefined;
   Signup: undefined;
   CollectionCreate: undefined;
+  Collection: { colUid: string };
   CollectionEdit: { colUid: string };
   CollectionChangelog: { colUid: string };
   CollectionMembers: { colUid: string };
@@ -13,11 +14,11 @@ export type RootStackParamList = {
     colUid: string;
     itemUid?: undefined;
   } | undefined;
-  NoteProps: {
+  NoteEdit: {
     colUid: string;
     itemUid: string;
   };
-  NoteEdit: {
+  NoteProps: {
     colUid: string;
     itemUid: string;
   };
