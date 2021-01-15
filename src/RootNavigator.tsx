@@ -102,7 +102,16 @@ export default React.memo(function RootNavigator() {
             <Stack.Screen
               name="Home"
               component={NoteListScreen}
-              initialParams={{ colUid: "" }}
+              options={{
+                title: C.appName,
+                headerLeft: () => (
+                  <MenuButton />
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="Collection"
+              component={NoteListScreen}
               options={{
                 title: C.appName,
                 headerLeft: () => (

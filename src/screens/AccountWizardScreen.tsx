@@ -130,7 +130,7 @@ export default function AccountWizardScreen() {
 
   React.useEffect(() => {
     if (!syncError && !syncGate && ranWizard) {
-      navigation.navigate("Home", { colUid: "" });
+      navigation.navigate("Home");
     }
   }, [ranWizard, syncError, syncGate]);
 
