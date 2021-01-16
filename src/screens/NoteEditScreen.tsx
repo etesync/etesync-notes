@@ -24,6 +24,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import NotFound from "../widgets/NotFound";
 import { fontFamilies } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
+import { canShare, shareItem } from "../import-export";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "NoteEdit">;
 
@@ -86,6 +87,7 @@ export default function NoteEditScreen(props: PropsType) {
           onSave={onSave}
           onEdit={() => navigation.navigate("NoteProps", { colUid, itemUid })}
           onDelete={() => setNoteDeleteDialogShow(true)}
+          onShare={onShare}
           changed={changed}
         />
       ),
@@ -169,6 +171,16 @@ export default function NoteEditScreen(props: PropsType) {
     }));
   }
 
+  function onShare() {
+    (async () => {
+      const colMgr = etebase.getCollectionManager();
+      const col = colMgr.cacheLoad(cacheCollections.get(colUid)!.cache);
+      const itemMgr = colMgr.getItemManager(col);
+      const item = itemMgr.cacheLoad(cacheItem!.cache);
+      await shareItem(item);
+    })();
+  }
+
   if (syncGate) {
     return syncGate;
   }
@@ -233,9 +245,10 @@ interface RightActionViewProps {
   onEdit: () => void;
   onSave: () => void;
   onDelete: () => void;
+  onShare: () => void;
 }
 
-function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, changed }: RightActionViewProps) {
+function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, onShare, changed }: RightActionViewProps) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   return (
@@ -269,6 +282,14 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, changed 
             onSave();
           }}
         />
+        {(canShare()) ? (
+          <Menu.Item icon="share-variant" title="Share"
+            onPress={() => {
+              setShowMenu(false);
+              onShare();
+            }}
+          />
+        ) : null}
       </Menu>
     </View>
   );
