@@ -47,7 +47,8 @@ export default function CollectionEditScreen(props: PropsType) {
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const syncGate = useSyncGate();
   const navigation = useNavigation<NavigationProp>();
-  const navigationState = (navigation.canGoBack()) ? useNavigationState((state) => state.routes[state.index - 1]) : null;
+  const navigationState_ = useNavigationState((state) => state.routes[state.index - 1]);
+  const navigationState = (navigation.canGoBack()) ? navigationState_ : null;
   const etebase = useCredentials()!;
   const [loading, error, setPromise] = useLoading();
   const colType = C.colType;
