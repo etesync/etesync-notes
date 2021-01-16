@@ -28,7 +28,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import Alert from "../widgets/Alert";
 import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../StacksParamList";
 
 interface DialogPropsType {
   visible: boolean;

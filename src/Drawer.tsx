@@ -21,7 +21,7 @@ import LogoutDialog from "./components/LogoutDialog";
 
 import * as C from "./constants";
 import { useCredentials } from "./credentials";
-import { RootStackParamList } from "./RootStackParamList";
+import { MainStackParamList, RootStackParamList } from "./StacksParamList";
 
 type MenuItem = {
   title: string;
@@ -99,11 +99,13 @@ interface PropsType {
   navigation: any;
 }
 
+type AllStacksParamList = RootStackParamList & MainStackParamList;
+
 export default function Drawer(props: PropsType) {
   const [showFingerprint, setShowFingerprint] = React.useState(false);
   const [showLogout, setShowLogout] = React.useState(false);
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
-  const navigation = props.navigation as DrawerNavigationProp<RootStackParamList, keyof RootStackParamList>;
+  const navigation = props.navigation as DrawerNavigationProp<AllStacksParamList, keyof AllStacksParamList>;
   const etebase = useCredentials();
   const loggedIn = !!etebase;
   const syncCount = useSelector((state: StoreState) => state.syncCount);

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
+import { AppState, AppStateStatus, Platform, useWindowDimensions } from "react-native";
 import * as Etebase from "etebase";
 
 import { logger } from "./logging";
@@ -172,3 +172,16 @@ export const fontFamilies = Platform.select({
     serif: "serif",
   },
 });
+
+const BREAKPOINT = 900;
+
+export function useSplitView() {
+  const { width } = useWindowDimensions();
+  const [splitView, setSplitView] = React.useState(false);
+
+  React.useEffect(() => {
+    if (width < BREAKPOINT) { setSplitView(false) } else { setSplitView(true) }
+  }, [width]);
+
+  return splitView;
+}

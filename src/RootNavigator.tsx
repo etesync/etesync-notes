@@ -15,15 +15,9 @@ import SignupScreen from "./screens/SignupScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
-import NoteListScreen from "./screens/NoteListScreen";
-import NoteEditScreen from "./screens/NoteEditScreen";
-import NotePropertiesScreen from "./screens/NotePropertiesScreen";
-import CollectionEditScreen from "./screens/CollectionEditScreen";
-import CollectionChangelogScreen from "./screens/CollectionChangelogScreen";
-import CollectionMembersScreen from "./screens/CollectionMembersScreen";
-import InvitationsScreen from "./screens/InvitationsScreen";
 import AccountWizardScreen from "./screens/AccountWizardScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
+import MainNavigator from "./MainNavigator";
 
 import { useCredentials } from "./credentials";
 import { performSync, popMessage } from "./store/actions";
@@ -32,7 +26,7 @@ import { useAppStateCb } from "./helpers";
 
 import * as C from "./constants";
 import { StoreState } from "./store";
-import { RootStackParamList } from "./RootStackParamList";
+import { RootStackParamList } from "./StacksParamList";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -98,60 +92,13 @@ export default React.memo(function RootNavigator() {
             />
           </>
         ) : (
-          <>
-            <Stack.Screen
-              name="Home"
-              component={NoteListScreen}
-              initialParams={{ colUid: "" }}
-              options={{
-                title: C.appName,
-                headerLeft: () => (
-                  <MenuButton />
-                ),
-              }}
-            />
-            <Stack.Screen
-              name="NoteCreate"
-              component={NotePropertiesScreen}
-            />
-            <Stack.Screen
-              name="NoteProps"
-              component={NotePropertiesScreen}
-            />
-            <Stack.Screen
-              name="CollectionEdit"
-              component={CollectionEditScreen}
-            />
-            <Stack.Screen
-              name="CollectionCreate"
-              component={CollectionEditScreen}
-            />
-            <Stack.Screen
-              name="CollectionChangelog"
-              component={CollectionChangelogScreen}
-              options={{
-                title: "Manage Notebook",
-              }}
-            />
-            <Stack.Screen
-              name="CollectionMembers"
-              component={CollectionMembersScreen}
-              options={{
-                title: "Collection Members",
-              }}
-            />
-            <Stack.Screen
-              name="NoteEdit"
-              component={NoteEditScreen}
-            />
-            <Stack.Screen
-              name="Invitations"
-              component={InvitationsScreen}
-              options={{
-                title: "Collection Invitations",
-              }}
-            />
-          </>
+          <Stack.Screen
+            name="Main"
+            component={MainNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
         )}
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="About" component={AboutScreen} />

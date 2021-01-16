@@ -21,12 +21,12 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorDialog from "../widgets/ErrorDialog";
 import NotFound from "../widgets/NotFound";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
-import { RootStackParamList } from "../RootStackParamList";
+import { MainStackParamList } from "../StacksParamList";
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionMembers">;
+type NavigationProp = StackNavigationProp<MainStackParamList, "CollectionMembers">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "CollectionMembers">;
+  route: RouteProp<MainStackParamList, "CollectionMembers">;
 }
 
 

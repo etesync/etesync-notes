@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { performSync } from "../store/actions";
 
 import * as C from "../constants";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../StacksParamList";
 
 const wizardPages = [
   (props: PagePropsType) => (
@@ -130,7 +130,7 @@ export default function AccountWizardScreen() {
 
   React.useEffect(() => {
     if (!syncError && !syncGate && ranWizard) {
-      navigation.navigate("Home", { colUid: "" });
+      navigation.navigate("Main");
     }
   }, [ranWizard, syncError, syncGate]);
 

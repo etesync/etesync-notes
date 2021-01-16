@@ -7,7 +7,7 @@ import { DarkTheme, DefaultTheme, Provider as PaperProvider, Colors } from "reac
 
 import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, PathConfig } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RootNavigator from "./RootNavigator";
 
@@ -20,19 +20,17 @@ import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 import { useSelector } from "react-redux";
 import { StoreState } from "./store";
-import { RootStackParamList } from "./RootStackParamList";
+import { MainStackParamList, RootStackParamList } from "./StacksParamList";
 enableScreens();
 
 const DrawerNavigation = createDrawerNavigator();
 
-type RootStackScreens = {
-  [route in keyof RootStackParamList]: string;
+type StackScreens<T extends RootStackParamList | MainStackParamList> = {
+  [route in keyof T]: string | PathConfig;
 };
 
-const rootStackScreens: RootStackScreens = {
+const mainStackScreens: StackScreens<MainStackParamList> = {
   Home: "notes/:colUid?",
-  Login: "login",
-  Signup: "signup",
   CollectionCreate: "notes/new-notebook",
   CollectionEdit: "notes/:colUid/edit",
   CollectionChangelog: "notes/:colUid/manage",
@@ -41,6 +39,15 @@ const rootStackScreens: RootStackScreens = {
   NoteProps: "notes/:colUid/:itemUid/properties",
   NoteEdit: "notes/:colUid/:itemUid",
   Invitations: "invitations",
+};
+
+const rootStackScreens: StackScreens<RootStackParamList> = {
+  Main: {
+    path: "",
+    screens: mainStackScreens,
+  },
+  Login: "login",
+  Signup: "signup",
   Settings: "settings",
   About: "settings/about",
   DebugLogs: "settings/logs",

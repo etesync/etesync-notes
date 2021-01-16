@@ -17,7 +17,8 @@ import { useCredentials } from "../credentials";
 
 import Menu from "../widgets/Menu";
 import NotFound from "../widgets/NotFound";
-import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { MainNavigationProp, MainStackParamList } from "../StacksParamList";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 
 function sortMtime(aIn: CachedItem, bIn: CachedItem) {
@@ -58,10 +59,18 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "Home">;
+const MenuButton = React.memo(function MenuButton() {
+  const navigation = useNavigation() as DrawerNavigationProp<any>;
+  return (
+    <Appbar.Action icon="menu" accessibilityLabel="Main menu" onPress={() => navigation.openDrawer()} />
+  );
+});
+
+type NavigationProp = StackNavigationProp<MainStackParamList, "Home">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "Home">;
+  route: Partial<RouteProp<MainStackParamList, "Home">>;
+  fixed?: boolean;
 }
 
 export default function NoteListScreen(props: PropsType) {
@@ -73,17 +82,19 @@ export default function NoteListScreen(props: PropsType) {
   const syncGate = useSyncGate();
   const theme = useTheme();
 
+  const fixed = props.fixed;
   const colUid = props.route.params?.colUid || undefined;
   const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
 
   React.useEffect(() => {
-
-    navigation.setOptions({
-      title: cacheCollection?.meta.name ?? "All Notes",
-      headerRight: () => (
-        <RightAction colUid={colUid} />
-      ),
-    });
+    if (!fixed) {
+      navigation.setOptions({
+        title: cacheCollection?.meta.name ?? "All Notes",
+        headerRight: () => (
+          <RightAction colUid={colUid} />
+        ),
+      });
+    }
   }, [navigation, cacheCollections, colUid]);
 
   const entriesList = React.useMemo(() => {
@@ -131,6 +142,13 @@ export default function NoteListScreen(props: PropsType) {
 
   return (
     <>
+      {fixed ? (
+        <Appbar.Header style={{ flex: 0 }}>
+          <MenuButton />
+          <Appbar.Content title={cacheCollection?.meta.name ?? "All Notes"} />
+          <Appbar.Action icon="dots-vertical" onPress={() => { return }} />
+        </Appbar.Header>
+      ) : null}
       <FlatList
         style={[{ backgroundColor: theme.colors.background }, { flex: 1 }]}
         data={entriesList}
@@ -176,7 +194,7 @@ function RightAction(props: RightActionPropsType) {
   const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
   const selecetdStyle = { color: "green" };
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
-  const navigation = useNavigation<DefaultNavigationProp>();
+  const navigation = useNavigation<MainNavigationProp>();
   const { colUid } = props;
 
   function setShowSortMenu(value: boolean) {
