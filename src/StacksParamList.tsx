@@ -1,10 +1,8 @@
 
 import { StackNavigationProp } from "@react-navigation/stack";
 
-export type RootStackParamList = {
-  Home: { colUid: string };
-  Login: undefined;
-  Signup: undefined;
+export type MainStackParamList = {
+  Home: { colUid: string } | undefined;
   CollectionCreate: undefined;
   CollectionEdit: { colUid: string };
   CollectionChangelog: { colUid: string };
@@ -22,11 +20,19 @@ export type RootStackParamList = {
     itemUid: string;
   };
   Invitations: undefined;
+};
+
+export type RootStackParamList = {
+  Main: undefined;
+  Login: undefined;
+  Signup: undefined;
+  AccountWizard: undefined;
   Settings: undefined;
   About: undefined;
   DebugLogs: undefined;
-  AccountWizard: undefined;
   "404": undefined;
 };
 
-export type DefaultNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+export type RootNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+
+export type MainNavigationProp = StackNavigationProp<MainStackParamList, keyof MainStackParamList>;

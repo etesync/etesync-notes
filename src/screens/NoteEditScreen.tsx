@@ -23,12 +23,12 @@ import Menu from "../widgets/Menu";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import NotFound from "../widgets/NotFound";
 import { fontFamilies } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { MainStackParamList } from "../StacksParamList";
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "NoteEdit">;
+type NavigationProp = StackNavigationProp<MainStackParamList, "NoteEdit">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "NoteEdit">;
+  route: RouteProp<MainStackParamList, "NoteEdit">;
 }
 
 export default function NoteEditScreen(props: PropsType) {

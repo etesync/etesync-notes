@@ -24,17 +24,17 @@ import TextInputWithIcon from "../widgets/TextInputWithIcon";
 import NotFound from "../widgets/NotFound";
 
 import { useLoading, NoteMetadata } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { MainStackParamList } from "../StacksParamList";
 
 interface FormErrors {
   name?: string;
   notebook?: string;
 }
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "NoteProps"> | StackNavigationProp<RootStackParamList, "NoteCreate">;
+type NavigationProp = StackNavigationProp<MainStackParamList, "NoteProps"> | StackNavigationProp<MainStackParamList, "NoteCreate">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "NoteProps"> | RouteProp<RootStackParamList, "NoteCreate">;
+  route: RouteProp<MainStackParamList, "NoteProps"> | RouteProp<MainStackParamList, "NoteCreate">;
 }
 
 export default function NotePropertiesScreen(props: PropsType) {

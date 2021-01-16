@@ -22,7 +22,7 @@ import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 import NotFound from "../widgets/NotFound";
 
 import { useLoading, defaultColor } from "../helpers";
-import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { MainNavigationProp, MainStackParamList } from "../StacksParamList";
 
 import ColorPicker from "../widgets/ColorPicker";
 import * as C from "../constants";
@@ -32,10 +32,10 @@ interface FormErrors {
   color?: string;
 }
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionEdit"> | StackNavigationProp<RootStackParamList, "CollectionCreate">;
+type NavigationProp = StackNavigationProp<MainStackParamList, "CollectionEdit"> | StackNavigationProp<MainStackParamList, "CollectionCreate">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "CollectionEdit"> | RouteProp<RootStackParamList, "CollectionCreate">;
+  route: RouteProp<MainStackParamList, "CollectionEdit"> | RouteProp<MainStackParamList, "CollectionCreate">;
 }
 
 export default function CollectionEditScreen(props: PropsType) {
@@ -212,7 +212,7 @@ export default function CollectionEditScreen(props: PropsType) {
 
 function RightAction(props: { colUid: string | undefined }) {
   const [confirmationVisible, setConfirmationVisible] = React.useState(false);
-  const navigation = useNavigation<DefaultNavigationProp>();
+  const navigation = useNavigation<MainNavigationProp>();
   const etebase = useCredentials()!;
   const dispatch = useAsyncDispatch();
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);

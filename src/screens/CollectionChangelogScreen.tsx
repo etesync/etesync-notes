@@ -18,17 +18,17 @@ import { Title } from "../widgets/Typography";
 import NotFound from "../widgets/NotFound";
 
 import { defaultColor } from "../helpers";
-import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { MainNavigationProp, MainStackParamList } from "../StacksParamList";
 
 import ColorBox from "../widgets/ColorBox";
 
 const iconDeleted = (props: any) => (<List.Icon {...props} color="#F20C0C" icon="delete" />);
 const iconChanged = (props: any) => (<List.Icon {...props} color="#FEB115" icon="pencil" />);
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionChangelog">;
+type NavigationProp = StackNavigationProp<MainStackParamList, "CollectionChangelog">;
 
 interface PropsType {
-  route: RouteProp<RootStackParamList, "CollectionChangelog">;
+  route: RouteProp<MainStackParamList, "CollectionChangelog">;
 }
 
 export default function CollectionChangelogScreen(props: PropsType) {
@@ -114,7 +114,7 @@ export default function CollectionChangelogScreen(props: PropsType) {
 
 function RightAction(props: { colUid: string }) {
   const [showMenu, setShowMenu] = React.useState(false);
-  const navigation = useNavigation<DefaultNavigationProp>();
+  const navigation = useNavigation<MainNavigationProp>();
   const colUid = props.colUid;
 
   return (
