@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512pt" height="512pt" version="1.1" viewBox="0 0 181 181" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter id="filter4498-9" color-interpolation-filters="sRGB">
+   <feFlood flood-color="rgb(0,0,0)" flood-opacity=".498" result="flood"/>
+   <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
+   <feGaussianBlur in="composite1" result="blur" stdDeviation="4"/>
+   <feOffset dx="0" dy="4" result="offset"/>
+   <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
+  </filter>
+  <filter id="filter4510-5" color-interpolation-filters="sRGB">
+   <feFlood flood-color="rgb(0,0,0)" flood-opacity=".498" result="flood"/>
+   <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
+   <feGaussianBlur in="composite1" result="blur" stdDeviation="4"/>
+   <feOffset dx="0" dy="4" result="offset"/>
+   <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
+  </filter>
+ </defs>
+ <g transform="translate(-13.7 -40.5)">
+  <path d="m13.7 86.1v135h181v-135l-27.6-4e-6h-125z" fill="#e1e6e9" style="paint-order:normal"/>
+  <path transform="matrix(.265 0 0 .265 13.7 40.5)" d="m0 211v6.55h683v-6.55h-683zm0 47.7v6.56h683v-6.56h-683zm0 48.4v6.55h683v-6.55h-683zm0 47.5v6.55h683v-6.55h-683zm0 48.4v6.55h683v-6.55h-683zm0 47.5v6.55h683v-6.55h-683zm0 48.3v6.55h683v-6.55h-683zm0 47.5v6.56h683v-6.56h-683zm0 47.7v6.56h683v-6.56h-683z" fill="#a8abb5" stroke-width="1.26"/>
+  <path d="m13.7 40.5v45.6h181v-45.6h-181z" fill="#6fa5ff" stroke-width="0" style="paint-order:normal"/>
+  <path d="m59.9 64.1a6.73 5.48 0 0 0-6.73 5.48 6.73 5.48 0 0 0 6.73 5.48 6.73 5.48 0 0 0 6.73-5.48 6.73 5.48 0 0 0-6.73-5.48z" fill="#fff" style="paint-order:normal"/>
+  <path d="m56.8 40.5-0.0443 29c-0.0019 1.22 1.45 1.86 3.09 1.86 1.65 0 3.07-0.619 3.07-1.86l0.0446-29z" fill="#637889"/>
+  <path d="m82 64.1a6.73 5.48 0 0 0-6.73 5.48 6.73 5.48 0 0 0 6.73 5.48 6.73 5.48 0 0 0 6.73-5.48 6.73 5.48 0 0 0-6.73-5.48z" fill="#fff" style="paint-order:normal"/>
+  <path d="m78.9 40.5 6.3e-5 29c3e-6 1.22 1.45 1.86 3.09 1.86 1.65 0 3.07-0.619 3.07-1.86l0.0446-29z" fill="#637889"/>
+  <path d="m104 64.1a6.73 5.48 0 0 0-6.73 5.48 6.73 5.48 0 0 0 6.73 5.48 6.73 5.48 0 0 0 6.73-5.48 6.73 5.48 0 0 0-6.73-5.48z" fill="#fff" style="paint-order:normal"/>
+  <path d="m101 40.5-0.0443 29c-2e-3 1.22 1.45 1.86 3.09 1.86 1.65 0 3.07-0.619 3.07-1.86l0.0446-29z" fill="#637889"/>
+  <path d="m126 64.1a6.73 5.48 0 0 0-6.73 5.48 6.73 5.48 0 0 0 6.73 5.48 6.73 5.48 0 0 0 6.73-5.48 6.73 5.48 0 0 0-6.73-5.48z" fill="#fff" style="paint-order:normal"/>
+  <path d="m123 40.5-0.0443 29c-2e-3 1.22 1.45 1.86 3.09 1.86 1.65 0 3.07-0.619 3.07-1.86l0.101-29z" fill="#637889"/>
+  <path d="m148 64.1a6.73 5.48 0 0 0-6.73 5.48 6.73 5.48 0 0 0 6.73 5.48 6.73 5.48 0 0 0 6.73-5.48 6.73 5.48 0 0 0-6.73-5.48z" fill="#fff" style="paint-order:normal"/>
+  <path d="m145 40.5 6e-5 29c0 1.22 1.45 1.86 3.09 1.86 1.65 0 3.07-0.619 3.07-1.86l0.101-29z" fill="#637889"/>
+  <path transform="matrix(.599 0 0 .594 16.1 15.9)" d="m211 167v-37.5h-37.5l-26.5-26.5-26.5 26.5h-37.5v37.5l-26.5 26.5 26.5 26.5v37.5h37.5l26.5 26.5 26.5-26.5h37.5v-37.5l26.5-26.5z" fill="#ffc107" filter="url(#filter4498-9)"/>
+  <g>
+   <ellipse cx="104" cy="131" rx="9.64" ry="9.57" fill="#ffd740" stroke="#ffd740" stroke-linecap="round" stroke-linejoin="round" stroke-width="36.4"/>
+   <path transform="matrix(.614 0 0 .586 13.9 296)" d="m147-329v-17.4l-23.3 23.3 23.3 23.3v-17.4c19.3 0 34.9 15.6 34.9 34.9 0 5.87-1.46 11.5-4.08 16.3l8.5 8.49c4.54-7.15 7.22-15.6 7.22-24.8 0-25.7-20.8-46.5-46.6-46.5z" fill="#448aff" filter="url(#filter4510-5)" stroke-width="60.7"/>
+   <path transform="matrix(.614 0 0 .586 13.9 297)" d="m147-248c-19.3 0-34.9-15.6-34.9-34.9 0-5.87 1.46-11.5 4.08-16.3l-8.5-8.49c-4.54 7.15-7.22 15.6-7.22 24.8 0 25.7 20.8 46.5 46.6 46.5v17.4l23.3-23.3-23.3-23.3z" fill="#448aff" filter="url(#filter4510-5)" stroke-width="60.7"/>
+  </g>
+ </g>
+</svg>

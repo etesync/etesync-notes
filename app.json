@@ -20,7 +20,8 @@
       "bundleIdentifier": "com.etesync.notes"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "themeColor": "#ffc107"
     },
     "sdkVersion": "39.0.0",
     "platforms": [
