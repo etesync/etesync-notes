@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { Keyboard, Platform } from "react-native";
+import { Keyboard, Platform, ScrollView } from "react-native";
 import { Card, Portal, Modal, Button, ProgressBar, Paragraph, useTheme, Dialog } from "react-native-paper";
 
 import { isPromise, useIsMounted } from "../helpers";
@@ -89,16 +89,19 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
           visible={props.visible}
           onDismiss={props.onCancel}
           dismissable={props.dismissable && !loading}
+          style={{ maxHeight: "100%" }}
         >
-          <Dialog.Title>
-            {props.title}
-          </Dialog.Title>
-          <Dialog.Content>
-            {content}
-          </Dialog.Content>
-          <Dialog.Actions>
-            {buttons}
-          </Dialog.Actions>
+          <ScrollView>
+            <Dialog.Title>
+              {props.title}
+            </Dialog.Title>
+            <Dialog.Content>
+              {content}
+            </Dialog.Content>
+            <Dialog.Actions>
+              {buttons}
+            </Dialog.Actions>
+          </ScrollView>
         </Dialog>
       </FakePortal>
     );
@@ -110,16 +113,19 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
         visible={props.visible}
         onDismiss={props.onCancel}
         dismissable={props.dismissable && !loading}
+        style={{ maxHeight: "100%" }}
       >
-        <Card accessible={false}>
-          <Card.Title title={props.title} />
-          <Card.Content>
-            {content}
-          </Card.Content>
-          <Card.Actions style={{ justifyContent: "flex-end" }}>
-            {buttons}
-          </Card.Actions>
-        </Card>
+        <ScrollView>
+          <Card accessible={false}>
+            <Card.Title title={props.title} />
+            <Card.Content>
+              {content}
+            </Card.Content>
+            <Card.Actions style={{ justifyContent: "flex-end" }}>
+              {buttons}
+            </Card.Actions>
+          </Card>
+        </ScrollView>
       </Modal>
     </FakePortal>
   );
