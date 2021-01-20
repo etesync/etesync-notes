@@ -7,7 +7,14 @@ module.exports = async function (env, argv) {
       // Passing true will enable the default Workbox + Expo SW configuration.
       offline: true,
     },
-    argv
+    {
+      ...argv,
+      workbox: {
+        generateSWOptions: {
+          importWorkboxFrom: "local",
+        },
+      },
+    }
   );
   // Customize the config before returning it.
   return config;
