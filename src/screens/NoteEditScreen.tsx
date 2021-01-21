@@ -88,6 +88,7 @@ export default function NoteEditScreen(props: PropsType) {
           onSave={onSave}
           onEdit={() => navigation.navigate("NoteProps", { colUid, itemUid })}
           onDelete={() => setNoteDeleteDialogShow(true)}
+          onMove={() => navigation.navigate("NoteMove", { colUid, itemUid })}
           onShare={onShare}
           changed={changed}
         />
@@ -246,10 +247,11 @@ interface RightActionViewProps {
   onEdit: () => void;
   onSave: () => void;
   onDelete: () => void;
+  onMove: () => void;
   onShare: () => void;
 }
 
-function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, onShare, changed }: RightActionViewProps) {
+function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, onMove, onShare, changed }: RightActionViewProps) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   return (
@@ -274,6 +276,12 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, onShare,
           onPress={() => {
             setShowMenu(false);
             onDelete();
+          }}
+        />
+        <Menu.Item icon="share" title="Move"
+          onPress={() => {
+            setShowMenu(false);
+            onMove();
           }}
         />
         <Menu.Item icon="content-save" title="Save"

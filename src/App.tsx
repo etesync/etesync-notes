@@ -41,6 +41,7 @@ const rootStackScreens: RootStackScreens = {
   NoteCreate: "new-note",
   NoteEdit: "notebook/:colUid/note/:itemUid",
   NoteProps: "notebook/:colUid/note/:itemUid/properties",
+  NoteMove: "notebook/:colUid/note/:itemUid/move",
   Invitations: "invitations",
   Settings: "settings",
   About: "settings/about",
