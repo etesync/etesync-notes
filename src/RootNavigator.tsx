@@ -18,6 +18,7 @@ import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
 import NoteEditScreen from "./screens/NoteEditScreen";
 import NotePropertiesScreen from "./screens/NotePropertiesScreen";
+import NoteMoveScreen from "./screens/NoteMoveScreen";
 import CollectionEditScreen from "./screens/CollectionEditScreen";
 import CollectionChangelogScreen from "./screens/CollectionChangelogScreen";
 import CollectionMembersScreen from "./screens/CollectionMembersScreen";
@@ -126,6 +127,10 @@ export default React.memo(function RootNavigator() {
             <Stack.Screen
               name="NoteProps"
               component={NotePropertiesScreen}
+            />
+            <Stack.Screen
+              name="NoteMove"
+              component={NoteMoveScreen}
             />
             <Stack.Screen
               name="CollectionEdit"

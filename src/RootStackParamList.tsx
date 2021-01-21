@@ -22,6 +22,10 @@ export type RootStackParamList = {
     colUid: string;
     itemUid: string;
   };
+  NoteMove: {
+    colUid: string;
+    itemUid: string;
+  };
   Invitations: undefined;
   Settings: undefined;
   About: undefined;
