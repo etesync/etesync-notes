@@ -5,7 +5,7 @@
     <key>EXUpdatesSDKVersion</key>
     <string>39.0.0</string>
     <key>EXUpdatesURL</key>
-    <string>https://expo.etesync.com/etesync-notes/release/1/ios-index.json</string>
+    <string>https://expo.etesync.com/etesync-notes/release/2/ios-index.json</string>
     <key>EXUpdatesEnabled</key>
     <true/>
     <key>EXUpdatesCheckOnLaunch</key>
