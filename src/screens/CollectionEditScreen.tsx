@@ -8,11 +8,10 @@ import { Text, HelperText, Button, Appbar, Paragraph } from "react-native-paper"
 import { useNavigation, RouteProp, useNavigationState, CommonActions } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-import { SyncManager } from "../sync/SyncManager";
 import { useSyncGate } from "../SyncGate";
 import { useCredentials } from "../credentials";
 import { StoreState, useAsyncDispatch } from "../store";
-import { collectionUpload, performSync, pushMessage } from "../store/actions";
+import { collectionUpload, pushMessage } from "../store/actions";
 
 import TextInput from "../widgets/TextInput";
 import ScrollView from "../widgets/ScrollView";
@@ -138,9 +137,6 @@ export default function CollectionEditScreen(props: PropsType) {
           navigation.replace("Collection", { colUid: collection.uid });
         }
       }
-      // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
-      const syncManager = SyncManager.getManager(etebase);
-      dispatch(performSync(syncManager.sync())); // not awaiting on puprose
     });
   }
 
@@ -245,9 +241,6 @@ function RightAction(props: { colUid: string | undefined }) {
           await dispatch(collectionUpload(colMgr, collection));
           dispatch(pushMessage({ message: "Collection deleted", severity: "success" }));
           navigation.navigate("Home");
-          // FIXME having the sync manager here is ugly. We should just deal with these changes centrally.
-          const syncManager = SyncManager.getManager(etebase);
-          dispatch(performSync(syncManager.sync())); // not awaiting on puprose
         }}
         onCancel={() => {
           setConfirmationVisible(false);

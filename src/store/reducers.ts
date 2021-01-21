@@ -178,16 +178,24 @@ export const items = handleActions(
       }
       return state;
     },
-    [actions.setCacheCollection.toString()]: (state: CachedItemsData, action: ActionMeta<any, { colUid: string }>) => {
-      if (action.payload !== undefined) {
+    [combineActions(
+      actions.setCacheCollection,
+      actions.collectionUpload
+    ).toString()]: (state: CachedItemsData, action_: any) => {
+      const action = action_ as ActionMeta<CachedCollection[], { colUid: string, deleted: boolean }>;
+      if (action.payload !== undefined && !action.meta.deleted) {
         if (!state.has(action.meta.colUid)) {
           return state.set(action.meta.colUid, ImmutableMap());
         }
       }
       return state;
     },
-    [actions.unsetCacheCollection.toString()]: (state: CachedItemsData, action: ActionMeta<any, { colUid: string }>) => {
-      if (action.payload !== undefined) {
+    [combineActions(
+      actions.unsetCacheCollection,
+      actions.collectionUpload
+    ).toString()]: (state: CachedItemsData, action_: any) => {
+      const action = action_ as ActionMeta<CachedCollection[], { colUid: string, deleted: boolean }>;
+      if (action.payload !== undefined && action.meta.deleted) {
         return state.remove(action.meta.colUid);
       }
       return state;
