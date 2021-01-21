@@ -52,7 +52,7 @@ export default function NotePropertiesScreen(props: PropsType) {
       .sort((a, b) => (a.meta!.name!.toUpperCase() >= b.meta!.name!.toUpperCase()) ? 1 : -1)
       .values()
   );
-  const [collection, setCollection] = React.useState<typeof options[0] | undefined>();
+  const [collection, setCollection] = React.useState((options.length > 0) ? options[0] : undefined);
   const syncGate = useSyncGate();
   const navigation = useNavigation<NavigationProp>();
   const etebase = useCredentials()!;
