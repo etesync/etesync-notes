@@ -3,10 +3,8 @@
 
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { Appbar, useTheme, Snackbar } from "react-native-paper";
+import { Snackbar } from "react-native-paper";
 
 import { SyncManager } from "./sync/SyncManager";
 
@@ -33,20 +31,14 @@ import { useAppStateCb } from "./helpers";
 import * as C from "./constants";
 import { StoreState } from "./store";
 import { RootStackParamList } from "./RootStackParamList";
+import MenuButton from "./widgets/MenuButton";
+import Appbar from "./widgets/Appbar";
 
 const Stack = createStackNavigator<RootStackParamList>();
-
-const MenuButton = React.memo(function MenuButton() {
-  const navigation = useNavigation() as DrawerNavigationProp<any>;
-  return (
-    <Appbar.Action icon="menu" accessibilityLabel="Main menu" onPress={() => navigation.openDrawer()} />
-  );
-});
 
 export default React.memo(function RootNavigator() {
   const dispatch = useDispatch();
   const etebase = useCredentials();
-  const theme = useTheme();
 
   // Sync app when it goes to background
   useAppStateCb((_foreground) => {
@@ -61,14 +53,7 @@ export default React.memo(function RootNavigator() {
     <>
       <Stack.Navigator
         screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.colors.primary,
-          },
-          headerTintColor: "#000000",
-          headerBackTitleVisible: false,
-          headerBackTitleStyle: {
-            backgroundColor: "black",
-          },
+          header: (props) => <Appbar {...props} menuFallback />,
           cardStyle: {
             maxHeight: "100%",
           },
