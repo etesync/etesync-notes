@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { StatusBar, useColorScheme } from "react-native";
-import { DarkTheme, DefaultTheme, Provider as PaperProvider, Colors } from "react-native-paper";
+import { DarkTheme, DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -19,6 +19,8 @@ import { enableScreens } from "react-native-screens";
 import { useSelector } from "react-redux";
 import { StoreState } from "./store";
 import { RootStackParamList } from "./RootStackParamList";
+import { extraColors, mainColors, Theme } from "./theme";
+
 enableScreens();
 
 const DrawerNavigation = createDrawerNavigator();
@@ -68,13 +70,13 @@ function InnerApp() {
   const colorScheme = (darkModePreference === "auto") ? colorScheme_ : darkModePreference;
   const baseTheme = (colorScheme === "dark") ? DarkTheme : DefaultTheme;
 
-  const theme: typeof DefaultTheme = {
+  const theme: Theme = {
     ...baseTheme,
     mode: "exact",
     colors: {
       ...baseTheme.colors,
-      primary: Colors.amber500,
-      accent: Colors.lightBlueA700, // Not the real etesync theme but better for accessibility
+      ...mainColors,
+      ...extraColors,
     },
   };
 

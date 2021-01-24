@@ -17,6 +17,7 @@ export default React.memo(React.forwardRef(function PasswordInput(inProps: React
       style={[{ backgroundColor: "transparent" }, style]}
       autoCorrect={false}
       theme={{ colors: { primary: theme.colors.placeholder } }}
+      selectionColor=""
       {...props}
     />
   );

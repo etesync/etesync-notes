@@ -3,8 +3,10 @@
 
 import * as React from "react";
 import { ViewProps, Linking } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
+
 import LinkButton from "./LinkButton";
+import { useTheme } from "../theme";
 
 type PropsType = {
   href: string;
@@ -19,7 +21,7 @@ export default function ExternalLink(props_: React.PropsWithChildren<PropsType>)
       {...props}
       onPress={() => Linking.openURL(href)}
     >
-      <Text style={{ color: theme.colors.accent }}>{children}</Text>
+      <Text style={{ color: theme.colors.accentText }}>{children}</Text>
     </LinkButton>
   );
 }

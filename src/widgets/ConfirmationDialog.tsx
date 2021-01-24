@@ -3,9 +3,10 @@
 
 import * as React from "react";
 import { Keyboard, Platform, ScrollView } from "react-native";
-import { Card, Portal, Modal, Button, ProgressBar, Paragraph, useTheme, Dialog } from "react-native-paper";
+import { Card, Portal, Modal, Button, ProgressBar, Paragraph, Dialog } from "react-native-paper";
 
 import { isPromise, useIsMounted } from "../helpers";
+import { useTheme } from "../theme";
 
 interface PropsType {
   title: string;
@@ -30,7 +31,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
   const labelCancel = props.labelCancel ?? "Cancel";
   const labelOk = props.labelOk ?? "OK";
   const loadingText = props.loadingText ?? "Loading...";
-  const buttonThemeOverride = { colors: { primary: theme.colors.accent } };
+  const buttonThemeOverride = { colors: { primary: theme.colors.accentText } };
 
   React.useEffect(() => {
     Keyboard.dismiss();
