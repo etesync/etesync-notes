@@ -3,13 +3,14 @@
 
 import * as React from "react";
 import { Linking, FlatList } from "react-native";
-import { Text, List, TouchableRipple, useTheme } from "react-native-paper";
+import { Text, List, TouchableRipple } from "react-native-paper";
 
 import { Title } from "../widgets/Typography";
 import Container from "../widgets/Container";
 
 import { expo } from "../../app.json";
 import * as C from "../constants";
+import { useTheme } from "../theme";
 
 import * as licenses from "../../licenses.json";
 
@@ -42,7 +43,7 @@ export default function AboutScreen() {
         <Container>
           <Title style={{ textAlign: "center" }}>{C.appName} {expo.version}</Title>
           <TouchableRipple onPress={() => { Linking.openURL(C.homePage) }}>
-            <Text style={{ textAlign: "center", color: theme.colors.accent, textDecorationLine: "underline", margin: 10 }}>{C.homePage}</Text>
+            <Text style={{ textAlign: "center", color: theme.colors.accentText, textDecorationLine: "underline", margin: 10 }}>{C.homePage}</Text>
           </TouchableRipple>
           <Title style={{ marginTop: 30 }}>Open Source Licenses</Title>
         </Container>

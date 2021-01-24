@@ -3,7 +3,8 @@
 
 import * as React from "react";
 import { ViewProps } from "react-native";
-import { Text, TouchableRipple, useTheme } from "react-native-paper";
+import { Text, TouchableRipple } from "react-native-paper";
+import { useTheme } from "../theme";
 
 type PropsType = {
   onPress: () => void;
@@ -19,7 +20,7 @@ export default function LinkButton(props_: React.PropsWithChildren<PropsType>) {
       {...props}
       onPress={onPress}
     >
-      <Text style={{ color: theme.colors.accent }}>{children}</Text>
+      <Text style={{ color: theme.colors.accentText }}>{children}</Text>
     </TouchableRipple>
   );
 }
