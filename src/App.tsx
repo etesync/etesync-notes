@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, useColorScheme } from "react-native";
 import { DarkTheme, DefaultTheme, Provider as PaperProvider, Colors } from "react-native-paper";
-
-import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -102,10 +100,8 @@ class App extends React.Component {
   public render() {
     return (
       <SafeAreaProvider>
-        <AppearanceProvider>
-          <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-          <InnerApp />
-        </AppearanceProvider>
+        <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
+        <InnerApp />
       </SafeAreaProvider>
     );
   }
