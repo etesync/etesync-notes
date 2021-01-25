@@ -4,7 +4,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { View } from "react-native";
-import { Text, HelperText, Button, TouchableRipple } from "react-native-paper";
+import { HelperText, Button, TouchableRipple } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Item } from "etebase";
@@ -220,7 +220,7 @@ export default function NotePropertiesScreen(props: PropsType) {
           disabled={loading}
           onPress={onSave}
         >
-          <Text>{loading ? "Loading…" : "Save"}</Text>
+          {loading ? "Loading…" : "Save"}
         </Button>
       </Container>
     </ScrollView>

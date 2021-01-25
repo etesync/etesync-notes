@@ -3,8 +3,9 @@
 
 import * as React from "react";
 import { ViewProps } from "react-native";
-import { Button, useTheme } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { fontFamilies, FontFamilyKey } from "../helpers";
+import { useTheme } from "../theme";
 import Menu from "./Menu";
 
 interface PropsType extends ViewProps {
@@ -29,7 +30,14 @@ export default function FontSelector(inProps: React.PropsWithChildren<PropsType>
       visible={visible}
       onDismiss={onDismiss}
       anchor={(
-        <Button mode="contained" color={theme.colors.accent} onPress={onOpen}>{selected && prettyName[selected]}</Button>
+        <Button
+          mode="contained"
+          color={theme.colors.accent}
+          labelStyle={{ color: theme.colors.onAccent }}
+          onPress={onOpen}
+        >
+          {selected && prettyName[selected]}
+        </Button>
       )}
       {...props}
     >

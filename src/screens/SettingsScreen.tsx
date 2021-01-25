@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { TextInput as NativeTextInput, Linking } from "react-native";
-import { List, HelperText, Switch, useTheme, Button } from "react-native-paper";
+import { List, HelperText, Switch, Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import * as Updates from "expo-updates";
 
@@ -29,6 +29,28 @@ import Alert from "../widgets/Alert";
 import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
 import { RootStackParamList } from "../RootStackParamList";
+import { useTheme } from "../theme";
+
+type AnchorButtonProps = {
+  onPress: () => void;
+  children: React.ReactNode;
+};
+
+function AnchorButton(props: AnchorButtonProps) {
+  const { children, onPress } = props; 
+  const theme = useTheme();
+
+  return (
+    <Button
+      mode="contained"
+      color={theme.colors.accent}
+      labelStyle={{ color: theme.colors.onAccent }}
+      onPress={onPress}
+    >
+      {children}
+    </Button>
+  );
+}
 
 interface DialogPropsType {
   visible: boolean;
@@ -148,7 +170,6 @@ function ChangePasswordDialog(props: DialogPropsType) {
 }
 
 function DarkModePreferenceSelector() {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const [selectDarkModeOpen, setDarkModePreferenceOpen] = React.useState(false);
   const darkModePreference = useSelector((state: StoreState) => state.settings.theme);
@@ -177,7 +198,7 @@ function DarkModePreferenceSelector() {
             dispatch(setSettings({ theme: selected as typeof darkModePreference }));
           }}
           anchor={(
-            <Button mode="contained" color={theme.colors.accent} onPress={() => setDarkModePreferenceOpen(true)}>{prettyName[darkModePreference]}</Button>
+            <AnchorButton onPress={() => setDarkModePreferenceOpen(true)}>{prettyName[darkModePreference]}</AnchorButton>
           )}
         />
       }
@@ -186,7 +207,6 @@ function DarkModePreferenceSelector() {
 }
 
 function FontSizePreferenceSelector() {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const [selectFontSizeOpen, setFontSizePreferenceOpen] = React.useState(false);
   const fontSizePreference = useSelector((state: StoreState) => state.settings.fontSize);
@@ -218,7 +238,7 @@ function FontSizePreferenceSelector() {
             dispatch(setSettings({ fontSize: selected as typeof fontSizePreference }));
           }}
           anchor={(
-            <Button mode="contained" color={theme.colors.accent} onPress={() => setFontSizePreferenceOpen(true)}>{fontSizePreference && prettyName[fontSizePreference]}</Button>
+            <AnchorButton onPress={() => setFontSizePreferenceOpen(true)}>{fontSizePreference && prettyName[fontSizePreference]}</AnchorButton>
           )}
         />
       }
@@ -297,7 +317,6 @@ function ViewerFontFamilyPreferenceSelector() {
 }
 
 function ViewModePreferenceSelector() {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const [selectViewModeOpen, setViewModePreferenceOpen] = React.useState(false);
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
@@ -335,7 +354,7 @@ function ViewModePreferenceSelector() {
             }));
           }}
           anchor={(
-            <Button mode="contained" color={theme.colors.accent} onPress={() => setViewModePreferenceOpen(true)}>{prettyName[defaultViewMode]}</Button>
+            <AnchorButton onPress={() => setViewModePreferenceOpen(true)}>{prettyName[defaultViewMode]}</AnchorButton>
           )}
         />
       }

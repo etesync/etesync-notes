@@ -264,7 +264,7 @@ export default React.memo(function SignupScreen() {
             disabled={loading}
             loading={loading}
           >
-            <Text>Signup</Text>
+            Signup
           </Button>
         </View>
       </Container>
