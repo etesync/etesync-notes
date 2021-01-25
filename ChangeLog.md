@@ -1,6 +1,22 @@
 # Changelog
 *NOTE:* may be removed in the future in favor of the fastlane changelog.
 
+## Version 1.7.0
+* A lot of cosmetic improvements
+* Web: Do heavy cryptographic operations in a web worker
+* Set up linking for web and add 404 page
+* Add a font setting for editor and viewer
+* Handle better refresh token errors
+* Add setting for default view mode
+* Sort notebooks by name
+* Replace the note edit dialog with a screen
+* Upgrade react native deps
+* Add feature to share a note
+* Add offline support for PWA
+* Make ConfirmationDialog scrollable in case content is too long
+* Improve light/dark themes' contrast for accessibility
+* Use darker color for splash screen
+
 ## Version 1.6.0
 * Add task (checkbox) support to note preview (including toggling them)
 * Make the Android icon adaptive (much nicer looking)

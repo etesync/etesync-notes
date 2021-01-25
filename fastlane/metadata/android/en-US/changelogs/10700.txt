@@ -1,0 +1,14 @@
+* A lot of cosmetic improvements
+* Web: Do heavy cryptographic operations in a web worker
+* Set up linking for web and add 404 page
+* Add a font setting for editor and viewer
+* Handle better refresh token errors
+* Add setting for default view mode
+* Sort notebooks by name
+* Replace the note edit dialog with a screen
+* Upgrade react native deps
+* Add feature to share a note
+* Add offline support for PWA
+* Make ConfirmationDialog scrollable in case content is too long
+* Improve light/dark themes' contrast for accessibility
+* Use darker color for splash screen
