@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
+import { AppState, AppStateStatus, Platform, useWindowDimensions } from "react-native";
 import * as Etebase from "etebase";
 
 import { logger } from "./logging";
@@ -172,3 +172,16 @@ export const fontFamilies = Platform.select({
     serif: "serif",
   },
 });
+
+const widescreenBreakPoint = 960;
+
+export function useWidescreen() {
+  const { width } = useWindowDimensions();
+  const [widescreen, setWidescreen] = React.useState(false);
+
+  React.useEffect(() => {
+    (width < widescreenBreakPoint) ? setWidescreen(false) : setWidescreen(true);
+  }, [width]);
+
+  return widescreen;
+}
