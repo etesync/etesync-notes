@@ -3,7 +3,7 @@
 
 import * as React from "react";
 
-import { Text, View, TextInput as NativeTextInput } from "react-native";
+import { View, TextInput as NativeTextInput } from "react-native";
 import { Switch, Button, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
 
 
@@ -154,7 +154,7 @@ export default function LoginForm(props: PropsType) {
           mode="contained"
           onPress={onSubmit}
         >
-          <Text>Log In</Text>
+          Log In
         </Button>
       </View>
     </>

@@ -4,7 +4,7 @@
 import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View, Platform } from "react-native";
-import { Appbar, List, useTheme, FAB } from "react-native-paper";
+import { Appbar, List, FAB } from "react-native-paper";
 import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,6 +18,7 @@ import { useCredentials } from "../credentials";
 import Menu from "../widgets/Menu";
 import NotFound from "../widgets/NotFound";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { useTheme } from "../theme";
 
 
 function sortMtime(aIn: CachedItem, bIn: CachedItem) {
@@ -147,7 +148,7 @@ export default function NoteListScreen(props: PropsType) {
       <FAB
         icon="plus"
         accessibilityLabel="New"
-        color="white"
+        color={theme.colors.onAccent}
         style={styles.fab}
         onPress={() => navigation.navigate("NoteCreate", colUid ? { colUid } : undefined)}
       />
