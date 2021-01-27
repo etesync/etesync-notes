@@ -4,19 +4,21 @@
 import * as React from "react";
 import { ViewProps } from "react-native";
 import Menu from "./Menu";
+import MenuItem from "./MenuItem";
 
 interface PropsType<T> extends ViewProps {
   visible: boolean;
   anchor: React.ReactNode;
   options: T[];
   noneString?: string;
+  active?: (item: T) => boolean;
   titleAccossor?: (item: T) => string;
   onChange: (item: T | null) => void;
   onDismiss: () => void;
 }
 
 export default function Select<T = string>(inProps: React.PropsWithChildren<PropsType<T>>) {
-  const { visible, anchor, options, onDismiss, noneString, titleAccossor, onChange, ...props } = inProps;
+  const { visible, anchor, options, onDismiss, noneString, active, titleAccossor, onChange, ...props } = inProps;
 
   const getTitle = titleAccossor ?? ((item: T) => item);
 
@@ -28,10 +30,10 @@ export default function Select<T = string>(inProps: React.PropsWithChildren<Prop
       {...props}
     >
       {noneString && (
-        <Menu.Item onPress={() => onChange(null)} title={noneString} />
+        <MenuItem onPress={() => onChange(null)} title={noneString} />
       )}
       {options.map((item, idx) => (
-        <Menu.Item key={idx} onPress={() => onChange(item)} title={getTitle(item)} />
+        <MenuItem key={idx} onPress={() => onChange(item)} title={getTitle(item)} active={active && active(item)} />
       ))}
     </Menu>
   );

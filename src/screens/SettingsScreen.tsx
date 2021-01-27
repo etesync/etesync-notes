@@ -171,6 +171,7 @@ function DarkModePreferenceSelector() {
           onDismiss={() => setDarkModePreferenceOpen(false)}
           options={["auto", "dark", "light"]}
           titleAccossor={(x) => prettyName[x]}
+          active={(x) => x === darkModePreference}
           onChange={(selected) => {
             setDarkModePreferenceOpen(false);
             if (selected === darkModePreference) {
@@ -216,6 +217,7 @@ function FontSizePreferenceSelector() {
           onDismiss={() => setFontSizePreferenceOpen(false)}
           options={Object.keys(prettyName)}
           titleAccossor={(x) => prettyName[x]}
+          active={(x) => x === fontSizePreference.toString()}
           onChange={(selected_) => {
             setFontSizePreferenceOpen(false);
             const selected = (selected_ !== null) ? parseInt(selected_) : null;
@@ -336,6 +338,7 @@ function ViewModePreferenceSelector() {
           onDismiss={() => setViewModePreferenceOpen(false)}
           options={options}
           titleAccossor={(x) => prettyName[x]}
+          active={(x) => x === defaultViewMode}
           onChange={(selected) => {
             setViewModePreferenceOpen(false);
             if (!selected || selected === defaultViewMode) {
