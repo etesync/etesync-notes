@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { TextInput as NativeTextInput, Linking } from "react-native";
-import { List, HelperText, Switch, Button } from "react-native-paper";
+import { List, HelperText, Switch } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import * as Updates from "expo-updates";
 
@@ -26,31 +26,11 @@ import { startTask, enforcePasswordRules } from "../helpers";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Alert from "../widgets/Alert";
+import AnchorButton from "../widgets/AnchorButton";
 import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
 import { RootStackParamList } from "../RootStackParamList";
 import { useTheme } from "../theme";
-
-type AnchorButtonProps = {
-  onPress: () => void;
-  children: React.ReactNode;
-};
-
-function AnchorButton(props: AnchorButtonProps) {
-  const { children, onPress } = props; 
-  const theme = useTheme();
-
-  return (
-    <Button
-      mode="contained"
-      color={theme.colors.accent}
-      labelStyle={{ color: theme.colors.onAccent }}
-      onPress={onPress}
-    >
-      {children}
-    </Button>
-  );
-}
 
 interface DialogPropsType {
   visible: boolean;
@@ -199,7 +179,12 @@ function DarkModePreferenceSelector() {
             dispatch(setSettings({ theme: selected as typeof darkModePreference }));
           }}
           anchor={(
-            <AnchorButton onPress={() => setDarkModePreferenceOpen(true)}>{prettyName[darkModePreference]}</AnchorButton>
+            <AnchorButton
+              open={selectDarkModeOpen}
+              onPress={() => setDarkModePreferenceOpen(true)}
+            >
+              {prettyName[darkModePreference]}
+            </AnchorButton>
           )}
         />
       }
@@ -240,7 +225,12 @@ function FontSizePreferenceSelector() {
             dispatch(setSettings({ fontSize: selected as typeof fontSizePreference }));
           }}
           anchor={(
-            <AnchorButton onPress={() => setFontSizePreferenceOpen(true)}>{fontSizePreference && prettyName[fontSizePreference]}</AnchorButton>
+            <AnchorButton
+              open={selectFontSizeOpen}
+              onPress={() => setFontSizePreferenceOpen(true)}
+            >
+              {fontSizePreference && prettyName[fontSizePreference]}
+            </AnchorButton>
           )}
         />
       }
@@ -359,7 +349,12 @@ function ViewModePreferenceSelector() {
             }));
           }}
           anchor={(
-            <AnchorButton onPress={() => setViewModePreferenceOpen(true)}>{prettyName[defaultViewMode]}</AnchorButton>
+            <AnchorButton
+              open={selectViewModeOpen}
+              onPress={() => setViewModePreferenceOpen(true)}
+            >
+              {prettyName[defaultViewMode]}
+            </AnchorButton>
           )}
         />
       }
