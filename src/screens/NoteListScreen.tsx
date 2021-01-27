@@ -16,6 +16,7 @@ import { performSync, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
 
 import Menu from "../widgets/Menu";
+import MenuItem from "../widgets/MenuItem";
 import NotFound from "../widgets/NotFound";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
 import { useTheme } from "../theme";
@@ -175,7 +176,6 @@ function RightAction(props: RightActionPropsType) {
   const [showSortMenu, setShowSortMenu_] = React.useState(false);
   const syncDispatch = useDispatch();
   const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
-  const selecetdStyle = { color: "green" };
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const navigation = useNavigation<DefaultNavigationProp>();
   const { colUid } = props;
@@ -240,11 +240,9 @@ function RightAction(props: RightActionPropsType) {
             />
           )}
         >
-          <Menu.Item icon="sort-alphabetical" title="Name"
+          <MenuItem icon="sort-alphabetical" title="Name"
             disabled={isSyncing}
-            titleStyle={
-              (viewSettings.sortBy === "name") ? selecetdStyle : undefined
-            }
+            active={viewSettings.sortBy === "name"}
             onPress={() => {
               setShowSortMenu(false);
               syncDispatch(setSettings({
@@ -255,11 +253,9 @@ function RightAction(props: RightActionPropsType) {
               }));
             }}
           />
-          <Menu.Item icon="sort-numeric" title="Modification time"
+          <MenuItem icon="sort-numeric" title="Modification time"
             disabled={isSyncing}
-            titleStyle={
-              (viewSettings.sortBy === "mtime") ? selecetdStyle : undefined
-            }
+            active={viewSettings.sortBy === "mtime"}
             onPress={() => {
               setShowSortMenu(false);
               syncDispatch(setSettings({
@@ -272,7 +268,7 @@ function RightAction(props: RightActionPropsType) {
           />
         </Menu>
         {colUid && (
-          <Menu.Item icon="notebook" title="Manage Notebook"
+          <MenuItem icon="notebook" title="Manage Notebook"
             disabled={isSyncing}
             onPress={() => {
               setShowMenu(false);
