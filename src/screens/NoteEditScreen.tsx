@@ -227,7 +227,7 @@ export default function NoteEditScreen(props: PropsType) {
           item.setMeta(meta);
           item.delete(true);
 
-          await dispatch(setCacheItem(col, itemMgr, item));
+          await dispatch(itemBatch(col, itemMgr, [item]));
           navigation.goBack();
         }}
         onCancel={() => setNoteDeleteDialogShow(false)}
