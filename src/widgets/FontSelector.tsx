@@ -6,6 +6,7 @@ import { ViewProps } from "react-native";
 import { fontFamilies, FontFamilyKey } from "../helpers";
 import AnchorButton from "./AnchorButton";
 import Menu from "./Menu";
+import MenuItem from "./MenuItem";
 
 interface PropsType extends ViewProps {
   visible: boolean;
@@ -38,7 +39,7 @@ export default function FontSelector(inProps: React.PropsWithChildren<PropsType>
       {...props}
     >
       {Object.keys(prettyName).map((font, idx) => (
-        <Menu.Item key={idx} onPress={() => onChange(font as FontFamilyKey)} title={prettyName[font]} titleStyle={{ fontFamily: fontFamilies[font] }} />
+        <MenuItem key={idx} onPress={() => onChange(font as FontFamilyKey)} title={prettyName[font]} titleStyle={{ fontFamily: fontFamilies[font] }} active={font === selected} />
       ))}
     </Menu>
   );
