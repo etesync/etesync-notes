@@ -183,6 +183,7 @@ function DarkModePreferenceSelector() {
     <List.Item
       title="Theme"
       description="Set the app's theme to dark, light or auto"
+      onPress={() => setDarkModePreferenceOpen(true)}
       right={(props) =>
         <Select
           {...props}
@@ -222,6 +223,7 @@ function FontSizePreferenceSelector() {
     <List.Item
       title="Font Size"
       description="Set the content's font size"
+      onPress={() => setFontSizePreferenceOpen(true)}
       right={(props) =>
         <Select
           {...props}
@@ -256,6 +258,7 @@ function EditorFontFamilyPreferenceSelector() {
     <List.Item
       title="Editor Font"
       description="Set the font used in the note editor"
+      onPress={() => setEditorFontFamilyPreferenceOpen(true)}
       right={(props) =>
         <FontSelector
           {...props}
@@ -291,6 +294,7 @@ function ViewerFontFamilyPreferenceSelector() {
     <List.Item
       title="Preview Font"
       description="Set the font used in the note preview"
+      onPress={() => setViewerFontFamilyPreferenceOpen(true)}
       right={(props) =>
         <FontSelector
           {...props}
@@ -334,6 +338,7 @@ function ViewModePreferenceSelector() {
     <List.Item
       title="Default View Mode"
       description="Set the default view mode for notes"
+      onPress={() => setViewModePreferenceOpen(true)}
       right={(props) =>
         <Select
           {...props}
