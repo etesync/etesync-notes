@@ -6,6 +6,9 @@ export interface Theme extends PaperTheme {
   colors: PaperTheme["colors"] & {
     accentText: string;
     onAccent: string;
+    active: string;
+    activeIcon: string;
+    activeBackground: string;
   };
 }
 
@@ -22,6 +25,9 @@ export const LightTheme: Theme = {
     ...mainColors,
     accentText: Color(mainColors.accent).darken(0.2).rgb().string(),
     onAccent: "#FFFFFF",
+    active: Color(mainColors.accent).darken(0.4).rgb().string(),
+    activeIcon: Color(mainColors.accent).darken(0.2).rgb().string(),
+    activeBackground: Color(mainColors.accent).alpha(0.12).rgb().string(),
   },
 };
 
@@ -33,6 +39,9 @@ export const DarkTheme: Theme = {
     ...mainColors,
     accentText: Color(mainColors.accent).lighten(0.4).rgb().string(),
     onAccent: "#000000",
+    active: Color(mainColors.accent).lighten(0.4).rgb().string(),
+    activeIcon: mainColors.accent,
+    activeBackground: Color(mainColors.accent).alpha(0.12).rgb().string(),
   },
 };
 
