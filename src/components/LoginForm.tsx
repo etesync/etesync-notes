@@ -4,7 +4,7 @@
 import * as React from "react";
 
 import { View, TextInput as NativeTextInput } from "react-native";
-import { Switch, Button, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
+import { Switch, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
 
 
 import ExternalLink from "../widgets/ExternalLink";
@@ -13,6 +13,7 @@ import TextInput from "../widgets/TextInput";
 
 import * as C from "../constants";
 import PasswordInput from "../widgets/PasswordInput";
+import FormButton from "../widgets/FormButton";
 
 interface FormErrors {
   username?: string;
@@ -150,12 +151,11 @@ export default function LoginForm(props: PropsType) {
           <React.Fragment />
         </HelperText>
 
-        <Button
-          mode="contained"
+        <FormButton
           onPress={onSubmit}
         >
           Log In
-        </Button>
+        </FormButton>
       </View>
     </>
   );

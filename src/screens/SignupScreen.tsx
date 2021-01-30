@@ -6,7 +6,7 @@ import * as React from "react";
 import * as Etebase from "etebase";
 
 import { View, TextInput as NativeTextInput, Linking } from "react-native";
-import { Switch, Button, Text, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
+import { Switch, Text, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
 
 import { Headline } from "../widgets/Typography";
 import ScrollView from "../widgets/ScrollView";
@@ -15,6 +15,7 @@ import TextInput from "../widgets/TextInput";
 import PasswordInput from "../widgets/PasswordInput";
 import Alert from "../widgets/Alert";
 import Row from "../widgets/Row";
+import FormButton from "../widgets/FormButton";
 
 import { useAsyncDispatch } from "../store";
 
@@ -258,14 +259,13 @@ export default React.memo(function SignupScreen() {
             Please make sure you remember your password, as it can't be recovered if lost!
           </Alert>
 
-          <Button
-            mode="contained"
+          <FormButton
             onPress={onSubmit}
             disabled={loading}
             loading={loading}
           >
             Signup
-          </Button>
+          </FormButton>
         </View>
       </Container>
     </ScrollView>

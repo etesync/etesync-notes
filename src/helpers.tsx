@@ -175,6 +175,7 @@ export const fontFamilies = Platform.select({
 
 // These are taken from https://material.io/design/layout/responsive-layout-grid.html#breakpoints
 const deviceBreakpoints = {
+  tabletPortrait: 600,
   tabletLandscape: 960,
 };
 
