@@ -5,7 +5,7 @@ import * as React from "react";
 import { Keyboard, Platform, ScrollView } from "react-native";
 import { Card, Portal, Modal, Button, ProgressBar, Paragraph, Dialog } from "react-native-paper";
 
-import { isPromise, useIsMounted, useWidescreen } from "../helpers";
+import { isPromise, useDeviceBreakpoint, useIsMounted } from "../helpers";
 import { useTheme } from "../theme";
 
 interface PropsType {
@@ -32,7 +32,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
   const labelOk = props.labelOk ?? "OK";
   const loadingText = props.loadingText ?? "Loading...";
   const buttonThemeOverride = { colors: { primary: theme.colors.accentText } };
-  const widescreen = useWidescreen();
+  const breakpoint = useDeviceBreakpoint("tabletLandscape");
 
   React.useEffect(() => {
     Keyboard.dismiss();
@@ -91,7 +91,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
           visible={props.visible}
           onDismiss={props.onCancel}
           dismissable={props.dismissable && !loading}
-          style={{ maxHeight: "100%", alignSelf: "center", width: widescreen ? 560 : 280, maxWidth: "100%" }}
+          style={{ maxHeight: "100%", alignSelf: "center", width: breakpoint ? 560 : 280, maxWidth: "100%" }}
         >
           <ScrollView>
             <Dialog.Title>
@@ -116,7 +116,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
         onDismiss={props.onCancel}
         dismissable={props.dismissable && !loading}
         style={{ alignItems: "center" }}
-        contentContainerStyle={{ maxHeight: "100%", width: widescreen ? 560 : 280, maxWidth: "100%" }}
+        contentContainerStyle={{ maxHeight: "100%", width: breakpoint ? 560 : 280, maxWidth: "100%" }}
       >
         <ScrollView>
           <Card accessible={false}>

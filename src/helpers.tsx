@@ -173,15 +173,18 @@ export const fontFamilies = Platform.select({
   },
 });
 
-const widescreenBreakPoint = 960;
+// These are taken from https://material.io/design/layout/responsive-layout-grid.html#breakpoints
+const deviceBreakpoints = {
+  tabletLandscape: 960,
+};
 
-export function useWidescreen() {
+export function useDeviceBreakpoint(device: keyof typeof deviceBreakpoints) {
   const { width } = useWindowDimensions();
-  const [widescreen, setWidescreen] = React.useState(false);
+  const [breakpoint, setBreakpoint] = React.useState(false);
 
   React.useEffect(() => {
-    (width < widescreenBreakPoint) ? setWidescreen(false) : setWidescreen(true);
-  }, [width]);
+    (width < deviceBreakpoints[device]) ? setBreakpoint(false) : setBreakpoint(true);
+  }, [width, device]);
 
-  return widescreen;
+  return breakpoint;
 }
