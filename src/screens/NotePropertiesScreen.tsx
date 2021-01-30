@@ -4,7 +4,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { View } from "react-native";
-import { HelperText, Button, TouchableRipple } from "react-native-paper";
+import { HelperText, TouchableRipple } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Item } from "etebase";
@@ -22,6 +22,7 @@ import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 import Select from "../widgets/Select";
 import TextInputWithIcon from "../widgets/TextInputWithIcon";
 import NotFound from "../widgets/NotFound";
+import FormButton from "../widgets/FormButton";
 
 import { useLoading, NoteMetadata } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
@@ -215,13 +216,12 @@ export default function NotePropertiesScreen(props: PropsType) {
           </HelperText>
         </View>
 
-        <Button
-          mode="contained"
+        <FormButton
           disabled={loading}
           onPress={onSave}
         >
           {loading ? "Loading…" : "Save"}
-        </Button>
+        </FormButton>
       </Container>
     </ScrollView>
   );

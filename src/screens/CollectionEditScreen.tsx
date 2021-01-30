@@ -4,7 +4,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { TextInput as NativeTextInput } from "react-native";
-import { HelperText, Button, Appbar, Paragraph } from "react-native-paper";
+import { HelperText, Appbar, Paragraph } from "react-native-paper";
 import { useNavigation, RouteProp, useNavigationState, CommonActions } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -19,6 +19,7 @@ import Container from "../widgets/Container";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 import NotFound from "../widgets/NotFound";
+import FormButton from "../widgets/FormButton";
 
 import { useLoading, defaultColor } from "../helpers";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
@@ -194,13 +195,12 @@ export default function CollectionEditScreen(props: PropsType) {
 
         {collectionColorBox}
 
-        <Button
-          mode="contained"
+        <FormButton
           disabled={loading}
           onPress={onSave}
         >
           {loading ? "Loading…" : "Save"}
-        </Button>
+        </FormButton>
       </Container>
     </ScrollView>
   );
