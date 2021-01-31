@@ -2,152 +2,29 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import { TextInput as NativeTextInput, Linking } from "react-native";
-import { List, HelperText, Switch } from "react-native-paper";
+import { Linking } from "react-native";
+import { List, Switch } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import * as Updates from "expo-updates";
 
-import * as Etebase from "etebase";
-
-import { logger, LogLevel } from "../logging";
+import { LogLevel } from "../logging";
 
 import { useCredentials } from "../credentials";
 
 import ScrollView from "../widgets/ScrollView";
-import ConfirmationDialog from "../widgets/ConfirmationDialog";
-import PasswordInput from "../widgets/PasswordInput";
 
-import { StoreState, useAsyncDispatch } from "../store";
-import { setSettings, login, pushMessage } from "../store/actions";
+import { StoreState } from "../store";
+import { setSettings, pushMessage } from "../store/actions";
 import { ViewModeKey } from "../store/reducers";
 
 import * as C from "../constants";
-import { startTask, enforcePasswordRules } from "../helpers";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Alert from "../widgets/Alert";
 import AnchorButton from "../widgets/AnchorButton";
 import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
 import { RootStackParamList } from "../RootStackParamList";
 import { useTheme } from "../theme";
-
-interface DialogPropsType {
-  visible: boolean;
-  onDismiss: () => void;
-}
-
-interface EncryptionFormErrors {
-  oldPassword?: string;
-  newPassword?: string;
-}
-
-function ChangePasswordDialog(props: DialogPropsType) {
-  const etebase = useCredentials()!;
-  const dispatch = useAsyncDispatch();
-  const [errors, setErrors] = React.useState<EncryptionFormErrors>({});
-  const [oldPassword, setOldPassword] = React.useState("");
-  const [newPassword, setNewPassword] = React.useState("");
-
-  async function onOk() {
-    const fieldNotEmpty = "Password can't be empty.";
-    const errors: EncryptionFormErrors = {};
-    if (!oldPassword) {
-      errors.oldPassword = fieldNotEmpty;
-    }
-    if (!newPassword) {
-      errors.newPassword = fieldNotEmpty;
-    } else {
-      const passwordRulesError = enforcePasswordRules(newPassword);
-      if (passwordRulesError) {
-        errors.newPassword = passwordRulesError;
-      }
-    }
-
-    setErrors(errors);
-    if (Object.keys(errors).length > 0) {
-      return;
-    }
-
-    await startTask(async () => {
-      const serverUrl = etebase.serverUrl;
-      logger.info("Changing encryption password");
-      logger.info("Verifying old key");
-      const username = etebase.user.username;
-      try {
-        const etebase = await Etebase.Account.login(username, oldPassword, serverUrl);
-        await etebase.logout();
-      } catch (e) {
-        if (e instanceof Etebase.UnauthorizedError) {
-          setErrors({ oldPassword: "Error: wrong encryption password." });
-        } else {
-          setErrors({ oldPassword: e.toString() });
-        }
-        return;
-      }
-
-      logger.info("Setting new password");
-      try {
-        await etebase.changePassword(newPassword);
-        dispatch(login(etebase));
-        dispatch(pushMessage({ message: "Password successfully changed.", severity: "success" }));
-        props.onDismiss();
-      } catch (e) {
-        setErrors({ newPassword: e.toString() });
-      }
-    });
-  }
-
-  const newPasswordRef = React.createRef<NativeTextInput>();
-
-  return (
-    <ConfirmationDialog
-      title="Change Encryption Password"
-      visible={props.visible}
-      onOk={onOk}
-      onCancel={props.onDismiss}
-      isEditingHack
-    >
-      <>
-        <PasswordInput
-          autoFocus
-          returnKeyType="next"
-          onSubmitEditing={() => newPasswordRef.current!.focus()}
-          error={!!errors.oldPassword}
-          label="Current Password"
-          value={oldPassword}
-          onChangeText={setOldPassword}
-        />
-        <HelperText
-          type="error"
-          visible={!!errors.oldPassword}
-        >
-          {errors.oldPassword}
-        </HelperText>
-
-        <PasswordInput
-          ref={newPasswordRef}
-          error={!!errors.newPassword}
-          label="New Password"
-          value={newPassword}
-          onChangeText={setNewPassword}
-        />
-        <HelperText
-          type="error"
-          visible={!!errors.newPassword}
-        >
-          {errors.newPassword}
-        </HelperText>
-
-        <Alert
-          severity="warning"
-        >
-          Please make sure you remember your password, as it can't be recovered if lost!
-        </Alert>
-      </>
-    </ConfirmationDialog>
-  );
-}
 
 function DarkModePreferenceSelector() {
   const dispatch = useDispatch();
@@ -374,8 +251,6 @@ const SettingsScreen = function _SettingsScreen() {
   const theme = useTheme();
   const settings = useSelector((state: StoreState) => state.settings);
 
-  const [showChangePasswordDialog, setShowChangePasswordDialog] = React.useState(false);
-
   const loggedIn = !!etebase;
 
   return (
@@ -401,7 +276,7 @@ const SettingsScreen = function _SettingsScreen() {
             <List.Item
               title="Change Password"
               description="Change your account's password"
-              onPress={() => { setShowChangePasswordDialog(true) }}
+              onPress={() => { navigation.navigate("Password") }}
             />
           </List.Section>
         )}
@@ -468,8 +343,6 @@ const SettingsScreen = function _SettingsScreen() {
           </List.Section>
         )}
       </ScrollView>
-
-      <ChangePasswordDialog visible={showChangePasswordDialog} onDismiss={() => setShowChangePasswordDialog(false)} />
     </>
   );
 };

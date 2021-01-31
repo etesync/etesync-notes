@@ -24,6 +24,7 @@ export type RootStackParamList = {
   };
   Invitations: undefined;
   Settings: undefined;
+  Password: undefined;
   About: undefined;
   DebugLogs: undefined;
   AccountWizard: undefined;

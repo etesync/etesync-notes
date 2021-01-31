@@ -44,6 +44,7 @@ const rootStackScreens: RootStackScreens = {
   Invitations: "invitations",
   Settings: "settings",
   About: "settings/about",
+  Password: "settings/password",
   DebugLogs: "settings/logs",
   AccountWizard: "account-wizard",
   "404": "*",
