@@ -12,6 +12,7 @@ import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
+import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
 import NoteListScreen from "./screens/NoteListScreen";
 import NoteEditScreen from "./screens/NoteEditScreen";
@@ -143,6 +144,13 @@ export default React.memo(function RootNavigator() {
               component={InvitationsScreen}
               options={{
                 title: "Collection Invitations",
+              }}
+            />
+            <Stack.Screen
+              name="Password"
+              component={ChangePasswordScreen}
+              options={{
+                title: "Change Your Account Password",
               }}
             />
           </>
