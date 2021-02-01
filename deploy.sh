@@ -32,7 +32,7 @@ PUBLIC_URL=https://expo.etesync.com
 DEPLOY_PATH='etesync-notes/release'
 # DEPLOY_PATH='test'
 
-APP_VERSION=2
+APP_VERSION=3
 
 rm -rf "$OUTPUTDIR"
 yarn run expo export --dump-sourcemap --public-url ${PUBLIC_URL}/${DEPLOY_PATH}/${APP_VERSION}
