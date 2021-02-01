@@ -21,7 +21,9 @@ export default function Appbar(props: StackHeaderProps & { menuFallback: boolean
   return (
     <PaperAppbar.Header statusBarHeight={insets.top}>
       {left}
-      <PaperAppbar.Content title={title} />
+      {(typeof title === "string") ? (
+        <PaperAppbar.Content title={title} />
+      ) : title({ onLayout: () => null })}
       {right}
     </PaperAppbar.Header>
   );
