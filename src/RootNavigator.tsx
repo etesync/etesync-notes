@@ -42,13 +42,13 @@ export default React.memo(function RootNavigator() {
   const etebase = useCredentials();
 
   // Sync app when it goes to background
-  useAppStateCb((_foreground) => {
+  useAppStateCb(React.useCallback((_foreground) => {
     if (etebase) {
       // FIXME: We should only sync when moving to foreground if haven't in X minutes
       const syncManager = SyncManager.getManager(etebase);
       dispatch(performSync(syncManager.sync()));
     }
-  });
+  }, [etebase]));
 
   return (
     <>

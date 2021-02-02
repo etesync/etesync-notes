@@ -138,7 +138,7 @@ export function useAppStateCb(cb: (foreground: boolean) => void) {
     return () => {
       AppState.removeEventListener("change", onChange);
     };
-  }, []);
+  }, [cb]);
 
   return appState;
 }
