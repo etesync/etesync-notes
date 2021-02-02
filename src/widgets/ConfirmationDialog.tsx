@@ -90,7 +90,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
         <Dialog
           visible={props.visible}
           onDismiss={props.onCancel}
-          dismissable={props.dismissable && !loading}
+          dismissable={!loading && props.dismissable}
           style={{ maxHeight: "100%", alignSelf: "center", width: breakpoint ? 560 : 280, maxWidth: "100%" }}
         >
           <ScrollView>
@@ -114,7 +114,7 @@ export default React.memo(function ConfirmationDialog(props: PropsType) {
       <Modal
         visible={props.visible}
         onDismiss={props.onCancel}
-        dismissable={props.dismissable && !loading}
+        dismissable={!loading && props.dismissable}
         style={{ alignItems: "center" }}
         contentContainerStyle={{ maxHeight: "100%", width: breakpoint ? 560 : 280, maxWidth: "100%" }}
       >
