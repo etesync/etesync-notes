@@ -5,7 +5,7 @@ import * as React from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { FlatList, View } from "react-native";
-import { Divider, Appbar, Text, List, useTheme } from "react-native-paper";
+import { Divider, Text, List, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -16,6 +16,7 @@ import Container from "../widgets/Container";
 import Menu from "../widgets/Menu";
 import { Title } from "../widgets/Typography";
 import NotFound from "../widgets/NotFound";
+import AppbarAction from "../widgets/AppbarAction";
 
 import { defaultColor } from "../helpers";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
@@ -122,7 +123,7 @@ function RightAction(props: { colUid: string }) {
       visible={showMenu}
       onDismiss={() => setShowMenu(false)}
       anchor={(
-        <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
+        <AppbarAction icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
       )}
     >
       <Menu.Item icon="pencil" title="Edit"

@@ -73,6 +73,7 @@ function InnerApp() {
 
   return (
     <PaperProvider theme={theme}>
+      <StatusBar barStyle={theme.dark ? "light-content" : "dark-content"} translucent backgroundColor="transparent" />
       <ErrorBoundary>
         <SettingsGate>
           <NavigationContainer linking={linking}>
@@ -93,7 +94,6 @@ class App extends React.Component {
   public render() {
     return (
       <SafeAreaProvider>
-        <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
         <InnerApp />
       </SafeAreaProvider>
     );

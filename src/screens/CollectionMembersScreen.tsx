@@ -5,7 +5,7 @@ import * as React from "react";
 import * as Etebase from "etebase";
 import { useSelector, useDispatch } from "react-redux";
 import { View } from "react-native";
-import { Avatar, List, Appbar, Paragraph, useTheme } from "react-native-paper";
+import { Avatar, List, Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -20,6 +20,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorDialog from "../widgets/ErrorDialog";
 import NotFound from "../widgets/NotFound";
+import AppbarAction from "../widgets/AppbarAction";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
 import { RootStackParamList } from "../RootStackParamList";
 
@@ -196,7 +197,7 @@ export default function CollectionMembersScreen(props: PropsType) {
 function RightAction(props: { onClick: () => void }) {
   return (
     <>
-      <Appbar.Action
+      <AppbarAction
         icon="account-plus"
         accessibilityLabel="Add member"
         onPress={() => {

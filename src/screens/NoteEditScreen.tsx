@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as Etebase from "etebase";
 import { View, ViewProps, KeyboardAvoidingView, Platform } from "react-native";
-import { Appbar, Paragraph, useTheme } from "react-native-paper";
+import { Paragraph, useTheme } from "react-native-paper";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useDebouncedCallback } from "use-debounce";
@@ -22,6 +22,7 @@ import LoadingIndicator from "../widgets/LoadingIndicator";
 import Menu from "../widgets/Menu";
 import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import NotFound from "../widgets/NotFound";
+import AppbarAction from "../widgets/AppbarAction";
 import { fontFamilies } from "../helpers";
 import { RootStackParamList } from "../RootStackParamList";
 import { canShare, shareItem } from "../import-export";
@@ -253,14 +254,14 @@ function RightAction({ viewMode, setViewMode, onSave, onEdit, onDelete, onShare,
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <Appbar.Action icon={viewMode ? "pencil" : "eye"} accessibilityLabel="View mode" onPress={() => {
+      <AppbarAction icon={viewMode ? "pencil" : "eye"} accessibilityLabel="View mode" onPress={() => {
         setViewMode(!viewMode);
       }} />
       <Menu
         visible={showMenu}
         onDismiss={() => setShowMenu(false)}
         anchor={(
-          <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
+          <AppbarAction icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
         )}
       >
         <Menu.Item icon="pencil" title="Edit Properties"
