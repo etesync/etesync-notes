@@ -4,7 +4,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { TextInput as NativeTextInput } from "react-native";
-import { HelperText, Appbar, Paragraph } from "react-native-paper";
+import { HelperText, Paragraph } from "react-native-paper";
 import { useNavigation, RouteProp, useNavigationState, CommonActions } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
@@ -20,6 +20,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 import NotFound from "../widgets/NotFound";
 import FormButton from "../widgets/FormButton";
+import AppbarAction from "../widgets/AppbarAction";
 
 import { useLoading, defaultColor } from "../helpers";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
@@ -220,7 +221,7 @@ function RightAction(props: { colUid: string | undefined }) {
 
   return (
     <React.Fragment>
-      <Appbar.Action
+      <AppbarAction
         icon="delete"
         accessibilityLabel="Delete collection"
         onPress={() => {

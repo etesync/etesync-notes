@@ -4,7 +4,7 @@
 import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View, Platform } from "react-native";
-import { Appbar, List, FAB } from "react-native-paper";
+import { List, FAB } from "react-native-paper";
 import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,6 +18,7 @@ import { useCredentials } from "../credentials";
 import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
 import NotFound from "../widgets/NotFound";
+import AppbarAction from "../widgets/AppbarAction";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
 import { useTheme } from "../theme";
 
@@ -214,7 +215,7 @@ function RightAction(props: RightActionPropsType) {
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <Appbar.Action icon="sync" accessibilityLabel="Sync"
+      <AppbarAction icon="sync" accessibilityLabel="Sync"
         disabled={isSyncing}
         onPress={() => {
           setShowMenu(false);
@@ -225,7 +226,7 @@ function RightAction(props: RightActionPropsType) {
         visible={showMenu}
         onDismiss={() => setShowMenu(false)}
         anchor={(
-          <Appbar.Action icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
+          <AppbarAction icon="dots-vertical" accessibilityLabel="Menu" onPress={() => setShowMenu(true)} />
         )}
       >
         <Menu

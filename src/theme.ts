@@ -19,7 +19,6 @@ const mainColors = {
 
 export const LightTheme: Theme = {
   ...PaperLightTheme,
-  mode: "exact",
   colors: {
     ...PaperLightTheme.colors,
     ...mainColors,
@@ -33,7 +32,6 @@ export const LightTheme: Theme = {
 
 export const DarkTheme: Theme = {
   ...PaperDarkTheme,
-  mode: "exact",
   colors: {
     ...PaperDarkTheme.colors,
     ...mainColors,
