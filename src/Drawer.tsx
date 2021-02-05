@@ -5,8 +5,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Image, Linking, View, StatusBar } from "react-native";
-import { Divider, List, Text, Paragraph } from "react-native-paper";
-import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
+import { Divider, Drawer as PaperDrawer, Text, Paragraph } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { StoreState } from "./store";
@@ -16,6 +15,7 @@ import ConfirmationDialog from "./widgets/ConfirmationDialog";
 import PrettyFingerprint from "./widgets/PrettyFingerprint";
 import Container from "./widgets/Container";
 import { Subheading } from "./widgets/Typography";
+import DrawerItem from "./widgets/DrawerItem";
 
 import LogoutDialog from "./components/LogoutDialog";
 
@@ -26,7 +26,8 @@ import { RootStackParamList } from "./RootStackParamList";
 type MenuItem = {
   title: string;
   path: keyof RootStackParamList;
-  icon: IconSource;
+  icon: string;
+  link: string;
 };
 
 const menuItems: MenuItem[] = [
@@ -34,6 +35,7 @@ const menuItems: MenuItem[] = [
     title: "Settings",
     path: "Settings",
     icon: "settings",
+    link: "/settings",
   },
 ];
 
@@ -126,91 +128,96 @@ export default function Drawer(props: PropsType) {
         </SafeAreaView>
         {loggedIn && (
           <>
-            <List.Item
-              title="All Notes"
+            <DrawerItem
+              label="All Notes"
+              to="/"
               onPress={() => {
                 navigation.closeDrawer();
                 navigation.navigate("Home");
               }}
-              left={(props) => <List.Icon {...props} icon="note-multiple" />}
+              icon="note-multiple"
             />
             <Divider />
-            <List.Section title="Notebooks">
+            <PaperDrawer.Section title="Notebooks">
               {Array.from(cacheCollections
                 .sort((a, b) => (a.meta!.name!.toUpperCase() >= b.meta!.name!.toUpperCase()) ? 1 : -1)
                 .map(({ meta }, uid) => (
-                  <List.Item
+                  <DrawerItem
                     key={uid}
-                    title={meta.name}
+                    label={meta.name!}
+                    to={`/notebook/${uid}`}
                     onPress={() => {
                       navigation.closeDrawer();
                       navigation.navigate("Collection", { colUid: uid });
                     }}
-                    left={(props) => <List.Icon {...props} icon="notebook" />}
+                    icon="notebook"
                   />
                 ))
                 .values()
               )}
-              <List.Item
-                title="Create new notebook"
+              <DrawerItem
+                label="Create new notebook"
+                to="/new-notebook"
                 onPress={() => {
                   navigation.navigate("CollectionCreate");
                 }}
-                left={(props) => <List.Icon {...props} icon="plus" />}
+                icon="plus"
               />
-            </List.Section>
-            <Divider />
+            </PaperDrawer.Section>
           </>
         )}
         <>
           {menuItems.map((menuItem) => (
-            <List.Item
+            <DrawerItem
               key={menuItem.title}
-              title={menuItem.title}
+              label={menuItem.title}
+              to={menuItem.link}
               onPress={() => {
                 navigation.closeDrawer();
                 navigation.navigate(menuItem.path);
               }}
-              left={(props) => <List.Icon {...props} icon={menuItem.icon} />}
+              icon={menuItem.icon}
             />
           ))}
           {loggedIn && (
             <>
-              <List.Item
-                title="Show Fingerprint"
+              <DrawerItem
+                label="Show Fingerprint"
                 onPress={() => {
                   setShowFingerprint(true);
                 }}
-                left={(props) => <List.Icon {...props} icon="fingerprint" />}
+                icon="fingerprint"
               />
-              <List.Item
-                title="Invitations"
+              <DrawerItem
+                label="Invitations"
+                to="/invitations"
                 onPress={() => {
                   navigation.closeDrawer();
                   navigation.navigate("Invitations");
                 }}
-                left={(props) => <List.Icon {...props} icon="email-outline" />}
+                icon="email-outline"
               />
-              <List.Item
-                title="Logout"
+              <DrawerItem
+                label="Logout"
                 onPress={() => setShowLogout(true)}
                 disabled={syncCount > 0}
-                left={(props) => <List.Icon {...props} icon="exit-to-app" />}
+                icon="exit-to-app"
               />
             </>
           )}
         </>
         <Divider />
-        <List.Section title="External links">
+        <PaperDrawer.Section title="External links">
           {externalMenuItems.map((menuItem) => (
-            <List.Item
+            <DrawerItem
               key={menuItem.title}
-              title={menuItem.title}
+              label={menuItem.title}
+              to={menuItem.link}
               onPress={() => { Linking.openURL(menuItem.link) }}
-              left={(props) => <List.Icon {...props} icon={menuItem.icon} />}
+              icon={menuItem.icon}
             />
           ))}
-        </List.Section>
+        </PaperDrawer.Section>
       </ScrollView>
 
       <FingerprintDialog visible={showFingerprint} onDismiss={() => setShowFingerprint(false)} />
