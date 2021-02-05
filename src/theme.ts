@@ -9,6 +9,7 @@ export interface Theme extends PaperTheme {
     active: string;
     activeIcon: string;
     activeBackground: string;
+    inactiveIcon: string;
   };
 }
 
@@ -28,6 +29,7 @@ export const LightTheme: Theme = {
     active: Color(mainColors.accent).darken(0.4).rgb().string(),
     activeIcon: Color(mainColors.accent).darken(0.2).rgb().string(),
     activeBackground: Color(mainColors.accent).alpha(0.12).rgb().string(),
+    inactiveIcon: Color(PaperLightTheme.colors.text).alpha(0.68).rgb().string(),
   },
 };
 
@@ -42,6 +44,7 @@ export const DarkTheme: Theme = {
     active: Color(mainColors.accent).lighten(0.4).rgb().string(),
     activeIcon: mainColors.accent,
     activeBackground: Color(mainColors.accent).alpha(0.12).rgb().string(),
+    inactiveIcon: Color(PaperDarkTheme.colors.text).alpha(0.68).rgb().string(),
   },
 };
 
