@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import moment from "moment";
-import { StyleSheet, FlatList, View, Platform } from "react-native";
+import { StyleSheet, FlatList, View, Platform, BackHandler } from "react-native";
 import { FAB } from "react-native-paper";
 import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -15,11 +15,14 @@ import { SyncManager } from "../sync/SyncManager";
 import { performSync, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
 
+import Appbar from "../widgets/Appbar";
 import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
 import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
 import ListItem from "../widgets/ListItem";
+import Search from "../widgets/Search";
+import SearchToolbar from "../widgets/SearchToolbar";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
 import { useTheme } from "../theme";
 
@@ -76,19 +79,51 @@ export default function NoteListScreen(props: PropsType) {
   const navigation = useNavigation<NavigationProp>();
   const syncGate = useSyncGate();
   const theme = useTheme();
+  const [searchMode, setSearchMode] = React.useState(false);
+  const [searchTerms, setSearchTerms] = React.useState("");
 
   const colUid = props.route.params?.colUid || undefined;
   const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
 
   React.useEffect(() => {
+    if (searchMode) {
+      navigation.setOptions({
+        header: () => (
+          <SearchToolbar
+            value={searchTerms}
+            onChangeText={(text) => setSearchTerms(text)}
+            onIconPress={() => setSearchMode(false)}
+          />
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        header: (props) => <Appbar {...props} menuFallback />,
+        title: cacheCollection?.meta.name ?? "All Notes",
+        headerRight: () => (
+          <RightAction colUid={colUid} setSearchMode={setSearchMode} />
+        ),
+      });
+    }
+  }, [navigation, cacheCollections, colUid, searchMode, searchTerms]);
 
-    navigation.setOptions({
-      title: cacheCollection?.meta.name ?? "All Notes",
-      headerRight: () => (
-        <RightAction colUid={colUid} />
-      ),
-    });
-  }, [navigation, cacheCollections, colUid]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (searchMode) {
+          setSearchMode(false);
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [searchMode])
+  );
 
   const entriesList = React.useMemo(() => {
     const filterByUid = colUid;
@@ -116,6 +151,10 @@ export default function NoteListScreen(props: PropsType) {
 
   if (colUid && !cacheCollection) {
     return <NotFound />;
+  }
+
+  if (searchMode) {
+    return <Search value={searchTerms} />;
   }
 
   function renderEntry(param: { item: CachedItem & { colUid: string, uid: string } }) {
@@ -170,6 +209,7 @@ const styles = StyleSheet.create({
 
 interface RightActionPropsType {
   colUid?: string;
+  setSearchMode: (searchMode: boolean) => void;
 }
 
 function RightAction(props: RightActionPropsType) {
@@ -180,7 +220,7 @@ function RightAction(props: RightActionPropsType) {
   const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const navigation = useNavigation<DefaultNavigationProp>();
-  const { colUid } = props;
+  const { colUid, setSearchMode } = props;
 
   function setShowSortMenu(value: boolean) {
     setShowSortMenu_(value);
@@ -216,6 +256,13 @@ function RightAction(props: RightActionPropsType) {
 
   return (
     <View style={{ flexDirection: "row" }}>
+      <AppbarAction icon="magnify" accessibilityLabel="Search"
+        disabled={isSyncing}
+        onPress={() => {
+          setShowMenu(false);
+          setSearchMode(true);
+        }}
+      />
       <AppbarAction icon="sync" accessibilityLabel="Sync"
         disabled={isSyncing}
         onPress={() => {
