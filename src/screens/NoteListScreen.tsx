@@ -4,7 +4,7 @@
 import * as React from "react";
 import moment from "moment";
 import { StyleSheet, FlatList, View, Platform, BackHandler } from "react-native";
-import { FAB } from "react-native-paper";
+import { FAB, List } from "react-native-paper";
 import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,7 +20,7 @@ import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
 import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
-import ListItem from "../widgets/ListItem";
+import Link from "../widgets/Link";
 import Search from "../widgets/Search";
 import SearchToolbar from "../widgets/SearchToolbar";
 import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
@@ -163,11 +163,16 @@ export default function NoteListScreen(props: PropsType) {
     const mtime = (item.meta.mtime) ? moment(item.meta.mtime) : undefined;
 
     return (
-      <ListItem
+      <Link
         key={item.uid}
-        title={name}
-        description={mtime?.format("llll")}
         to={`/notebook/${item.colUid}/note/${item.uid}`}
+        renderChild={(props) => (
+          <List.Item
+            {...props}
+            title={name}
+            description={mtime?.format("llll")}
+          />
+        )}
       />
     );
   }
@@ -181,7 +186,7 @@ export default function NoteListScreen(props: PropsType) {
         renderItem={renderEntry}
         maxToRenderPerBatch={10}
         ListEmptyComponent={() => (
-          <ListItem
+          <List.Item
             title="Notebook is empty"
           />
         )}
