@@ -3,14 +3,14 @@ import * as Etebase from "etebase";
 import MiniSearch, { Options, SearchResult } from "minisearch";
 import { findAll } from "highlight-words-core";
 import { FlatList, View, Text } from "react-native";
-import { useTheme } from "react-native-paper";
+import { List, useTheme } from "react-native-paper";
 import { useSelector } from "react-redux";
 
 import { useCredentials } from "../credentials";
 import { useSyncGate } from "../SyncGate";
 import { StoreState } from "../store";
 
-import ListItem from "../widgets/ListItem";
+import Link from "./Link";
 
 
 type NoteData = { name: string, content: string, id: string };
@@ -219,11 +219,16 @@ export default function Search(props: PropsType) {
     }
 
     return (
-      <ListItem
+      <Link
         key={result.id}
-        title={(nameMatches.length > 0) ? <Result text={result.name} search={value} matches={nameMatches} /> : result.name}
-        description={(contentMatches.length > 0) ? <Result text={result.content} search={value} matches={contentMatches} /> : result.content}
         to={`/notebook/${colUid}/note/${itemUid}`}
+        renderChild={(props) => (
+          <List.Item
+            {...props}
+            title={(nameMatches.length > 0) ? <Result text={result.name} search={value} matches={nameMatches} /> : result.name}
+            description={(contentMatches.length > 0) ? <Result text={result.content} search={value} matches={contentMatches} /> : result.content}
+          />
+        )}
       />
     );
   }
@@ -237,7 +242,7 @@ export default function Search(props: PropsType) {
         renderItem={renderEntry}
         maxToRenderPerBatch={10}
         ListEmptyComponent={() => value ? (
-          <ListItem
+          <List.Item
             title={`No notes match "${value}"`}
           />
         ) : null}
