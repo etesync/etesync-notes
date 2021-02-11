@@ -7,7 +7,7 @@ import { View, TextInput as NativeTextInput } from "react-native";
 import { Switch, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
 
 
-import ExternalLink from "../widgets/ExternalLink";
+import LinkButton from "../widgets/LinkButton";
 import Row from "../widgets/Row";
 import TextInput from "../widgets/TextInput";
 
@@ -104,9 +104,9 @@ export default function LoginForm(props: PropsType) {
         </HelperText>
         {!C.genericMode && (
           <>
-            <ExternalLink href={C.forgotPassword}>
+            <LinkButton to={C.forgotPassword} external>
               Forget password?
-            </ExternalLink>
+            </LinkButton>
           </>
         )}
 

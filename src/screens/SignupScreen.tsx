@@ -135,7 +135,7 @@ export default React.memo(function SignupScreen() {
       <Container>
         <Headline>Signup</Headline>
         <View style={{ alignItems: "center", flexDirection: "row" }}>
-          <Text> or </Text><LinkButton onPress={() => navigation.navigate("Login")}>log in to your account</LinkButton>
+          <Text> or </Text><LinkButton to="/login">log in to your account</LinkButton>
         </View>
 
         <Alert
