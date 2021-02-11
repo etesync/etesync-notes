@@ -5,7 +5,7 @@ import * as React from "react";
 
 import * as Etebase from "etebase";
 
-import { View, TextInput as NativeTextInput, Linking } from "react-native";
+import { View, TextInput as NativeTextInput } from "react-native";
 import { Switch, Text, HelperText, Paragraph, TouchableRipple } from "react-native-paper";
 
 import { Headline } from "../widgets/Typography";
@@ -141,7 +141,8 @@ export default React.memo(function SignupScreen() {
         <Alert
           style={{ marginTop: 10 }}
           severity="info"
-          onPress={() => Linking.openURL(C.pricing)}
+          to={C.pricing}
+          external
         >
           You are signing up for a free trial. Click here for pricing information.
         </Alert>
