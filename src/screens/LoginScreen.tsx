@@ -52,7 +52,7 @@ const LoginScreen = React.memo(function _LoginScreen() {
         <Headline>Please Log In</Headline>
         {!C.genericMode && (
           <View style={{ alignItems: "center", flexDirection: "row" }}>
-            <Text> or </Text><LinkButton onPress={() => navigation.navigate("Signup")}>create an account</LinkButton>
+            <Text> or </Text><LinkButton to="/signup">create an account</LinkButton>
           </View>
         )}
         <LoginForm

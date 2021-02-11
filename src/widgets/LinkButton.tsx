@@ -5,22 +5,31 @@ import * as React from "react";
 import { ViewProps } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { useTheme } from "../theme";
+import Link from "./Link";
 
 type PropsType = {
-  onPress: () => void;
+  to: string;
+  external?: boolean;
+  onPress?: () => void;
 } & ViewProps;
 
 export default function LinkButton(props_: React.PropsWithChildren<PropsType>) {
-  const { onPress, children, ...props } = props_;
+  const { to, external, onPress, children, ...props } = props_;
   const theme = useTheme();
 
   return (
-    <TouchableRipple
-      accessibilityRole="link"
-      {...props}
+    <Link
+      to={to}
+      external={external}
       onPress={onPress}
-    >
-      <Text style={{ color: theme.colors.accentText }}>{children}</Text>
-    </TouchableRipple>
+      renderChild={(childProps) => (
+        <TouchableRipple
+          {...childProps}
+          {...props}
+        >
+          <Text style={{ color: theme.colors.accentText }}>{children}</Text>
+        </TouchableRipple>
+      )}
+    />
   );
 }

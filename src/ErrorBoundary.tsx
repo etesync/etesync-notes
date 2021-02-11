@@ -23,7 +23,7 @@ import { setSettings, addError, popError, login } from "./store/actions";
 import LogoutDialog from "./components/LogoutDialog";
 import ConfirmationDialog from "./widgets/ConfirmationDialog";
 import PasswordInput from "./widgets/PasswordInput";
-import ExternalLink from "./widgets/ExternalLink";
+import LinkButton from "./widgets/LinkButton";
 import { useCredentials } from "./credentials";
 
 function emailDevelopers(error: Error, logs: string | undefined) {
@@ -109,9 +109,9 @@ function SessionExpiredDialog() {
         </HelperText>
         {!C.genericMode && (
           <>
-            <ExternalLink href={C.forgotPassword}>
+            <LinkButton to={C.forgotPassword} external>
               <Text>Forget password?</Text>
-            </ExternalLink>
+            </LinkButton>
           </>
         )}
       </>
