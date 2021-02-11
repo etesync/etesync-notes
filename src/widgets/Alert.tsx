@@ -5,15 +5,18 @@ import * as React from "react";
 import { View, ViewProps, StyleSheet } from "react-native";
 import { Text, useTheme, TouchableRipple } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Link from "./Link";
 
 type PropsType = ViewProps & {
   severity: "error" | "warning" | "info" | "success";
+  to?: string;
+  external?: boolean;
   onPress?: () => void;
 };
 
 export default function Alert(props_: React.PropsWithChildren<PropsType>) {
   const theme = useTheme();
-  const { children, style, severity, onPress, ...props } = props_;
+  const { children, style, severity, to, external, onPress, ...props } = props_;
   const icons = {
     error: "information-outline",
     warning: "alert-outline",
@@ -25,14 +28,32 @@ export default function Alert(props_: React.PropsWithChildren<PropsType>) {
   return (
     <View style={[styles.root, stylesColor[severity], style]}>
       <Icon name={icons[severity]} style={[styles.icon, stylesIcon[severity]]} size={24} />
-      <TouchableRipple style={styles.touchable} onPress={onPress}>
-        <Text
-          style={[styles.text, stylesColor[severity]]}
-          {...props}
-        >
-          {children}
-        </Text>
-      </TouchableRipple>
+      {(to) ? (
+        <Link
+          to={to}
+          external={external}
+          onPress={onPress}
+          renderChild={(props) => (
+            <TouchableRipple style={styles.touchable} {...props}>
+              <Text
+                style={[styles.text, stylesColor[severity]]}
+                {...props}
+              >
+                {children}
+              </Text>
+            </TouchableRipple>
+          )}
+        />
+      ) : (
+        <View style={styles.touchable}>
+          <Text
+            style={[styles.text, stylesColor[severity]]}
+            {...props}
+          >
+            {children}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
