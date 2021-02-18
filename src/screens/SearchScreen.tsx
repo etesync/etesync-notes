@@ -5,12 +5,15 @@ import { findAll } from "highlight-words-core";
 import { FlatList, View, Text } from "react-native";
 import { List, useTheme } from "react-native-paper";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 import { useCredentials } from "../credentials";
 import { useSyncGate } from "../SyncGate";
 import { StoreState } from "../store";
 
-import Link from "./Link";
+import Link from "../widgets/Link";
+import { DefaultNavigationProp } from "../RootStackParamList";
+import SearchToolbar from "../widgets/SearchToolbar";
 
 
 type NoteData = { name: string, content: string, id: string };
@@ -146,7 +149,9 @@ function Result(props: ResultProps) {
   );
 }
 
-type PropsType = { value: string };
+type PropsType = {
+  active: boolean;
+};
 
 export default function Search(props: PropsType) {
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
@@ -154,8 +159,25 @@ export default function Search(props: PropsType) {
   const etebase = useCredentials()!;
   const syncGate = useSyncGate();
   const theme = useTheme();
-  const { value } = props;
+  const { active } = props;
+  const [value, setValue] = React.useState("");
   const [entries, setEntries] = React.useState<SearchResult[]>([]);
+  const navigation = useNavigation<DefaultNavigationProp>();
+
+  React.useEffect(() => {
+    if (!active) {
+      return;
+    }
+
+    navigation.setOptions({
+      header: () => (
+        <SearchToolbar
+          value={value}
+          onChangeText={(text) => setValue(text)}
+        />
+      ),
+    });
+  }, [active, navigation, cacheCollections, value]);
 
   React.useEffect(() => {
     if (syncGate) {

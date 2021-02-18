@@ -2,15 +2,15 @@ import * as React from "react";
 import { I18nManager, StyleSheet, TextInput } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import MenuButton from "./MenuButton";
 
 type PropsType = {
   value: string;
   onChangeText: (query: string) => void;
-  onIconPress: () => void;
 };
 
 export default function SearchToolbar(props: PropsType) {
-  const { value, onChangeText, onIconPress } = props;
+  const { value, onChangeText } = props;
   const theme = useTheme();
   const textColor = (theme.dark && theme.mode === "adaptive") ? theme.colors.onSurface : "#000000";
   const inputRef = React.useRef<TextInput>(null);
@@ -18,7 +18,11 @@ export default function SearchToolbar(props: PropsType) {
 
   return (
     <Appbar.Header statusBarHeight={insets.top}>
-      <Appbar.BackAction onPress={onIconPress} />
+      <MenuButton />
+      <Appbar.Action
+        disabled
+        icon="magnify"
+      />
       <TextInput
         ref={inputRef}
         placeholder="Search"
