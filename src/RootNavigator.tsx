@@ -14,7 +14,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
-import NoteListScreen from "./screens/NoteListScreen";
+import HomeScreen from "./screens/HomeScreen";
 import NoteEditScreen from "./screens/NoteEditScreen";
 import NotePropertiesScreen from "./screens/NotePropertiesScreen";
 import CollectionEditScreen from "./screens/CollectionEditScreen";
@@ -87,7 +87,7 @@ export default React.memo(function RootNavigator() {
           <>
             <Stack.Screen
               name="Home"
-              component={NoteListScreen}
+              component={HomeScreen}
               options={{
                 title: C.appName,
                 headerLeft: () => (
@@ -97,7 +97,7 @@ export default React.memo(function RootNavigator() {
             />
             <Stack.Screen
               name="Collection"
-              component={NoteListScreen}
+              component={HomeScreen}
               options={{
                 title: C.appName,
                 headerLeft: () => (

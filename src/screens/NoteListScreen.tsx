@@ -3,10 +3,9 @@
 
 import * as React from "react";
 import moment from "moment";
-import { StyleSheet, FlatList, View, Platform, BackHandler } from "react-native";
+import { StyleSheet, FlatList, View, Platform } from "react-native";
 import { FAB, List } from "react-native-paper";
-import { useNavigation, useFocusEffect, RouteProp } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
@@ -21,9 +20,7 @@ import MenuItem from "../widgets/MenuItem";
 import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
 import Link from "../widgets/Link";
-import Search from "../widgets/Search";
-import SearchToolbar from "../widgets/SearchToolbar";
-import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { DefaultNavigationProp } from "../RootStackParamList";
 import { useTheme } from "../theme";
 
 
@@ -65,10 +62,9 @@ function getSortFunction(sortOrder: string) {
   };
 }
 
-type NavigationProp = StackNavigationProp<RootStackParamList, "Home"> | StackNavigationProp<RootStackParamList, "Collection">;
-
 interface PropsType {
-  route: RouteProp<RootStackParamList, "Home"> | RouteProp<RootStackParamList, "Collection">;
+  active: boolean;
+  colUid?: string;
 }
 
 export default function NoteListScreen(props: PropsType) {
@@ -76,54 +72,26 @@ export default function NoteListScreen(props: PropsType) {
   const { sortBy } = viewSettings;
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const cacheItems = useSelector((state: StoreState) => state.cache.items);
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<DefaultNavigationProp>();
   const syncGate = useSyncGate();
   const theme = useTheme();
-  const [searchMode, setSearchMode] = React.useState(false);
-  const [searchTerms, setSearchTerms] = React.useState("");
 
-  const colUid = props.route.params?.colUid || undefined;
+  const { active, colUid } = props;
   const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
 
   React.useEffect(() => {
-    if (searchMode) {
-      navigation.setOptions({
-        header: () => (
-          <SearchToolbar
-            value={searchTerms}
-            onChangeText={(text) => setSearchTerms(text)}
-            onIconPress={() => setSearchMode(false)}
-          />
-        ),
-      });
-    } else {
-      navigation.setOptions({
-        header: (props) => <Appbar {...props} menuFallback />,
-        title: cacheCollection?.meta.name ?? "All Notes",
-        headerRight: () => (
-          <RightAction colUid={colUid} setSearchMode={setSearchMode} />
-        ),
-      });
+    if (!active) {
+      return;
     }
-  }, [navigation, cacheCollections, colUid, searchMode, searchTerms]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        if (searchMode) {
-          setSearchMode(false);
-          return true;
-        } else {
-          return false;
-        }
-      };
-
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-      return () =>
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-    }, [searchMode])
-  );
+    navigation.setOptions({
+      header: (props) => <Appbar {...props} menuFallback />,
+      title: cacheCollection?.meta.name ?? "All Notes",
+      headerRight: () => (
+        <RightAction colUid={colUid} />
+      ),
+    });
+  }, [active, navigation, cacheCollections, colUid]);
 
   const entriesList = React.useMemo(() => {
     const filterByUid = colUid;
@@ -151,10 +119,6 @@ export default function NoteListScreen(props: PropsType) {
 
   if (colUid && !cacheCollection) {
     return <NotFound />;
-  }
-
-  if (searchMode) {
-    return <Search value={searchTerms} />;
   }
 
   function renderEntry(param: { item: CachedItem & { colUid: string, uid: string } }) {
@@ -214,7 +178,6 @@ const styles = StyleSheet.create({
 
 interface RightActionPropsType {
   colUid?: string;
-  setSearchMode: (searchMode: boolean) => void;
 }
 
 function RightAction(props: RightActionPropsType) {
@@ -225,7 +188,7 @@ function RightAction(props: RightActionPropsType) {
   const isSyncing = useSelector((state: StoreState) => state.syncCount) > 0;
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const navigation = useNavigation<DefaultNavigationProp>();
-  const { colUid, setSearchMode } = props;
+  const { colUid } = props;
 
   function setShowSortMenu(value: boolean) {
     setShowSortMenu_(value);
@@ -261,13 +224,6 @@ function RightAction(props: RightActionPropsType) {
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <AppbarAction icon="magnify" accessibilityLabel="Search"
-        disabled={isSyncing}
-        onPress={() => {
-          setShowMenu(false);
-          setSearchMode(true);
-        }}
-      />
       <AppbarAction icon="sync" accessibilityLabel="Sync"
         disabled={isSyncing}
         onPress={() => {
