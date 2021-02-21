@@ -31,6 +31,7 @@ export default function Link(props: PropsType) {
 
   return (
     <Clickable
+      applyToChild
       renderChild={(props) => (
         <a
           {...props}
