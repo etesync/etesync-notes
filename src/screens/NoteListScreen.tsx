@@ -2,82 +2,37 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import * as React from "react";
-import moment from "moment";
-import { StyleSheet, FlatList, View, Platform } from "react-native";
-import { FAB, List } from "react-native-paper";
+import { StyleSheet, View, Platform } from "react-native";
+import { FAB } from "react-native-paper";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useSyncGate } from "../SyncGate";
-import { CachedItem, StoreState } from "../store";
+import { StoreState } from "../store";
 import { SyncManager } from "../sync/SyncManager";
 import { performSync, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
 
+import NoteList from "../components/NoteList";
 import Appbar from "../widgets/Appbar";
 import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
-import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
-import Link from "../widgets/Link";
 import { DefaultNavigationProp } from "../RootStackParamList";
 import { useTheme } from "../theme";
 
-
-function sortMtime(aIn: CachedItem, bIn: CachedItem) {
-  const a = aIn.meta.mtime!;
-  const b = bIn.meta.mtime!;
-  return (a > b) ? -1 : (a < b) ? 1 : 0;
-}
-
-function sortName(aIn: CachedItem, bIn: CachedItem) {
-  const a = aIn.meta.name!;
-  const b = bIn.meta.name!;
-  return a.localeCompare(b);
-}
-
-function getSortFunction(sortOrder: string) {
-  const sortFunctions: (typeof sortName)[] = [];
-
-  switch (sortOrder) {
-    case "mtime":
-      // Do nothing because it's the last sort function anyway
-      break;
-    case "name":
-      sortFunctions.push(sortName);
-      break;
-  }
-
-  sortFunctions.push(sortMtime);
-
-  return (a: CachedItem, b: CachedItem) => {
-    for (const sortFunction of sortFunctions) {
-      const ret = sortFunction(a, b);
-      if (ret !== 0) {
-        return ret;
-      }
-    }
-
-    return 0;
-  };
-}
-
 interface PropsType {
   active: boolean;
-  colUid?: string;
 }
 
 export default function NoteListScreen(props: PropsType) {
   const viewSettings = useSelector((state: StoreState) => state.settings.viewSettings);
   const { sortBy } = viewSettings;
-  const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
-  const cacheItems = useSelector((state: StoreState) => state.cache.items);
   const navigation = useNavigation<DefaultNavigationProp>();
   const syncGate = useSyncGate();
   const theme = useTheme();
 
-  const { active, colUid } = props;
-  const cacheCollection = (colUid) ? cacheCollections.get(colUid) : undefined;
+  const { active } = props;
 
   React.useEffect(() => {
     if (!active) {
@@ -86,74 +41,21 @@ export default function NoteListScreen(props: PropsType) {
 
     navigation.setOptions({
       header: (props) => <Appbar {...props} menuFallback />,
-      title: cacheCollection?.meta.name ?? "All Notes",
+      title: "Notes",
       headerRight: () => (
-        <RightAction colUid={colUid} />
+        <RightAction />
       ),
     });
-  }, [active, navigation, cacheCollections, colUid]);
-
-  const entriesList = React.useMemo(() => {
-    const filterByUid = colUid;
-
-    const ret: (CachedItem & { colUid: string, uid: string })[] = [];
-    for (const [colUid, itemLists] of cacheItems.entries()) {
-      if (filterByUid && (filterByUid !== colUid)) {
-        continue;
-      }
-
-      for (const [uid, item] of itemLists.entries()) {
-        if (item.isDeleted) {
-          continue;
-        }
-
-        ret.push({ ...item, uid, colUid });
-      }
-    }
-    return ret.sort(getSortFunction(sortBy));
-  }, [cacheItems, sortBy, colUid]);
+  }, [active, navigation]);
 
   if (syncGate) {
     return syncGate;
   }
 
-  if (colUid && !cacheCollection) {
-    return <NotFound />;
-  }
-
-  function renderEntry(param: { item: CachedItem & { colUid: string, uid: string } }) {
-    const item = param.item;
-    const name = item.meta.name!;
-    const mtime = (item.meta.mtime) ? moment(item.meta.mtime) : undefined;
-
-    return (
-      <Link
-        key={item.uid}
-        to={`/notebook/${item.colUid}/note/${item.uid}`}
-        renderChild={(props) => (
-          <List.Item
-            {...props}
-            title={name}
-            description={mtime?.format("llll")}
-          />
-        )}
-      />
-    );
-  }
-
   return (
     <>
-      <FlatList
-        style={[{ backgroundColor: theme.colors.background }, { flex: 1 }]}
-        data={entriesList}
-        keyExtractor={(item) => item.uid}
-        renderItem={renderEntry}
-        maxToRenderPerBatch={10}
-        ListEmptyComponent={() => (
-          <List.Item
-            title="Notebook is empty"
-          />
-        )}
+      <NoteList
+        sortBy={sortBy}
       />
 
       <FAB
@@ -161,7 +63,7 @@ export default function NoteListScreen(props: PropsType) {
         accessibilityLabel="New"
         color={theme.colors.onAccent}
         style={styles.fab}
-        onPress={() => navigation.navigate("NoteCreate", colUid ? { colUid } : undefined)}
+        onPress={() => navigation.navigate("NoteCreate")}
       />
     </>
   );

@@ -104,7 +104,6 @@ interface PropsType {
 export default function Drawer(props: PropsType) {
   const [showFingerprint, setShowFingerprint] = React.useState(false);
   const [showLogout, setShowLogout] = React.useState(false);
-  const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const navigation = props.navigation as DrawerNavigationProp<RootStackParamList, keyof RootStackParamList>;
   const etebase = useCredentials();
   const loggedIn = !!etebase;
@@ -129,7 +128,7 @@ export default function Drawer(props: PropsType) {
         {loggedIn && (
           <>
             <DrawerItem
-              label="All Notes"
+              label="Notes"
               to="/"
               onPress={() => {
                 navigation.closeDrawer();
@@ -138,32 +137,6 @@ export default function Drawer(props: PropsType) {
               icon="note-multiple"
             />
             <Divider />
-            <PaperDrawer.Section title="Notebooks">
-              {Array.from(cacheCollections
-                .sort((a, b) => (a.meta!.name!.toUpperCase() >= b.meta!.name!.toUpperCase()) ? 1 : -1)
-                .map(({ meta }, uid) => (
-                  <DrawerItem
-                    key={uid}
-                    label={meta.name!}
-                    to={`/notebook/${uid}`}
-                    onPress={() => {
-                      navigation.closeDrawer();
-                      navigation.navigate("Collection", { colUid: uid });
-                    }}
-                    icon="notebook"
-                  />
-                ))
-                .values()
-              )}
-              <DrawerItem
-                label="Create new notebook"
-                to="/new-notebook"
-                onPress={() => {
-                  navigation.navigate("CollectionCreate");
-                }}
-                icon="plus"
-              />
-            </PaperDrawer.Section>
           </>
         )}
         <>
