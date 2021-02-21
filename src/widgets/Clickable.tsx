@@ -5,6 +5,7 @@ type ChildProps = {
 };
 
 type PropsType = {
+  applyToChild?: boolean;
   renderChild: (props: ChildProps) => React.ReactElement;
 };
 
