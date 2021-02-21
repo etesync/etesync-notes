@@ -8,6 +8,7 @@ import { RootStackParamList } from "../RootStackParamList";
 
 import NoteListScreen from "./NoteListScreen";
 import SearchScreen from "./SearchScreen";
+import NotebookListScreen from "./NotebookListScreen";
 
 interface PropsType {
   route: RouteProp<RootStackParamList, "Home"> | RouteProp<RootStackParamList, "Collection">;
@@ -16,6 +17,7 @@ interface PropsType {
 const routes = [
   { key: "notes", title: "Notes", icon: "note-multiple" },
   { key: "search", title: "Search", icon: "magnify" },
+  { key: "notebooks", title: "Notebooks", icon: "notebook-multiple" },
 ];
 
 export default function HomeScreen(props: PropsType) {
@@ -24,9 +26,11 @@ export default function HomeScreen(props: PropsType) {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case "notes":
-        return <NoteListScreen colUid={colUid} active={activeRoute?.key === "notes"} />;
+        return <NoteListScreen active={activeRoute?.key === "notes"} />;
       case "search":
         return <SearchScreen active={activeRoute?.key === "search"} />;
+      case "notebooks":
+        return <NotebookListScreen colUid={colUid} active={activeRoute?.key === "notebooks"} />;
       default:
         return null;
     }
@@ -34,9 +38,14 @@ export default function HomeScreen(props: PropsType) {
 
   const colUid = props.route.params?.colUid || undefined;
 
+  React.useEffect(() => {
+    if (colUid) {
+      setIndex(2);
+    }
+  }, []);
+
   return (
     <BottomNavigation
-      shifting
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
