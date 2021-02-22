@@ -14,6 +14,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import AboutScreen from "./screens/AboutScreen";
 import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import DebugLogsScreen from "./screens/DebugLogsScreen";
+import ExportScreen from "./screens/ExportScreen";
 import HomeScreen from "./screens/HomeScreen";
 import NoteEditScreen from "./screens/NoteEditScreen";
 import NotePropertiesScreen from "./screens/NotePropertiesScreen";
@@ -156,6 +157,13 @@ export default React.memo(function RootNavigator() {
               component={ChangePasswordScreen}
               options={{
                 title: "Change Your Account Password",
+              }}
+            />
+            <Stack.Screen
+              name="Export"
+              component={ExportScreen}
+              options={{
+                title: "Export Your Notes",
               }}
             />
           </>
