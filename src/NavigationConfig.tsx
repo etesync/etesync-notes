@@ -36,3 +36,41 @@ export type RootStackParamList = {
 };
 
 export type DefaultNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+
+type RootStackScreens = {
+  [route in keyof RootStackParamList]: string;
+};
+
+const rootStackScreens: RootStackScreens = {
+  Home: "",
+  Login: "login",
+  Signup: "signup",
+  CollectionCreate: "new-notebook",
+  Collection: "notebook/:colUid",
+  CollectionEdit: "notebook/:colUid/edit",
+  CollectionChangelog: "notebook/:colUid/manage",
+  CollectionMembers: "notebook/:colUid/members",
+  NoteCreate: "new-note",
+  NoteEdit: "notebook/:colUid/note/:itemUid",
+  NoteProps: "notebook/:colUid/note/:itemUid/properties",
+  NoteMove: "notebook/:colUid/note/:itemUid/move",
+  Invitations: "invitations",
+  Settings: "settings",
+  About: "settings/about",
+  Password: "settings/password",
+  DebugLogs: "settings/logs",
+  AccountWizard: "account-wizard",
+  "404": "*",
+};
+
+export const linking = {
+  prefixes: ["https://notes.etesync.com", "com.etesync.notes://"],
+  config: {
+    screens: {
+      Root: {
+        path: "",
+        screens: rootStackScreens,
+      },
+    },
+  },
+};
