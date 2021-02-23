@@ -4,7 +4,7 @@
 import * as React from "react";
 import { BottomNavigation } from "react-native-paper";
 import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 import NoteListScreen from "./NoteListScreen";
 import SearchScreen from "./SearchScreen";

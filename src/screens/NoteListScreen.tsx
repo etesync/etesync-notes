@@ -18,7 +18,7 @@ import Appbar from "../widgets/Appbar";
 import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
 import AppbarAction from "../widgets/AppbarAction";
-import { DefaultNavigationProp } from "../RootStackParamList";
+import { DefaultNavigationProp } from "../NavigationConfig";
 import { useTheme } from "../theme";
 
 interface PropsType {

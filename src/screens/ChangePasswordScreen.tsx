@@ -19,7 +19,7 @@ import ErrorOrLoadingDialog from "../widgets/ErrorOrLoadingDialog";
 import PasswordInput from "../widgets/PasswordInput";
 import ScrollView from "../widgets/ScrollView";
 
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 interface PasswordFormErrors {
   oldPassword?: string;

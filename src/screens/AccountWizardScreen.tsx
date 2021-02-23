@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { performSync } from "../store/actions";
 
 import * as C from "../constants";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 const wizardPages = [
   (props: PagePropsType) => (

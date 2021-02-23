@@ -27,7 +27,7 @@ import { useCredentials } from "../credentials";
 import LinkButton from "../widgets/LinkButton";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 interface FormErrors {
   username?: string;

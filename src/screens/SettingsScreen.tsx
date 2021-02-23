@@ -23,7 +23,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import AnchorButton from "../widgets/AnchorButton";
 import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 import { useTheme } from "../theme";
 
 function DarkModePreferenceSelector() {

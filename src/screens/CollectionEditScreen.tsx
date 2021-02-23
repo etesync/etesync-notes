@@ -23,7 +23,7 @@ import FormButton from "../widgets/FormButton";
 import AppbarAction from "../widgets/AppbarAction";
 
 import { useLoading, defaultColor } from "../helpers";
-import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { DefaultNavigationProp, RootStackParamList } from "../NavigationConfig";
 
 import ColorPicker from "../widgets/ColorPicker";
 import * as C from "../constants";

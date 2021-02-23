@@ -22,7 +22,7 @@ import TextInputWithIcon from "../widgets/TextInputWithIcon";
 import NotFound from "../widgets/NotFound";
 
 import { useLoading } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 interface FormErrors {
   notebook?: string;

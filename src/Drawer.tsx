@@ -21,7 +21,7 @@ import LogoutDialog from "./components/LogoutDialog";
 
 import * as C from "./constants";
 import { useCredentials } from "./credentials";
-import { RootStackParamList } from "./RootStackParamList";
+import { RootStackParamList } from "./NavigationConfig";
 
 type MenuItem = {
   title: string;

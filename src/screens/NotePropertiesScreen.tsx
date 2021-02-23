@@ -25,7 +25,7 @@ import NotFound from "../widgets/NotFound";
 import FormButton from "../widgets/FormButton";
 
 import { useLoading, NoteMetadata } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 interface FormErrors {
   name?: string;
