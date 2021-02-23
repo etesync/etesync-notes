@@ -60,7 +60,7 @@ export default function NotebookListScreen(props: PropsType) {
         <RightAction colUid={notebook?.uid} />
       ),
     });
-  }, [active, navigation, notebook]);
+  }, [active, colUid, navigation, notebook]);
 
   const onBackPress = React.useCallback(() => {
     if (active && notebook) {
@@ -82,6 +82,10 @@ export default function NotebookListScreen(props: PropsType) {
   }
 
   if (colUid && !cacheCollection) {
+    navigation.setOptions({
+      title: "Not Found",
+      headerLeft: () => <PaperAppbar.BackAction onPress={() => navigation.navigate("Home", { colUid: "" })} />,
+    });
     return <NotFound />;
   }
 
