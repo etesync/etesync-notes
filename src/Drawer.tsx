@@ -3,7 +3,8 @@
 
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { DrawerContentComponentProps } from "@react-navigation/drawer";
+import { DrawerActionHelpers, NavigationHelpers } from "@react-navigation/native";
 import { Image, Linking, View, StatusBar } from "react-native";
 import { Divider, Drawer as PaperDrawer, Text, Paragraph } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +23,7 @@ import LogoutDialog from "./components/LogoutDialog";
 import * as C from "./constants";
 import { useCredentials } from "./credentials";
 import { RootStackParamList } from "./RootStackParamList";
+import { getActiveRoute } from "./helpers";
 
 type MenuItem = {
   title: string;
@@ -97,17 +99,14 @@ function FingerprintDialog(props: { visible: boolean, onDismiss: () => void }) {
   );
 }
 
-interface PropsType {
-  navigation: any;
-}
-
-export default function Drawer(props: PropsType) {
+export default function Drawer(props: DrawerContentComponentProps) {
   const [showFingerprint, setShowFingerprint] = React.useState(false);
   const [showLogout, setShowLogout] = React.useState(false);
-  const navigation = props.navigation as DrawerNavigationProp<RootStackParamList, keyof RootStackParamList>;
+  const navigation = props.navigation as NavigationHelpers<RootStackParamList, any> & DrawerActionHelpers<RootStackParamList>;
   const etebase = useCredentials();
   const loggedIn = !!etebase;
   const syncCount = useSelector((state: StoreState) => state.syncCount);
+  const activeRoute = getActiveRoute(props.state);
 
   return (
     <>
@@ -134,6 +133,7 @@ export default function Drawer(props: PropsType) {
                 navigation.closeDrawer();
                 navigation.navigate("Home");
               }}
+              focused={activeRoute.name === "Home" || activeRoute.name === "Collection"}
               icon="note-multiple"
             />
             <Divider />
@@ -149,6 +149,7 @@ export default function Drawer(props: PropsType) {
                 navigation.closeDrawer();
                 navigation.navigate(menuItem.path);
               }}
+              focused={activeRoute.name === menuItem.path}
               icon={menuItem.icon}
             />
           ))}
@@ -168,6 +169,7 @@ export default function Drawer(props: PropsType) {
                   navigation.closeDrawer();
                   navigation.navigate("Invitations");
                 }}
+                focused={activeRoute.name === "Invitations"}
                 icon="email-outline"
               />
               <DrawerItem

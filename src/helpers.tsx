@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import { AppState, AppStateStatus, Platform, useWindowDimensions } from "react-native";
+import { NavigationState, PartialState } from "@react-navigation/native";
 import * as Etebase from "etebase";
 
 import { logger } from "./logging";
@@ -188,4 +189,14 @@ export function useDeviceBreakpoint(device: keyof typeof deviceBreakpoints) {
   }, [width, device]);
 
   return breakpoint;
+}
+
+export function getActiveRoute(state: NavigationState | Omit<PartialState<NavigationState>, "stale">): { name: string, params?: any } {
+  const route = (typeof state.index === "number") ? state.routes[state.index] : state.routes[state.routes.length - 1];
+
+  if (route.state) {
+    return getActiveRoute(route.state);
+  }
+
+  return route;
 }

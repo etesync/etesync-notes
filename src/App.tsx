@@ -79,7 +79,7 @@ function InnerApp() {
         <SettingsGate>
           <NavigationContainer linking={linking}>
             <DrawerNavigation.Navigator
-              drawerContent={({ navigation }) => <Drawer navigation={navigation} />}
+              drawerContent={(props) => <Drawer {...props} />}
               drawerStyle={initRender ? { width: 0 } : null}
             >
               <DrawerNavigation.Screen name="Root" component={RootNavigator} />
