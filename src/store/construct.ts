@@ -14,9 +14,9 @@ import { List, Map as ImmutableMap } from "immutable";
 
 import {
   SettingsType,
-  fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer,
+  fetchCount, syncCount, credentials, settingsReducer, syncStatusReducer, lastSyncReducer, connectionReducer, errorsReducer, activeNotebookReducer,
   CredentialsData, SyncCollectionsData, SyncGeneralData,
-  collections, items, syncCollections, syncItems, syncGeneral, CachedCollectionsData, CachedItemsData, SyncItemsData, messagesReducer, Message,
+  collections, items, syncCollections, syncItems, syncGeneral, CachedCollectionsData, CachedItemsData, SyncItemsData, messagesReducer, Message, Notebook,
 } from "./reducers";
 
 export interface StoreState {
@@ -39,6 +39,7 @@ export interface StoreState {
   connection: NetInfoStateType | null;
   errors: List<Error>;
   messages: List<Message>;
+  activeNotebook: Notebook;
 }
 
 const settingsMigrations = {
@@ -168,6 +169,7 @@ const reducers = combineReducers({
   connection: connectionReducer,
   errors: errorsReducer,
   messages: messagesReducer,
+  activeNotebook: activeNotebookReducer,
 });
 
 export default reducers;

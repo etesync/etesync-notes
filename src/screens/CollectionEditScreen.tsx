@@ -5,13 +5,13 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { TextInput as NativeTextInput } from "react-native";
 import { HelperText, Paragraph } from "react-native-paper";
-import { useNavigation, RouteProp, useNavigationState, CommonActions } from "@react-navigation/native";
+import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { useSyncGate } from "../SyncGate";
 import { useCredentials } from "../credentials";
 import { StoreState, useAsyncDispatch } from "../store";
-import { collectionUpload, pushMessage } from "../store/actions";
+import { collectionUpload, pushMessage, setActiveNotebook } from "../store/actions";
 
 import TextInput from "../widgets/TextInput";
 import ScrollView from "../widgets/ScrollView";
@@ -48,7 +48,6 @@ export default function CollectionEditScreen(props: PropsType) {
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
   const syncGate = useSyncGate();
   const navigation = useNavigation<NavigationProp>();
-  const navigationState = useNavigationState((state) => (state.index > 0) ? state.routes[state.index - 1] : null);
   const etebase = useCredentials()!;
   const [loading, error, setPromise] = useLoading();
   const colType = C.colType;
@@ -126,17 +125,12 @@ export default function CollectionEditScreen(props: PropsType) {
         navigation.goBack();
       } else {
         dispatch(pushMessage({ message: "Notebook created", severity: "success" }));
+        dispatch(setActiveNotebook({ meta, uid: collection.uid }));
 
-        const previousScreen = navigationState?.name;
-        if (navigationState && previousScreen === "NoteCreate") {
-          // We change the colUid 
-          navigation.dispatch({
-            ...CommonActions.setParams({ colUid: collection.uid }),
-            source: navigationState.key,
-          });
+        if (navigation.canGoBack()) {
+          navigation.goBack();
         } else {
-          // We're gonna navigate to the notebook's page
-          navigation.replace("Collection", { colUid: collection.uid });
+          navigation.replace("Home");
         }
       }
     });

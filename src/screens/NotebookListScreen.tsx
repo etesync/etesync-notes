@@ -3,12 +3,11 @@ import { StyleSheet, FlatList, Platform, View, BackHandler } from "react-native"
 import { Appbar as PaperAppbar, List, FAB, Avatar } from "react-native-paper";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import * as Etebase from "etebase";
 
 import { useSyncGate } from "../SyncGate";
-import { StoreState } from "../store";
+import { Notebook, StoreState, useAsyncDispatch } from "../store";
 import { SyncManager } from "../sync/SyncManager";
-import { performSync } from "../store/actions";
+import { performSync, setActiveNotebook } from "../store/actions";
 import { useCredentials } from "../credentials";
 
 import NoteList from "../components/NoteList";
@@ -26,25 +25,27 @@ interface PropsType {
   active: boolean;
 }
 
-type Notebook = {
-  meta: Etebase.ItemMetadata;
-  uid: string;
-};
-
 export default function NotebookListScreen(props: PropsType) {
   const cacheCollections = useSelector((state: StoreState) => state.cache.collections);
+  const notebook = useSelector((state: StoreState) => state.activeNotebook);
   const notebooks: Notebook[] = React.useMemo(() => Array.from(cacheCollections
     .sort((a, b) => (a.meta!.name!.toUpperCase() >= b.meta!.name!.toUpperCase()) ? 1 : -1)
     .map(({ meta }, uid) => {return { meta, uid }})
     .values()
   ), [cacheCollections]);
   const navigation = useNavigation<DefaultNavigationProp>();
+  const dispatch = useAsyncDispatch();
   const syncGate = useSyncGate();
   const theme = useTheme();
 
   const { colUid, active } = props;
   const cacheCollection = (colUid) ? notebooks.find((col) => col.uid === colUid) : undefined;
-  const [notebook, setNotebook] = React.useState(cacheCollection);
+
+  React.useEffect(() => {
+    if (cacheCollection) {
+      dispatch(setActiveNotebook(cacheCollection));
+    }
+  }, [cacheCollection]);
 
   React.useEffect(() => {
     if (!active) {
@@ -54,7 +55,7 @@ export default function NotebookListScreen(props: PropsType) {
     navigation.setOptions({
       header: (props) => <Appbar {...props} menuFallback />,
       title: notebook?.meta.name || "Notebooks",
-      headerLeft: (notebook) ? () => <PaperAppbar.BackAction onPress={() => setNotebook(undefined)} /> : undefined,
+      headerLeft: (notebook) ? () => <PaperAppbar.BackAction onPress={() => dispatch(setActiveNotebook(cacheCollection))} /> : undefined,
       headerRight: () => (
         <RightAction colUid={notebook?.uid} />
       ),
@@ -63,7 +64,7 @@ export default function NotebookListScreen(props: PropsType) {
 
   const onBackPress = React.useCallback(() => {
     if (active && notebook) {
-      setNotebook(undefined);
+      dispatch(setActiveNotebook(undefined));
       return true;
     } else {
       return false;
@@ -95,7 +96,7 @@ export default function NotebookListScreen(props: PropsType) {
           </View>
         )}
         onPress={() => {
-          setNotebook(item);
+          dispatch(setActiveNotebook(item));
         }}
       />
     );
