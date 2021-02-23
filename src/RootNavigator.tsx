@@ -34,7 +34,7 @@ import * as C from "./constants";
 import { StoreState } from "./store";
 import { RootStackParamList } from "./RootStackParamList";
 import MenuButton from "./widgets/MenuButton";
-import Appbar from "./widgets/Appbar";
+import { NavigationAppbar } from "./widgets/Appbar";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -55,7 +55,7 @@ export default React.memo(function RootNavigator() {
     <>
       <Stack.Navigator
         screenOptions={{
-          header: (props) => <Appbar {...props} menuFallback />,
+          header: (props) => <NavigationAppbar {...props} menuFallback />,
           cardStyle: {
             maxHeight: "100%",
           },

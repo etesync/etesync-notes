@@ -12,7 +12,7 @@ import { performSync } from "../store/actions";
 import { useCredentials } from "../credentials";
 
 import NoteList from "../components/NoteList";
-import Appbar from "../widgets/Appbar";
+import { NavigationAppbar } from "../widgets/Appbar";
 import AppbarAction from "../widgets/AppbarAction";
 import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
@@ -52,7 +52,7 @@ export default function NotebookListScreen(props: PropsType) {
     }
 
     navigation.setOptions({
-      header: (props) => <Appbar {...props} menuFallback />,
+      header: (props) => <NavigationAppbar {...props} menuFallback />,
       title: notebook?.meta.name || "Notebooks",
       headerLeft: (notebook) ? () => <PaperAppbar.BackAction onPress={() => setNotebook(undefined)} /> : undefined,
       headerRight: () => (

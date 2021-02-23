@@ -14,7 +14,7 @@ import { performSync, setSettings } from "../store/actions";
 import { useCredentials } from "../credentials";
 
 import NoteList from "../components/NoteList";
-import Appbar from "../widgets/Appbar";
+import { NavigationAppbar } from "../widgets/Appbar";
 import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
 import AppbarAction from "../widgets/AppbarAction";
@@ -40,7 +40,7 @@ export default function NoteListScreen(props: PropsType) {
     }
 
     navigation.setOptions({
-      header: (props) => <Appbar {...props} menuFallback />,
+      header: (props) => <NavigationAppbar {...props} menuFallback />,
       title: "Notes",
       headerRight: () => (
         <RightAction />
