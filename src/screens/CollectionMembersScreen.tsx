@@ -22,7 +22,7 @@ import ErrorDialog from "../widgets/ErrorDialog";
 import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
 import CollectionMemberAddDialog from "../components/CollectionMemberAddDialog";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "CollectionMembers">;
 

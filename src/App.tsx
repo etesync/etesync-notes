@@ -18,7 +18,7 @@ import "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 import { useSelector } from "react-redux";
 import { StoreState } from "./store";
-import { RootStackParamList } from "./RootStackParamList";
+import { RootStackParamList } from "./NavigationConfig";
 import { DarkTheme, LightTheme } from "./theme";
 
 enableScreens();

@@ -12,7 +12,7 @@ import { useSyncGate } from "../SyncGate";
 import { StoreState } from "../store";
 
 import Link from "../widgets/Link";
-import { DefaultNavigationProp } from "../RootStackParamList";
+import { DefaultNavigationProp } from "../NavigationConfig";
 import SearchToolbar from "../widgets/SearchToolbar";
 
 

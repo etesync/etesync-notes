@@ -18,7 +18,7 @@ import Menu from "../widgets/Menu";
 import MenuItem from "../widgets/MenuItem";
 import NotFound from "../widgets/NotFound";
 import { defaultColor } from "../helpers";
-import { DefaultNavigationProp } from "../RootStackParamList";
+import { DefaultNavigationProp } from "../NavigationConfig";
 import { useTheme } from "../theme";
 
 interface PropsType {

@@ -24,7 +24,7 @@ import ConfirmationDialog from "../widgets/ConfirmationDialog";
 import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
 import { fontFamilies } from "../helpers";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 import { canShare, shareItem } from "../import-export";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "NoteEdit">;
