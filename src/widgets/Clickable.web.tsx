@@ -8,13 +8,14 @@ type ChildProps = {
 
 type PropsType = {
   applyToChild?: boolean;
+  active?: boolean;
   renderChild: (props: ChildProps) => React.ReactElement;
 };
 
 export default function Clickable(props: PropsType) {
-  const { applyToChild, renderChild } = props;
+  const { active, applyToChild, renderChild } = props;
   const theme = useTheme();
-  const className = `state ${theme.dark ? "dark" : "light"}`;
+  const className = `state${active ? " active" : ""} ${theme.dark ? "dark" : "light"}`;
 
   if (applyToChild) {
     return renderChild({ className });

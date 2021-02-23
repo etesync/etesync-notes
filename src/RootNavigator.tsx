@@ -54,6 +54,7 @@ export default React.memo(function RootNavigator() {
   return (
     <>
       <Stack.Navigator
+        initialRouteName="AccountWizard"
         screenOptions={{
           header: (props) => <Appbar {...props} menuFallback />,
           cardStyle: {
