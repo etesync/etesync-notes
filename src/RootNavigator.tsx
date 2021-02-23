@@ -32,7 +32,7 @@ import { useAppStateCb } from "./helpers";
 
 import * as C from "./constants";
 import { StoreState } from "./store";
-import { RootStackParamList } from "./RootStackParamList";
+import { RootStackParamList } from "./NavigationConfig";
 import MenuButton from "./widgets/MenuButton";
 import Appbar from "./widgets/Appbar";
 
