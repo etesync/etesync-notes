@@ -6,7 +6,7 @@ import { createAction as origCreateAction, ActionMeta } from "redux-actions";
 import * as Etebase from "etebase";
 
 import { ConnectionInfo, SettingsType } from "./";
-import { Message } from "./reducers";
+import { Message, Notebook } from "./reducers";
 
 type FunctionAny = (...args: any[]) => any;
 
@@ -243,5 +243,16 @@ export const setSettings = createAction(
   "SET_SETTINGS",
   (settings: Partial<SettingsType>) => {
     return { ...settings };
+  }
+);
+
+export const setActiveNotebook = createAction(
+  "SET_ACTIVE_NOTEBOOK",
+  (activeNotebook: Notebook | undefined) => {
+    if (activeNotebook) {
+      return { ...activeNotebook };
+    } else {
+      return null;
+    }
   }
 );
