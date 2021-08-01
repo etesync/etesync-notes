@@ -38,13 +38,14 @@ Find more information about setting up the development environments here https:/
 
 Before you can build the App from source, you need to make sure you have `yarn` and `node` installed.
 
-- Clone this repository `git clone https://github.com/mrichtsfeld/etesync-notes.git`
+- Clone this repository `git clone https://github.com/etesync/etesync-notes.git`
 - Enter the newly created folder `cd etesync-notes`
 - Run `yarn` and wait until all of the deps are installed
 
 ## Run the Web App
 
 - Install expo `npm install -g expo-cli`
+- Run `yarn add expo`
 - Run `yarn web`
 
 ## Run the iOS App (OS X only)
