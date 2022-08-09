@@ -16,7 +16,7 @@ Secure, end-to-end encrypted, and privacy-respecting notes application.
      height="80">](https://apps.apple.com/us/app/etesync-notes/id1533806351)
 
 ![GitHub tag](https://img.shields.io/github/tag/etesync/etesync-notes.svg)
-[![Chat on freenode](https://img.shields.io/badge/irc.freenode.net-%23EteSync-blue.svg)](https://webchat.freenode.net/?channels=#etesync)
+[![Chat with us](https://img.shields.io/badge/chat-IRC%20|%20Matrix%20|%20Web-blue.svg)](https://www.etebase.com/community-chat/)
 
 # Overview
 
