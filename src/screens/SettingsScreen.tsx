@@ -25,6 +25,7 @@ import FontSelector from "../widgets/FontSelector";
 import Select from "../widgets/Select";
 import { RootStackParamList } from "../RootStackParamList";
 import { useTheme } from "../theme";
+import { canExport } from "../import-export";
 
 function DarkModePreferenceSelector() {
   const dispatch = useDispatch();
@@ -277,6 +278,17 @@ const SettingsScreen = function _SettingsScreen() {
               title="Change Password"
               description="Change your account's password"
               onPress={() => { navigation.navigate("Password") }}
+            />
+            <List.Item
+              title="Export"
+              description="Backup your notes"
+              onPress={() => {
+                if (canExport()) {
+                  navigation.navigate("Export");
+                } else {
+                  dispatch(pushMessage({ message: `Error: Export is not implemented on your platform`, severity: "error" }));
+                }
+              }}
             />
           </List.Section>
         )}
