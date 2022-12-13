@@ -19,7 +19,7 @@ import NotFound from "../widgets/NotFound";
 import AppbarAction from "../widgets/AppbarAction";
 
 import { defaultColor } from "../helpers";
-import { DefaultNavigationProp, RootStackParamList } from "../RootStackParamList";
+import { DefaultNavigationProp, RootStackParamList } from "../NavigationConfig";
 
 import ColorBox from "../widgets/ColorBox";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../RootStackParamList";
+import { RootStackParamList } from "../NavigationConfig";
 import NotFound from "../widgets/NotFound";
 
 type NavigationProp = StackNavigationProp<RootStackParamList, "404">;
