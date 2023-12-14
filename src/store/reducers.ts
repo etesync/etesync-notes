@@ -369,3 +369,17 @@ export const settingsReducer = handleActions(
     },
   }
 );
+
+export type Notebook = {
+  meta: Etebase.ItemMetadata;
+  uid: string;
+};
+
+export const activeNotebookReducer = handleActions(
+  {
+    [actions.setActiveNotebook.toString()]: (_state: Notebook | null, action: Action<Notebook | null>) => {
+      return action.payload;
+    },
+  },
+  null
+);

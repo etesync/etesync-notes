@@ -2,7 +2,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
-  Home: undefined;
+  Home: { colUid: string } | undefined;
   Login: undefined;
   Signup: undefined;
   CollectionCreate: undefined;
